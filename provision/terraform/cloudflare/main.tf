@@ -1,23 +1,6 @@
-terraform {
-
-  required_providers {
-    cloudflare = {
-      source  = "cloudflare/cloudflare"
-      version = "3.15.0"
-    }
-    http = {
-      source  = "hashicorp/http"
-      version = "2.1.0"
-    }
-    sops = {
-      source  = "carlpett/sops"
-      version = "0.7.1"
-    }
-  }
-}
-
+# Read cloudflare secrets + create cloudflre zone
 data "sops_file" "cloudflare_secrets" {
-  source_file = "secret.sops.yaml"
+  source_file = var.sops_file
 }
 
 provider "cloudflare" {
@@ -78,6 +61,7 @@ resource "cloudflare_zone_settings_override" "cloudflare_settings" {
   }
 }
 
+# Lookup my IP and add CNAME record to Cloudflare
 data "http" "ipv4" {
   url = "http://ipv4.icanhazip.com"
 }
