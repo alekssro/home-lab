@@ -18,5 +18,6 @@ terraform {
   backend "s3" {
     bucket = "alekssro-terraform-states"
     key    = "cloudflare.tfstate"
+    region = "eu-west-1"
   }
 }
