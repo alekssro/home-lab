@@ -16,9 +16,7 @@ terraform {
   }
 
   backend "s3" {
-    bucket = var.tf_backend_bucket
-    key    = var.tf_backend_key
+    bucket = "alekssro-terraform-states"
+    key    = "cloudflare.tfstate"
   }
 }
-
-

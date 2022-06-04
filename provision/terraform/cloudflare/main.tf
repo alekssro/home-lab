@@ -1,6 +1,6 @@
 # Read cloudflare secrets + create cloudflre zone
 data "sops_file" "cloudflare_secrets" {
-  source_file = var.sops_file
+  source_file = "secret.sops.yaml"
 }
 
 provider "cloudflare" {
