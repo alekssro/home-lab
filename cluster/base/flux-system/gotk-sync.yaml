@@ -8,7 +8,7 @@ spec:
   interval: 5m0s
   ref:
     branch: main
-  url: https://github.com/alekssro/home-lab.git
+  url: https://github.com/alekssro/home-lab
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
 kind: Kustomization
