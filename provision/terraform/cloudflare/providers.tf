@@ -22,3 +22,13 @@ terraform {
     dynamodb_table = "terraform-state-lock"
   }
 }
+
+# terraform {
+#   cloud {
+#     organization = "alekssro"
+
+#     workspaces {
+#       name = "home-lab-cloudflare"
+#     }
+#   }
+# }
