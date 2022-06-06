@@ -70,6 +70,7 @@ resource "cloudflare_record" "root" {
   ttl     = 1
 }
 
+
 # Removed from tf state (managed by cloudflare-ddns cronjob in k8s cluster)
 
 # # Lookup my IP and add CNAME record to Cloudflare

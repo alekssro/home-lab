@@ -19,7 +19,6 @@ terraform {
 
   cloud {
     organization = "alekssro"
-
     workspaces {
       name = "home-lab-cloudflare"
     }
