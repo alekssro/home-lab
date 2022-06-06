@@ -1,5 +1,7 @@
 terraform {
 
+  required_version = "~> 1.2.0"
+
   required_providers {
     cloudflare = {
       source  = "cloudflare/cloudflare"
@@ -15,20 +17,11 @@ terraform {
     }
   }
 
-  backend "s3" {
-    bucket         = "alekssro-terraform-states"
-    key            = "cloudflare.tfstate"
-    region         = "eu-west-1"
-    dynamodb_table = "terraform-state-lock"
+  cloud {
+    organization = "alekssro"
+
+    workspaces {
+      name = "home-lab-cloudflare"
+    }
   }
 }
-
-# terraform {
-#   cloud {
-#     organization = "alekssro"
-
-#     workspaces {
-#       name = "home-lab-cloudflare"
-#     }
-#   }
-# }
