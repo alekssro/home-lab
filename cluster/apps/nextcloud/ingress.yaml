@@ -7,7 +7,7 @@ spec:
     - web
   routes:
     - kind: Rule
-      match: Host(`drive.example.com`) && PathPrefix(`/`)
+      match: Host(`nextcloud.alekssro.com`) && PathPrefix(`/`)
       services:
         - name: nextcloud
           namespace: nextcloud
@@ -22,7 +22,7 @@ spec:
     - websecure
   routes:
     - kind: Rule
-      match: Host(`drive.example.com`) && PathPrefix(`/`)
+      match: Host(`nextcloud.alekssro.com`) && PathPrefix(`/`)
       services:
         - name: nextcloud
           namespace: nextcloud
