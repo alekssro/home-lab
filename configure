@@ -13,7 +13,7 @@ export SOPS_AGE_KEY_FILE=~/.config/sops/age/keys.txt
 source "${PROJECT_DIR}/.config.env"
 
 show_help() {
-cat << EOF
+    cat <<EOF
 Usage: $(basename "$0") <options>
     -h, --help                      Display help
     --verify                        Verify .config.env settings
@@ -38,37 +38,37 @@ main() {
         verify_success
     else
         # generate sops configuration file
-        envsubst < "${PROJECT_DIR}/tmpl/.sops.yaml" \
-            > "${PROJECT_DIR}/.sops.yaml"
+        envsubst <"${PROJECT_DIR}/tmpl/.sops.yaml" \
+            >"${PROJECT_DIR}/.sops.yaml"
         # generate cluster settings
-        envsubst < "${PROJECT_DIR}/tmpl/cluster/cluster-settings.yaml" \
-            > "${PROJECT_DIR}/cluster/base/cluster-settings.yaml"
-        envsubst < "${PROJECT_DIR}/tmpl/cluster/gotk-sync.yaml" \
-            > "${PROJECT_DIR}/cluster/base/flux-system/gotk-sync.yaml"
-        envsubst < "${PROJECT_DIR}/tmpl/cluster/kube-vip-daemonset.yaml" \
-            > "${PROJECT_DIR}/cluster/core/kube-system/kube-vip/daemon-set.yaml"
+        envsubst <"${PROJECT_DIR}/tmpl/cluster/cluster-settings.yaml" \
+            >"${PROJECT_DIR}/cluster/base/cluster-settings.yaml"
+        envsubst <"${PROJECT_DIR}/tmpl/cluster/gotk-sync.yaml" \
+            >"${PROJECT_DIR}/cluster/base/flux-system/gotk-sync.yaml"
+        envsubst <"${PROJECT_DIR}/tmpl/cluster/kube-vip-daemonset.yaml" \
+            >"${PROJECT_DIR}/cluster/core/kube-system/kube-vip/daemon-set.yaml"
         # generate cluster secrets
-        envsubst < "${PROJECT_DIR}/tmpl/cluster/cluster-secrets.sops.yaml" \
-            > "${PROJECT_DIR}/cluster/base/cluster-secrets.sops.yaml"
-        envsubst < "${PROJECT_DIR}/tmpl/cluster/cert-manager-secret.sops.yaml" \
-            > "${PROJECT_DIR}/cluster/core/cert-manager/secret.sops.yaml"
-        envsubst < "${PROJECT_DIR}/tmpl/cluster/cloudflare-ddns-secret.sops.yaml" \
-            > "${PROJECT_DIR}/cluster/apps/networking/cloudflare-ddns/secret.sops.yaml"
-        envsubst < "${PROJECT_DIR}/tmpl/cluster/external-dns-secret.sops.yaml" \
-            > "${PROJECT_DIR}/cluster/apps/networking/external-dns/secret.sops.yaml"
+        envsubst <"${PROJECT_DIR}/tmpl/cluster/cluster-secrets.sops.yaml" \
+            >"${PROJECT_DIR}/cluster/base/cluster-secrets.sops.yaml"
+        envsubst <"${PROJECT_DIR}/tmpl/cluster/cert-manager-secret.sops.yaml" \
+            >"${PROJECT_DIR}/cluster/core/cert-manager/secret.sops.yaml"
+        envsubst <"${PROJECT_DIR}/tmpl/cluster/cloudflare-ddns-secret.sops.yaml" \
+            >"${PROJECT_DIR}/cluster/apps/networking/cloudflare-ddns/secret.sops.yaml"
+        envsubst <"${PROJECT_DIR}/tmpl/cluster/external-dns-secret.sops.yaml" \
+            >"${PROJECT_DIR}/cluster/apps/networking/external-dns/secret.sops.yaml"
         # encrypt cluster secrets
         sops --encrypt --in-place "${PROJECT_DIR}/cluster/base/cluster-secrets.sops.yaml"
         sops --encrypt --in-place "${PROJECT_DIR}/cluster/core/cert-manager/secret.sops.yaml"
         sops --encrypt --in-place "${PROJECT_DIR}/cluster/apps/networking/cloudflare-ddns/secret.sops.yaml"
         sops --encrypt --in-place "${PROJECT_DIR}/cluster/apps/networking/external-dns/secret.sops.yaml"
         # generate terraform secrets
-        envsubst < "${PROJECT_DIR}/tmpl/terraform/secret.sops.yaml" \
-            > "${PROJECT_DIR}/provision/terraform/cloudflare/secret.sops.yaml"
+        envsubst <"${PROJECT_DIR}/tmpl/terraform/secret.sops.yaml" \
+            >"${PROJECT_DIR}/provision/terraform/cloudflare/secret.sops.yaml"
         # encrypt terraform secrets
         sops --encrypt --in-place "${PROJECT_DIR}/provision/terraform/cloudflare/secret.sops.yaml"
         # generate ansible settings
-        envsubst < "${PROJECT_DIR}/tmpl/ansible/kube-vip.yml" \
-            > "${PROJECT_DIR}/provision/ansible/inventory/group_vars/kubernetes/kube-vip.yml"
+        envsubst <"${PROJECT_DIR}/tmpl/ansible/kube-vip.yml" \
+            >"${PROJECT_DIR}/provision/ansible/inventory/group_vars/kubernetes/kube-vip.yml"
         # generate ansible hosts file and secrets
         generate_ansible_hosts
         generate_ansible_host_secrets
@@ -80,16 +80,16 @@ main() {
 parse_command_line() {
     while :; do
         case "${1:-}" in
-            -h|--help)
-                show_help
-                exit
-                ;;
-            --verify)
-                verify=1
-                ;;
-            *)
-                break
-                ;;
+        -h | --help)
+            show_help
+            exit
+            ;;
+        --verify)
+            verify=1
+            ;;
+        *)
+            break
+            ;;
         esac
 
         shift
@@ -172,7 +172,7 @@ verify_addressing() {
     # Depending on the IP address, verify if it should be in the metallb range or not
     metallb_octet_min=$(echo "${BOOTSTRAP_METALLB_LB_RANGE}" | cut -d- -f1 | cut -d. -f4)
     metallb_octet_ceil=$(echo "${BOOTSTRAP_METALLB_LB_RANGE}" | cut -d- -f2 | cut -d. -f4)
-    for (( octet=metallb_octet_min; octet<=metallb_octet_ceil; octet++ )); do
+    for ((octet = metallb_octet_min; octet <= metallb_octet_ceil; octet++)); do
         addr="${metallb_subnet_min}.${octet}"
         if [[ "${addr}" == "${BOOTSTRAP_KUBE_VIP_ADDR}" ]]; then
             found_kube_vip="true"
@@ -269,7 +269,7 @@ verify_git_repository() {
 
     export GIT_TERMINAL_PROMPT=0
     pushd "$(mktemp -d)" >/dev/null 2>&1
-    [ "$(git ls-remote "${BOOTSTRAP_GIT_REPOSITORY}" 2> /dev/null)" ] || {
+    [ "$(git ls-remote "${BOOTSTRAP_GIT_REPOSITORY}" 2>/dev/null)" ] || {
         _log "ERROR" "Unable to find the remote Git repository '${BOOTSTRAP_GIT_REPOSITORY}'"
         exit 1
     }
@@ -288,10 +288,10 @@ setup_github_webhook() {
         export BOOTSTRAP_FLUX_GITHUB_WEBHOOK_SECRET="${WEBHOOK_SECRET}"
         _log "INFO" "Using GitHub Token '${WEBHOOK_SECRET}' for Flux"
 
-        cp -rf  "${PROJECT_DIR}/tmpl/cluster/flux-system" "${PROJECT_DIR}/cluster/apps/"
+        cp -rf "${PROJECT_DIR}/tmpl/cluster/flux-system" "${PROJECT_DIR}/cluster/apps/"
 
-        envsubst < "${PROJECT_DIR}/tmpl/cluster/flux-system/webhooks/github/secret.sops.yaml" \
-            > "${PROJECT_DIR}/cluster/apps/flux-system/webhooks/github/secret.sops.yaml"
+        envsubst <"${PROJECT_DIR}/tmpl/cluster/flux-system/webhooks/github/secret.sops.yaml" \
+            >"${PROJECT_DIR}/cluster/apps/flux-system/webhooks/github/secret.sops.yaml"
 
         sops --encrypt --in-place "${PROJECT_DIR}/cluster/apps/flux-system/webhooks/github/secret.sops.yaml"
 
@@ -310,10 +310,11 @@ verify_cloudflare() {
     _has_envar "BOOTSTRAP_CLOUDFLARE_EMAIL"
 
     # Try to retrieve zone information from Cloudflare's API
-    account_zone=$(curl -s -X GET "https://api.cloudflare.com/client/v4/zones?name=${BOOTSTRAP_CLOUDFLARE_DOMAIN}&status=active" \
-        -H "X-Auth-Email: ${BOOTSTRAP_CLOUDFLARE_EMAIL}" \
-        -H "X-Auth-Key: ${BOOTSTRAP_CLOUDFLARE_APIKEY}" \
-        -H "Content-Type: application/json"
+    account_zone=$(
+        curl -s -X GET "https://api.cloudflare.com/client/v4/zones?name=${BOOTSTRAP_CLOUDFLARE_DOMAIN}&status=active" \
+            -H "X-Auth-Email: ${BOOTSTRAP_CLOUDFLARE_EMAIL}" \
+            -H "X-Auth-Key: ${BOOTSTRAP_CLOUDFLARE_APIKEY}" \
+            -H "Content-Type: application/json"
     )
 
     if [[ "$(echo "${account_zone}" | jq ".success")" == "true" ]]; then
@@ -415,7 +416,7 @@ generate_ansible_host_secrets() {
             printf "kind: Secret\n"
             printf "ansible_user: %s\n" "${!node_username}"
             printf "ansible_become_pass: %s\n" "${!node_password}"
-        } > "${PROJECT_DIR}/provision/ansible/inventory/host_vars/${node_hostname}.sops.yml"
+        } >"${PROJECT_DIR}/provision/ansible/inventory/host_vars/${node_hostname}.sops.yml"
         sops --encrypt --in-place "${PROJECT_DIR}/provision/ansible/inventory/host_vars/${node_hostname}.sops.yml"
     done
 }
@@ -436,7 +437,7 @@ generate_ansible_hosts() {
             node_id=$(echo "${var}" | awk -F"_" '{print $5}')
             node_control="BOOTSTRAP_ANSIBLE_CONTROL_NODE_${node_id}"
             if [[ "${!node_control}" == "true" ]]; then
-                master_node_count=$((master_node_count+1))
+                master_node_count=$((master_node_count + 1))
                 node_hostname="BOOTSTRAP_ANSIBLE_HOSTNAME_${node_id}"
                 host_key="${!node_hostname:-${default_control_node_prefix}}"
                 if [ "${host_key}" == "${default_control_node_prefix}" ]; then
@@ -447,7 +448,7 @@ generate_ansible_hosts() {
                 printf "        %s:\n" "${node_hostname}"
                 printf "          ansible_host: %s\n" "${!var}"
             else
-                worker_node_count=$((worker_node_count+1))
+                worker_node_count=$((worker_node_count + 1))
             fi
         done
         if [[ ${worker_node_count} -gt 0 ]]; then
@@ -469,7 +470,7 @@ generate_ansible_hosts() {
                 fi
             done
         fi
-    } > "${PROJECT_DIR}/provision/ansible/inventory/hosts.yml"
+    } >"${PROJECT_DIR}/provision/ansible/inventory/hosts.yml"
 }
 
 success() {
