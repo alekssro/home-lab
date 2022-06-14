@@ -1,7 +1,8 @@
 apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
 metadata:
-  name: hajimari-hpa
+  name: hajimari
+  namespace: default
 spec:
   scaleTargetRef:
     apiVersion: apps/v1
