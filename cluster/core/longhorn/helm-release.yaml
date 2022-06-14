@@ -23,3 +23,25 @@ spec:
       retries: 3
   values:
     enablePSP: true
+    replicaCount: 2
+    ingress:
+      enabled: true
+      ingressClassName: "traefik"
+      annotations:
+        cert-manager.io/cluster-issuer: "letsencrypt-production"
+        traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
+        traefik.ingress.kubernetes.io/router.middlewares: "networking-internal-only@kubernetescrd"
+      hosts:
+        - host: "longhorn.${SECRET_DOMAIN}"
+          paths:
+            - "/"
+      tls:
+        - secretName: longhorn-tls
+          hosts:
+            - "longhorn.${SECRET_DOMAIN}"
+    resources:
+      requests:
+        cpu: 100m
+        memory: 128Mi
+      limits:
+        memory: 256Mi
