@@ -25,3 +25,5 @@ resources:
   - stakater-charts.yaml
   - traefik-charts.yaml
   - weaveworks-kured-charts.yaml
+  - nextcloud-charts.yaml
+  - longhorn-charts.yaml
