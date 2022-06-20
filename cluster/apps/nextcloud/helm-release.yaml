@@ -5,8 +5,6 @@ metadata:
   name: nextcloud
   namespace: nextcloud
 spec:
-  nodeSelector:
-    kubernetes.io/arch: amd64
   interval: 5m
   chart:
     spec:
@@ -132,6 +130,7 @@ spec:
         enabled: true
         existingClaim: nextcloud-data
     podAnnotations:
+      kubernetes.io/arch: "amd64"
       configmap.reloader.stakater.com/reload: "nextcloud-settings"
     replicaCount: 1
     resources:
