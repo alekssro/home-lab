@@ -12,4 +12,4 @@ resources:
   - kube-system
   - networking
   - flux-system
-  # - nextcloud
+  - nextcloud
