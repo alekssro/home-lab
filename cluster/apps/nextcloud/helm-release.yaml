@@ -5,6 +5,8 @@ metadata:
   name: nextcloud
   namespace: nextcloud
 spec:
+  nodeSelector:
+    kubernetes.io/arch: amd64
   interval: 5m
   chart:
     spec:
