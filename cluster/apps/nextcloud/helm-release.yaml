@@ -131,7 +131,7 @@ spec:
         existingClaim: nextcloud-data
     podAnnotations:
       configmap.reloader.stakater.com/reload: "nextcloud-settings"
-    replicaCount: 2
+    replicaCount: 1
     resources:
       requests:
         cpu: 100m
