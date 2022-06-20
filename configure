@@ -71,6 +71,7 @@ main() {
             >"${PROJECT_DIR}/provision/ansible/inventory/group_vars/kubernetes/kube-vip.yml"
         # generate ansible hosts file and secrets
         generate_ansible_hosts
+        generate_ansible_disks
         generate_ansible_host_secrets
         setup_github_webhook
         success
@@ -471,6 +472,10 @@ generate_ansible_hosts() {
             done
         fi
     } >"${PROJECT_DIR}/provision/ansible/inventory/hosts.yml"
+}
+
+generate_ansible_disks() {
+    # TODO: Generate disk inventory associated with corresponding host
 }
 
 success() {

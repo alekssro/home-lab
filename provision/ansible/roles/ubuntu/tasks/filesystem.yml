@@ -18,3 +18,10 @@
   loop:
     - swap
     - none
+
+- name: Mount up HDD
+  ansible.posix.mount:
+    path: /srv/disk
+    src: LABEL=SOME_LABEL
+    fstype: ext4
+    state: present
