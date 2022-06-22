@@ -5,6 +5,7 @@ resources:
   - ingress.yaml
   - db-deployment.yaml
   - db-pvc.yaml
+  - db-service.yaml
   - elasticsearch-deployment.yaml
   - elasticsearch-pvc.yaml
   - secret.sops.yaml
