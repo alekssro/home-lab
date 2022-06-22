@@ -32,7 +32,7 @@ spec:
             - name: MYSQL_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  key: MYSQL_DATABASE
+                  key: MYSQL_PASSWORD
                   name: filerun-secret
             - name: MYSQL_DATABASE
               valueFrom:
