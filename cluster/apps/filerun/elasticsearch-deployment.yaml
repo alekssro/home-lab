@@ -22,7 +22,7 @@ spec:
             - name: cluster.name
               value: filerun
             - name: bootstrap.memory_lock
-              value: "true"
+              value: "false"
             - name: ES_JAVA_OPTS
               value: -Xms512m -Xmx512m
           image: docker.elastic.co/elasticsearch/elasticsearch:6.2.4
