@@ -1,0 +1,15 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - filerun-ns.yaml
+  - ingress.yaml
+  - db-deployment.yaml
+  - db-pvc.yaml
+  - elasticsearch-deployment.yaml
+  - elasticsearch-pvc.yaml
+  - secret.sops.yaml
+  - tika-deployment.yaml
+  - web-deployment.yaml
+  - web-html-pvc.yaml
+  - web-userfiles-pvc.yaml
+  - web-service.yaml

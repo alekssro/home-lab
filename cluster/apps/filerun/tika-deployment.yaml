@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: filerun-tika
+  namespace: filerun
+  labels:
+    service: filerun-tika
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      service: filerun-tika
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        service: filerun-tika
+    spec:
+      containers:
+        - image: logicalspark/docker-tikaserver
+          name: filerun-tika
+          resources: {}
+      nodeSelector:
+        kubernetes.io/arch: amd64
+      restartPolicy: Always

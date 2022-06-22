@@ -1,0 +1,54 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: filerun-db
+  namespace: filerun
+  labels:
+    service: filerun-db
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      service: filerun-db
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        service: filerun-db
+    spec:
+      containers:
+        - env:
+            - name: MYSQL_ROOT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: MYSQL_ROOT_PASSWORD
+                  name: filerun-secret
+            - name: MYSQL_USER
+              valueFrom:
+                secretKeyRef:
+                  key: MYSQL_USER
+                  name: filerun-secret
+            - name: MYSQL_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: MYSQL_DATABASE
+                  name: filerun-secret
+            - name: MYSQL_DATABASE
+              valueFrom:
+                secretKeyRef:
+                  key: MYSQL_DATABASE
+                  name: filerun-secret
+          image: mariadb:10.1
+          name: filerun-db
+          resources: {}
+          volumeMounts:
+            - mountPath: /var/lib/mysql
+              name: filerun-db-pvc
+      nodeSelector:
+        kubernetes.io/arch: amd64
+      restartPolicy: Always
+      volumes:
+        - name: filerun-db-pvc
+          persistentVolumeClaim:
+            claimName: filerun-db-pvc
