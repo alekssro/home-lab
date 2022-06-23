@@ -6,11 +6,11 @@ resources:
   - db-deployment.yaml
   - db-pvc.yaml
   - db-service.yaml
-  # - elasticsearch-deployment.yaml
-  # - elasticsearch-pvc.yaml
   - secret.sops.yaml
-  # - tika-deployment.yaml
   - web-deployment.yaml
   - web-html-pvc.yaml
   - web-userfiles-pvc.yaml
   - web-service.yaml
+  # - elasticsearch-deployment.yaml
+  # - elasticsearch-pvc.yaml
+  # - tika-deployment.yaml
