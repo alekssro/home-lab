@@ -33,6 +33,7 @@ spec:
         matchNames:
           - default
           - networking
+          - filerun
       name: "alekssro"
       # customApps:
       #   - name: Some External Cluster Service
