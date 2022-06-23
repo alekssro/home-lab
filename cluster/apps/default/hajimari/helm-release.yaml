@@ -33,6 +33,7 @@ spec:
         matchNames:
           - default
           - networking
+          - storage-system
           - filerun
       name: "alekssro"
       # customApps:
