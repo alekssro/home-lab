@@ -29,7 +29,7 @@ spec:
               value: "Europe/Madrid"
           args:
             - "-c"
-            - "/opt/adguardhome/conf"
+            - "/opt/adguardhome/conf/AdGuardHome.conf"
             - "--work-dir"
             - "/opt/adguardhome/work"
             - "--no-check-update"
