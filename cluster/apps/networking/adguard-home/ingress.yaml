@@ -1,6 +1,4 @@
-#! Ingress resource, used for HTTP(S) access to the AdGuard Home web interface via Kubernetes ingress-controller
-#! https://kubernetes.io/docs/concepts/services-networking/ingress-controllers/
-apiVersion: networking.k8s.io/v1beta1
+apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: adguard-home
