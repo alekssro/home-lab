@@ -68,10 +68,12 @@ spec:
               memory: "256Mi"
           readinessProbe:
             httpGet:
+              host: "adguard.${SECRET_DOMAIN}"
               path: /
               port: 3000
           livenessProbe:
             httpGet:
+              host: "adguard.${SECRET_DOMAIN}"
               path: /
               port: 3000
           volumeMounts:
