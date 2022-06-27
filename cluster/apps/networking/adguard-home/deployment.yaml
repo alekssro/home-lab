@@ -62,6 +62,8 @@ spec:
               mountPath: /opt/adguardhome/work
       volumes:
         - name: adguard-home-config
+          persistentVolumeClaim:
+            claimName: adguard-home
           configMap:
             name: adguard-home
             items:
