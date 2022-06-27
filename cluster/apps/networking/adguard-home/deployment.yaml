@@ -66,16 +66,6 @@ spec:
               cpu: "200m"
             limits:
               memory: "256Mi"
-          readinessProbe:
-            httpGet:
-              host: "adguard.${SECRET_DOMAIN}"
-              path: /
-              port: 3000
-          livenessProbe:
-            httpGet:
-              host: "adguard.${SECRET_DOMAIN}"
-              path: /
-              port: 3000
           volumeMounts:
             - name: adguard-home-config
               mountPath: /opt/adguardhome/conf
