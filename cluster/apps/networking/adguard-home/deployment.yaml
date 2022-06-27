@@ -1,0 +1,72 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: adguard-home
+  namespace: networking
+  labels:
+    service: adguard-home
+spec:
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+      maxSurge: 0
+  selector:
+    matchLabels:
+      service: adguard-home
+  template:
+    metadata:
+      labels:
+        service: adguard-home
+    spec:
+      containers:
+        - name: adguard-home
+          image: adguard/adguardhome:v0.106.3
+          env:
+            - name: TZ
+              value: "Europe/Madrid"
+          args:
+            - "-c"
+            - "/opt/adguardhome/conf"
+            - "--work-dir"
+            - "/opt/adguardhome/work"
+            - "--no-check-update"
+          securityContext:
+            privileged: false
+            allowPrivilegeEscalation: false
+          ports:
+            - containerPort: 3000
+              protocol: TCP
+            - containerPort: 53
+              protocol: UDP
+          resources:
+            requests:
+              memory: "128Mi"
+              cpu: "200m"
+            limits:
+              memory: "256Mi"
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 3000
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 3000
+          volumeMounts:
+            - name: adguard-home-config
+              mountPath: /opt/adguardhome/conf
+            - name: adguard-home-logs
+              mountPath: /opt/adguardhome/work
+      volumes:
+        - name: adguard-home-config
+          configMap:
+            name: adguard-home
+            items:
+              - key: AdGuardHome.yaml
+                path: AdGuardHome.yaml
+
+        - name: adguard-home-logs
+          emptyDir: {}

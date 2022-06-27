@@ -1,0 +1,30 @@
+#! Ingress resource, used for HTTP(S) access to the AdGuard Home web interface via Kubernetes ingress-controller
+#! https://kubernetes.io/docs/concepts/services-networking/ingress-controllers/
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: adguard-home
+  namespace: networking
+  labels:
+    service: adguard-home
+  annotations:
+    cert-manager.io/cluster-issuer: "letsencrypt-production"
+    traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
+    traefik.ingress.kubernetes.io/router.middlewares: "networking-internal-only@kubernetescrd"
+spec:
+  ingressClassName: traefik
+  tls:
+    - hosts:
+        - "adguardhome.${SECRET_DOMAIN}"
+      secretName: adguardhome-tls
+  rules:
+    - host: "adguardhome.${SECRET_DOMAIN}"
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: adguard-home
+                port:
+                  number: 3000
