@@ -28,11 +28,8 @@ spec:
           command:
             - "sh"
             - "-c"
-            - |
-              if [ ! -f /opt/adguardhome/conf/AdGuardHome.yaml ]; then
-                mkdir -p /opt/adguardhome/conf
-                cp /tmp/AdGuardHome.yaml /opt/adguardhome/conf/AdGuardHome.yaml
-              fi
+            - "mkdir -p /opt/adguardhome/conf"
+            - "cp /tmp/AdGuardHome.yaml /opt/adguardhome/conf/AdGuardHome.yaml"
           volumeMounts:
             - name: adguard-home-configmap
               mountPath: /tmp
