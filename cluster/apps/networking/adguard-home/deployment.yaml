@@ -18,6 +18,8 @@ spec:
       service: adguard-home
   template:
     metadata:
+      annotations:
+        configmap.reloader.stakater.com/reload: adguard-home
       labels:
         service: adguard-home
     spec:
