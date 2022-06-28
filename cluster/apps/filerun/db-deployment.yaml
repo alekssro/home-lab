@@ -19,6 +19,8 @@ spec:
     spec:
       containers:
         - env:
+            - name: TZ
+              value: "Europe/Madrid"
             - name: MYSQL_ROOT_PASSWORD
               valueFrom:
                 secretKeyRef:

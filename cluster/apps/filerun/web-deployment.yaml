@@ -19,6 +19,8 @@ spec:
     spec:
       containers:
         - env:
+            - name: TZ
+              value: "Europe/Madrid"
             - name: FR_DB_HOST
               value: filerun-db
             - name: FR_DB_PORT
