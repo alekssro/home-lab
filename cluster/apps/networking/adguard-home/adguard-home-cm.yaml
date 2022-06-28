@@ -71,7 +71,7 @@ data:
       blocked_services: []
       local_domain_name: lan
       resolve_clients: true
-      local_ptr_upstreams: []
+      local_ptr_upstreams: ["192.168.1.220"]
     tls:
       enabled: false
       server_name: ""
