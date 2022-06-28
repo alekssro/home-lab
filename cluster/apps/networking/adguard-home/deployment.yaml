@@ -28,8 +28,7 @@ spec:
           command:
             - "sh"
             - "-c"
-            - "mkdir -p /opt/adguardhome/conf"
-            - "cp /tmp/AdGuardHome.yaml /opt/adguardhome/conf/AdGuardHome.yaml"
+            - "mkdir -p /opt/adguardhome/conf && cp /tmp/AdGuardHome.yaml /opt/adguardhome/conf/AdGuardHome.yaml"
           volumeMounts:
             - name: adguard-home-configmap
               mountPath: /tmp
