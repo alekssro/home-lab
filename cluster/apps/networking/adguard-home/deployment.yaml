@@ -23,6 +23,7 @@ spec:
       labels:
         service: adguard-home
     spec:
+      hostNetwork: true
       initContainers:
         - name: copy-configmap
           image: busybox
