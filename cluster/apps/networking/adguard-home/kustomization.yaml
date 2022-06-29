@@ -4,6 +4,7 @@ kind: Kustomization
 resources:
   - adguard-home-cm.yaml
   - adguard-home-pvc.yaml
+  - adguard-home-logs-pvc.yaml
   - adguard-home-svc.yaml
   - deployment.yaml
   - ingress.yaml
