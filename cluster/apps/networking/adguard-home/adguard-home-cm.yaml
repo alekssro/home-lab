@@ -110,8 +110,8 @@ data:
       name: EasyPrivacy
       id: 5
     - enabled: true
-      url: https://easylist.to/easylist/fanboy-social.txt
-      name: Fanboy's Social Blocking List
+      url: https://secure.fanboy.co.nz/fanboy-annoyance.txt
+      name: Fanboy's Annoyance
       id: 6
     whitelist_filters: []
     user_rules: []
