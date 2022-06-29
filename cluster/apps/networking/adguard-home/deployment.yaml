@@ -23,6 +23,7 @@ spec:
       labels:
         service: adguard-home
     spec:
+      nodeName: raspi4
       hostNetwork: true
       initContainers:
         - name: copy-configmap
