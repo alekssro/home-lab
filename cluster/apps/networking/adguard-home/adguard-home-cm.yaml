@@ -20,10 +20,10 @@ data:
       bind_hosts:
       - 0.0.0.0
       port: 53
-      statistics_interval: 1
+      statistics_interval: 7
       querylog_enabled: true
       querylog_file_enabled: true
-      querylog_interval: 90
+      querylog_interval: 7
       querylog_size_memory: 1000
       anonymize_client_ip: false
       protection_enabled: true
