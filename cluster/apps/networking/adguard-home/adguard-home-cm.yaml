@@ -38,6 +38,7 @@ data:
       refuse_any: true
       upstream_dns:
       - https://dns10.quad9.net/dns-query
+      - [/alekssro.com/]192.168.1.220
       upstream_dns_file: ""
       bootstrap_dns:
       - 9.9.9.10
@@ -71,7 +72,7 @@ data:
       blocked_services: []
       local_domain_name: lan
       resolve_clients: true
-      local_ptr_upstreams: ["192.168.1.220"]
+      local_ptr_upstreams: []
     tls:
       enabled: false
       server_name: ""
@@ -88,18 +89,30 @@ data:
       certificate_path: ""
       private_key_path: ""
     filters:
-    - enabled: true
+    - enabled: false
       url: https://adguardteam.github.io/AdGuardSDNSFilter/Filters/filter.txt
       name: AdGuard DNS filter
       id: 1
-    - enabled: true
+    - enabled: false
       url: https://adaway.org/hosts.txt
       name: AdAway
       id: 2
     - enabled: true
-      url: https://www.malwaredomainlist.com/hostslist/hosts.txt
-      name: MalwareDomainList.com Hosts List
+      url: https://easylist.to/easylist/easylist.txt
+      name: EasyList
+      id: 3
+    - enabled: true
+      url: https://secure.fanboy.co.nz/fanboy-cookiemonster.txt
+      name: EasyList Cookiemonster
       id: 4
+    - enabled: true
+      url: https://easylist.to/easylist/easyprivacy.txt
+      name: EasyPrivacy
+      id: 5
+    - enabled: true
+      url: https://easylist.to/easylist/fanboy-social.txt
+      name: Fanboy's Social Blocking List
+      id: 6
     whitelist_filters: []
     user_rules: []
     dhcp:
