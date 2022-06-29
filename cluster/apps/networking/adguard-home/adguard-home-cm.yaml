@@ -93,7 +93,7 @@ data:
       url: https://adguardteam.github.io/AdGuardSDNSFilter/Filters/filter.txt
       name: AdGuard DNS filter
       id: 1
-    - enabled: false
+    - enabled: true
       url: https://adaway.org/hosts.txt
       name: AdAway
       id: 2
