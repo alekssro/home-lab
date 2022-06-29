@@ -90,4 +90,5 @@ spec:
             claimName: adguard-home
 
         - name: adguard-home-logs
-          emptyDir: {}
+          persistentVolumeClaim:
+            claimName: adguard-home-logs
