@@ -89,7 +89,7 @@ data:
       certificate_path: ""
       private_key_path: ""
     filters:
-    - enabled: false
+    - enabled: true
       url: https://adguardteam.github.io/AdGuardSDNSFilter/Filters/filter.txt
       name: AdGuard DNS filter
       id: 1
