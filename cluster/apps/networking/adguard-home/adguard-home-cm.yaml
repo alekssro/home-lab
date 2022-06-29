@@ -113,6 +113,10 @@ data:
       url: https://secure.fanboy.co.nz/fanboy-annoyance.txt
       name: Fanboy's Annoyance
       id: 6
+    - enabled: true
+      url: https://abp.oisd.nl
+      name: oisd full
+      id: 7
     whitelist_filters: []
     user_rules: []
     dhcp:
