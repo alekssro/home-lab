@@ -5,13 +5,16 @@ metadata:
   namespace: default
   annotations:
     cert-manager.io/cluster-issuer: "letsencrypt-production"
-    external-dns.alpha.kubernetes.io/target: "ipv4.${SECRET_DOMAIN}"
-    external-dns/is-public: "true"
     traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
-    traefik.ingress.kubernetes.io/router.middlewares: "networking-cloudflare-only@kubernetescrd"
+    traefik.ingress.kubernetes.io/router.middlewares: "networking-internal-only@kubernetescrd"
   labels:
     service: heimdall
 spec:
+  ingressClassName: traefik
+  tls:
+    - hosts:
+        - "heimdall.${SECRET_DOMAIN}"
+      secretName: heimdall-tls
   rules:
     - host: "heimdall.${SECRET_DOMAIN}"
       http:
@@ -23,7 +26,3 @@ spec:
                 name: heimdall
                 port:
                   number: 80
-  tls:
-    - hosts:
-        - "heimdall.${SECRET_DOMAIN}"
-      secretName: heimdall-tls
