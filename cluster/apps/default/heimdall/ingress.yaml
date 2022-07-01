@@ -23,3 +23,7 @@ spec:
                 name: heimdall
                 port:
                   number: 80
+  tls:
+    - hosts:
+        - "heimdall.${SECRET_DOMAIN}"
+      secretName: heimdall-tls
