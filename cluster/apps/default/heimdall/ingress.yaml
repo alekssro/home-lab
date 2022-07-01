@@ -23,22 +23,3 @@ spec:
                 name: heimdall
                 port:
                   number: 80
-
-      ingress:
-        main:
-          enabled: true
-          ingressClassName: "traefik"
-          annotations:
-            cert-manager.io/cluster-issuer: "letsencrypt-production"
-            external-dns.alpha.kubernetes.io/target: "ipv4.${SECRET_DOMAIN}"
-            external-dns/is-public: "true"
-            traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
-            traefik.ingress.kubernetes.io/router.middlewares: "networking-cloudflare-only@kubernetescrd"
-          hosts:
-            - host: "heimdall.${SECRET_DOMAIN}"
-              paths:
-                - "/"
-          tls:
-            - secretName: heimdall-tls
-              hosts:
-                - "heimdall.${SECRET_DOMAIN}"
