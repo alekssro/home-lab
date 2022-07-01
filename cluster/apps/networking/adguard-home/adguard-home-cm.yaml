@@ -9,6 +9,8 @@ data:
     bind_port: 3000
     beta_bind_port: 0
     users:
+      - name: alekssro
+        password: $2a$12$NEFRYj/k.MjYSPG3svvQ4O9efojUwu37p6pQnZ6WOZSXVq0Txz9xG
       - name: heimdall
         password: $2a$12$wCJySysX10iBFo5VV9CWOOkzPuKZCBRMPRuu3sd00zy23dqieAYsq
     auth_attempts: 5
