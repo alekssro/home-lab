@@ -8,7 +8,9 @@ data:
     bind_host: 0.0.0.0
     bind_port: 3000
     beta_bind_port: 0
-    users: []
+    users:
+      - name: heimdall
+        password: $2a$12$wCJySysX10iBFo5VV9CWOOkzPuKZCBRMPRuu3sd00zy23dqieAYsq
     auth_attempts: 5
     block_auth_min: 15
     http_proxy: ""
