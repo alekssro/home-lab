@@ -26,9 +26,9 @@ spec:
             - /bin/bash
           args:
             - /wg/config/startup.sh
-          env:
-            - name: TZ
-              value: Europe/Madrid
+          envFrom:
+            - secretRef:
+                name: wireguard-secret
           resources:
             requests:
               cpu: 100m
