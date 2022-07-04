@@ -46,7 +46,7 @@ spec:
               mountPath: /wg
             - name: config-files
               mountPath: /wg/config/
-              # readOnly: true
+              readOnly: true
       volumes:
         - name: wireguard-config
           persistentVolumeClaim:
