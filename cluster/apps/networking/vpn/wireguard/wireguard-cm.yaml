@@ -36,6 +36,8 @@ data:
 
     HOSTNAME=$(hostname --short)
 
+    ls /wg/config
+
     cp /wg/config/$HOSTNAME.conf /etc/wireguard/wg0.conf
 
     exec /bin/sh /etc/services.d/wireguard/run
