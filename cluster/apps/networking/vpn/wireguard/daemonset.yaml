@@ -46,6 +46,7 @@ spec:
               mountPath: /wg
             - name: config-files
               mountPath: /wg/config/
+              subPath: /wg/config/
               readOnly: true
       volumes:
         - name: wireguard-config
