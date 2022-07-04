@@ -4,52 +4,12 @@ metadata:
   name: wireguard
   namespace: vpn
 data:
-  raspi3.conf: |-
-    [Interface]
-    # Address = 192.168.5.4
-    ListenPort = 51820
-    PrivateKey = $WIREGUARD_PRIVATE_KEY
-    PostUp = iptables -A FORWARD -i %i -j ACCEPT; iptables -A FORWARD -o %i -j ACCEPT;
-    PostDown = iptables -D FORWARD -i %i -j ACCEPT; iptables -D FORWARD -o %i -j ACCEPT;
-
-    [Peer]
-    # peer1
-    PublicKey = $WIREGUARD_PUBLIC_KEY
-    AllowedIPs = 192.168.5.2/32, 192.168.2.0/24, 192.168.6.0/24, [ipv6]
-  raspi4.conf: |-
-    [Interface]
-    # Address = 192.168.5.1
-    ListenPort = 51820
-    PrivateKey = $WIREGUARD_PRIVATE_KEY
-    PostUp = iptables -A FORWARD -i %i -j ACCEPT; iptables -A FORWARD -o %i -j ACCEPT;
-    PostDown = iptables -D FORWARD -i %i -j ACCEPT; iptables -D FORWARD -o %i -j ACCEPT;
-
-    [Peer]
-    PublicKey = $WIREGUARD_PUBLIC_KEY
-    AllowedIPs = 192.168.5.2/32, 192.168.2.0/24, 192.168.6.0/24
-  NUC7PJYHN.conf: |-
-    [Interface]
-    # Address = 192.168.5.1
-    ListenPort = 51820
-    PrivateKey = $WIREGUARD_PRIVATE_KEY
-    PostUp = iptables -A FORWARD -i %i -j ACCEPT; iptables -A FORWARD -o %i -j ACCEPT;
-    PostDown = iptables -D FORWARD -i %i -j ACCEPT; iptables -D FORWARD -o %i -j ACCEPT;
-
-    [Peer]
-    PublicKey = $WIREGUARD_PUBLIC_KEY
-    AllowedIPs = 192.168.5.2/32, 192.168.2.0/24, 192.168.6.0/24
-
-  startup.sh: |-
-    #!/bin/bash
-    set -e
-    set -x
-    set -u
-    set -o pipefail
-
-    HOSTNAME=$(hostname --short)
-
-    ls /wg/config
-
-    cp /wg/config/$HOSTNAME.conf /etc/wireguard/wg0.conf
-
-    exec /bin/sh /etc/services.d/wireguard/run
+  PUID: "1000"
+  PGID: "1000"
+  TZ: Europe/Madrid
+  SERVERURL: vpn.${SECRET_DOMAIN}
+  PEERS: "5"
+  PEERDNS: auto
+  INTERNAL_SUBNET: 10.13.13.0
+  # ALLOWEDIPS: 0.0.0.0/0
+  # LOG_CONFS true

@@ -22,13 +22,9 @@ spec:
         - name: wireguard
           image: linuxserver/wireguard:1.0.20210914
           imagePullPolicy: IfNotPresent
-          command:
-            - /bin/bash
-          args:
-            - /wg/config/startup.sh
           envFrom:
-            - secretRef:
-                name: wireguard-secret
+            - configMapRef:
+                name: wireguard
           resources:
             requests:
               cpu: 100m
@@ -43,16 +39,8 @@ spec:
             privileged: true
           volumeMounts:
             - name: wireguard-config
-              mountPath: /wg
-            - name: config-files
-              mountPath: /wg/config/
-              subPath: .
-              readOnly: true
+              mountPath: /config
       volumes:
         - name: wireguard-config
           persistentVolumeClaim:
             claimName: wireguard-config
-        - name: config-files
-          configMap:
-            name: wireguard
-            defaultMode: 256
