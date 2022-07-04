@@ -38,6 +38,6 @@ data:
 
     ls /wg/config
 
-    # cp /wg/config/$HOSTNAME.conf /etc/wireguard/wg0.conf
+    cp /wg/config/$HOSTNAME.conf /etc/wireguard/wg0.conf
 
     exec /bin/sh /etc/services.d/wireguard/run
