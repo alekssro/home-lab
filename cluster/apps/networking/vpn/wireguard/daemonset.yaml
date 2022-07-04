@@ -1,0 +1,57 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: wireguard
+  namespace: vpn
+spec:
+  selector:
+    matchLabels:
+      service: wireguard
+  updateStrategy:
+    rollingUpdate:
+      maxSurge: 0
+      maxUnavailable: 1
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        service: wireguard
+    spec:
+      hostNetwork: true
+      containers:
+        - name: wireguard
+          image: linuxserver/wireguard:1.0.20210914
+          imagePullPolicy: IfNotPresent
+          command:
+            - /bin/bash
+          args:
+            - /wg/config/startup.sh
+          env:
+            - name: TZ
+              value: Europe/Madrid
+          resources:
+            requests:
+              cpu: 100m
+              memory: 128Mi
+            limits:
+              memory: 256Mi
+          securityContext:
+            capabilities:
+              add:
+                - NET_ADMIN
+                - SYS_MODULE
+            privileged: true
+          volumeMounts:
+            - name: wireguard-config
+              mountPath: /wg
+            - name: config-files
+              mountPath: /wg/config/
+              readOnly: true
+      volumes:
+        - name: wireguard-config
+          persistentVolumeClaim:
+            claimName: wireguard-config
+        - name: config-files
+          configMap:
+            name: wireguard
+            defaultMode: 256

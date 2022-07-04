@@ -1,0 +1,41 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: wireguard
+  namespace: vpn
+data:
+  srv4.conf: |-
+    [Interface]
+    Address = 192.168.5.4
+    ListenPort = 51820
+    PrivateKey = ${WIREGUARD_PRIVATE_KEY}
+    PostUp = iptables -A FORWARD -i %i -j ACCEPT; iptables -A FORWARD -o %i -j ACCEPT;
+    PostDown = iptables -D FORWARD -i %i -j ACCEPT; iptables -D FORWARD -o %i -j ACCEPT;
+
+    [Peer]
+    # peer1
+    PublicKey = ${WIREGUARD_PUBLIC_KEY}
+    AllowedIPs = 192.168.5.2/32, 192.168.2.0/24, 192.168.6.0/24, [ipv6]
+  srv5.conf: |-
+    [Interface]
+    Address = 192.168.5.1
+    ListenPort = 51820
+    PrivateKey = ${WIREGUARD_PRIVATE_KEY}
+    PostUp = iptables -A FORWARD -i %i -j ACCEPT; iptables -A FORWARD -o %i -j ACCEPT;
+    PostDown = iptables -D FORWARD -i %i -j ACCEPT; iptables -D FORWARD -o %i -j ACCEPT;
+
+    [Peer]
+    PublicKey = ${WIREGUARD_PUBLIC_KEY}
+    AllowedIPs = 192.168.5.2/32, 192.168.2.0/24, 192.168.6.0/24
+  startup.sh: |-
+    #!/bin/bash
+    set -e
+    set -x
+    set -u
+    set -o pipefail
+
+    HOSTNAME=$(hostname --short)
+
+    cp /wg/config/$HOSTNAME.conf /etc/wireguard/wg0.conf
+
+    exec /bin/sh /etc/services.d/wireguard/run
