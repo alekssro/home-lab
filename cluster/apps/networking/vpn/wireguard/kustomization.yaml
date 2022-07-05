@@ -6,5 +6,5 @@ resources:
   - daemonset.yaml
   - ingress.yaml
   - secret.sops.yaml
-  # - service.yaml
+  - service.yaml
   - wireguard-cm.yaml
