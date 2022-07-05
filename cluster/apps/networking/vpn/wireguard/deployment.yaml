@@ -1,5 +1,5 @@
 apiVersion: apps/v1
-kind: DaemonSet
+kind: Deployment
 metadata:
   name: wireguard
   namespace: vpn
@@ -8,10 +8,10 @@ spec:
     matchLabels:
       service: wireguard
   updateStrategy:
+    type: RollingUpdate
     rollingUpdate:
       maxSurge: 0
       maxUnavailable: 1
-    type: RollingUpdate
   template:
     metadata:
       labels:
@@ -25,6 +25,8 @@ spec:
           envFrom:
             - configMapRef:
                 name: wireguard
+          ports:
+            - containerPort: 51820
           resources:
             requests:
               cpu: 100m
@@ -40,7 +42,13 @@ spec:
           volumeMounts:
             - name: wireguard-config
               mountPath: /config
+            - name: host-volumes
+              mountPath: /lib/modules
       volumes:
         - name: wireguard-config
           persistentVolumeClaim:
             claimName: wireguard-config
+        - name: host-volumes
+          hostPath:
+            path: /lib/modules
+            type: Directory
