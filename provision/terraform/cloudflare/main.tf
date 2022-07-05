@@ -70,6 +70,15 @@ resource "cloudflare_record" "root" {
   ttl     = 1
 }
 
+resource "cloudflare_record" "vpn" {
+  name    = data.sops_file.cloudflare_secrets.data["cloudflare_domain"]
+  zone_id = lookup(data.cloudflare_zones.domain.zones[0], "id")
+  value   = "vpn.${data.sops_file.cloudflare_secrets.data["cloudflare_domain"]}"
+  proxied = true
+  type    = "CNAME"
+  ttl     = 1
+}
+
 # Removed from tf state (managed by cloudflare-ddns cronjob in k8s cluster)
 
 # # Lookup my IP and add CNAME record to Cloudflare
