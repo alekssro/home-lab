@@ -90,5 +90,5 @@ spec:
             claimName: adguard-home
 
         - name: adguard-home-logs
-          emptyDir:
-            sizeLimit: 500Mi
+          persistentVolumeClaim:
+            claimName: adguard-home-logs
