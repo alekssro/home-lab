@@ -9,7 +9,7 @@ metadata:
 spec:
   type: NodePort
   selector:
-    app: wireguard
+    service: wireguard
   ports:
     - port: 51820
       nodePort: 31820
