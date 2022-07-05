@@ -3,7 +3,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: wireguard
-  namespace: wireguard
+  namespace: vpn
   labels:
     service: wireguard
 spec:
