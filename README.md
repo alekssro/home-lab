@@ -1,23 +1,31 @@
-# Template for deploying k3s backed by Flux
+# Deploy k3s backed by Flux
 
-Highly opinionated template for deploying a single [k3s](https://k3s.io) cluster with [Ansible](https://www.ansible.com) and [Terraform](https://www.terraform.io) backed by [Flux](https://toolkit.fluxcd.io/) and [SOPS](https://toolkit.fluxcd.io/guides/mozilla-sops/).
+This repository and README replicate the following work: https://github.com/onedr0p/flux-cluster-template
 
-The purpose here is to showcase how you can deploy an entire Kubernetes cluster and show it off to the world using the [GitOps](https://www.weave.works/blog/what-is-gitops-really) tool [Flux](https://toolkit.fluxcd.io/). When completed, your Git repository will be driving the state of your Kubernetes cluster. In addition with the help of the [Ansible](https://github.com/ansible-collections/community.sops), [Terraform](https://github.com/carlpett/terraform-provider-sops) and [Flux](https://toolkit.fluxcd.io/guides/mozilla-sops/) SOPS integrations you'll be able to commit [Age](https://github.com/FiloSottile/age) encrypted secrets to your public repo.
+This home lab consists of:
+
+- ⛵ [k3s](https://k3s.io) cluster installed using [Ansible](https://www.ansible.com).
+- 🔹 GitOps setup using [Flux](https://fluxcd.io) for cluster management.
+- ☁️ DNS zone and root record created in Cloudflare using [Terraform](https://www.terraform.io).
+- 🔁 Dynamic DNS service managed by [Cloudflare DDNS](https://github.com/timothymiller/cloudflare-ddns) running in the cluster.
+- 🌐 DNS record updates managed by [ExternalDNS](https://github.com/kubernetes-sigs/external-dns).
+- 🔐 All secrets in the repo are encrypted with an [Age](https://github.com/FiloSottile/age) key via [SOPS](https://toolkit.fluxcd.io/guides/mozilla-sops/) integrations.
 
 ## Overview
 
-- [Introduction](https://github.com/k8s-at-home/template-cluster-k3s#-introduction)
-- [Prerequisites](https://github.com/k8s-at-home/template-cluster-k3s#-prerequisites)
-- [Repository structure](https://github.com/k8s-at-home/template-cluster-k3s#-repository-structure)
-- [Lets go!](https://github.com/k8s-at-home/template-cluster-k3s#-lets-go)
-- [Post installation](https://github.com/k8s-at-home/template-cluster-k3s#-post-installation)
-- [Troubleshooting](https://github.com/k8s-at-home/template-cluster-k3s#-troubleshooting)
-- [What's next](https://github.com/k8s-at-home/template-cluster-k3s#-whats-next)
-- [Thanks](https://github.com/k8s-at-home/template-cluster-k3s#-thanks)
+- [Introduction](https://github.com/alekssro/home-lab#-introduction)
+- [Systems](https://github.com/alekssro/home-lab#-systems)
+- [Prerequisites](https://github.com/alekssro/home-lab#-prerequisites)
+- [Repository structure](https://github.com/alekssro/home-lab#-repository-structure)
+- [Lets go!](https://github.com/alekssro/home-lab#-lets-go)
+- [Post installation](https://github.com/alekssro/home-lab#-post-installation)
+- [Troubleshooting](https://github.com/alekssro/home-lab#-troubleshooting)
+- [What's next](https://github.com/alekssro/home-lab#-whats-next)
+- [Thanks](https://github.com/alekssro/home-lab#-thanks)
 
 ## 👋 Introduction
 
-The following components will be installed in your [k3s](https://k3s.io/) cluster by default. Most are only included to get a minimum viable cluster up and running.
+The following components are installed in the [k3s](https://k3s.io/) cluster. Most are only included to get a minimum viable cluster up and running.
 
 - [flux](https://toolkit.fluxcd.io/) - GitOps operator for managing Kubernetes clusters from a Git repository
 - [kube-vip](https://kube-vip.io/) - Load balancer for the Kubernetes control plane nodes
@@ -28,28 +36,27 @@ The following components will be installed in your [k3s](https://k3s.io/) cluste
 - [k8s_gateway](https://github.com/ori-edge/k8s_gateway) - DNS resolver that provides local DNS to your Kubernetes ingresses
 - [traefik](https://traefik.io) - Kubernetes ingress controller used for a HTTP reverse proxy of Kubernetes ingresses
 - [local-path-provisioner](https://github.com/rancher/local-path-provisioner) - provision persistent local storage with Kubernetes
+- [longhorn](https://longhorn.io/) - distributed block storage system for Kubernetes
 
-_Additional applications include [hajimari](https://github.com/toboshii/hajimari), [error-pages](https://github.com/tarampampam/error-pages), [echo-server](https://github.com/Ealenn/Echo-Server), [system-upgrade-controller](https://github.com/rancher/system-upgrade-controller), [reflector](https://github.com/emberstack/kubernetes-reflector), and [reloader](https://github.com/stakater/Reloader)_
+_Additional applications include [filerun](https://filerun.com/), [heimdall](https://github.com/linuxserver/Heimdall), [error-pages](https://github.com/tarampampam/error-pages), [echo-server](https://github.com/Ealenn/Echo-Server), [system-upgrade-controller](https://github.com/rancher/system-upgrade-controller), [reflector](https://github.com/emberstack/kubernetes-reflector), and [reloader](https://github.com/stakater/Reloader)_
 
-For provisioning the following tools will be used:
+For provisioning, the following tools are used:
 
 - [Ubuntu](https://ubuntu.com/download/server) - Universal operating system that supports running all kinds of home related workloads in Kubernetes
 - [Ansible](https://www.ansible.com) - Provision the Ubuntu OS and install k3s
 - [Terraform](https://www.terraform.io) - Provision an already existing Cloudflare domain and certain DNS records to be used with your k3s cluster
 
-## 📝 Prerequisites
+## 💻 Systems
 
-**Note:** _This template has not been tested on cloud providers like AWS EC2, Hetzner, Scaleway etc... Those cloud offerings probably have a better way of provsioning a Kubernetes cluster and it's advisable to use those instead of the Ansible playbooks included here. This repository can still be used for the GitOps/Flux portion if there's a cluster working in one those environments._
+The home lab consists of the follwing hardware:
 
-### 💻 Systems
+- [Intel NUC7PJYHN](https://ark.intel.com/content/www/us/en/ark/products/130394/intel-nuc-kit-nuc7pjyhn.html) - 4 core, 8 thread, 8GB RAM, 256GB SSD (Ubuntu 22.04 LTS) - Master node
+- [Raspberry Pi 4B](https://www.raspberrypi.org/products/raspberry-pi-4-model-b/) - 4 core, 4 thread, 4GB RAM, 128GB SD card (Ubuntu Server 22.04 LTS) - Worker node
+- [Raspberry Pi 3B+](https://www.raspberrypi.org/products/raspberry-pi-3-model-b-plus/) - 4 core, 4 thread, 1GB RAM, 64GB SD card (Ubuntu Server 22.04 LTS) - Worker node
 
-- One or more nodes with a fresh install of [Ubuntu Server 22.04](https://ubuntu.com/download/server).
-  - These nodes can be ARM64/AMD64 bare metal or VMs.
-  - An odd number of control plane nodes, greater than or equal to 3 is required if deploying more than one control plane node.
-- A [Cloudflare](https://www.cloudflare.com/) account with a domain, this will be managed by Terraform and external-dns. You can [register new domains](https://www.cloudflare.com/products/registrar/) directly thru Cloudflare.
-- Some experience in debugging problems and a positive attitude ;)
+As you can see, there are two different architectures (ARM64/AMD64) involved, which means a large number of ~~headaches~~ opportunities for learning.
 
-📍 It is recommended to have 3 master nodes for a highly available control plane.
+## 📦 Prerequisites
 
 ### 🔧 Workstation Tools
 
@@ -94,36 +101,16 @@ It is advisable to install [pre-commit](https://pre-commit.com/) and the pre-com
 
 The Git repository contains the following directories under `cluster` and are ordered below by how Flux will apply them.
 
-- **base** directory is the entrypoint to Flux
-- **crds** directory contains custom resource definitions (CRDs) that need to exist globally in your cluster before anything else exists
-- **core** directory (depends on **crds**) are important infrastructure applications (grouped by namespace) that should never be pruned by Flux
-- **apps** directory (depends on **core**) is where your common applications (grouped by namespace) could be placed, Flux will prune resources here if they are not tracked by Git anymore
-
 ```
-cluster
-├── apps
-│   ├── default
-│   ├── kube-system
-│   ├── networking
-│   └── system-upgrade
-├── base
-│   └── flux-system
-├── core
-│   ├── cert-manager
-│   ├── kube-system
-│   ├── metallb-system
-│   └── namespaces
-└── crds
-    ├── cert-manager
-    ├── system-upgrade-controller
-    └── traefik
+📁 cluster      # k8s cluster defined as code
+├─📁 base       # the entrypoint to flux, gitops operator, loaded before everything
+├─📁 crds       # custom resources, loaded before 📁 core and 📁 apps
+├─📁 core       # crucial apps, namespaced dir tree, loaded before 📁 apps
+└─📁 apps       # regular apps, namespaced dir tree, loaded last
 ```
 
 ## 🚀 Lets go
 
-Very first step will be to create a new repository by clicking the **Use this template** button on this page.
-
-Clone the repo to you local workstation and `cd` into it.
 
 📍 **All of the below commands** are run on your **local** workstation, **not** on any of your cluster nodes.
 
@@ -151,23 +138,23 @@ Clone the repo to you local workstation and `cd` into it.
     source ~/.bashrc
     ```
 
-4. Fill out the Age public key in the `.config.env` under `BOOTSTRAP_AGE_PUBLIC_KEY`, **note** the public key should start with `age`...
+4. Keep the Age public key to fill out the [`.config.env`](https://github.com/alekssro/home-lab#-configuration) under `BOOTSTRAP_AGE_PUBLIC_KEY`, **note** the public key should start with `age`...
 
 ### ☁️ Global Cloudflare API Key
 
-In order to use Terraform and `cert-manager` with the Cloudflare DNS challenge you will need to create a API key.
+In order to use Terraform, `cloudflare-ddns` and `cert-manager` with the Cloudflare DNS challenge you will need to create an API key.
 
-1. Head over to Cloudflare and create a API key by going [here](https://dash.cloudflare.com/profile/api-tokens).
+1. Log in into your Cloudflare account and create an API [here](https://dash.cloudflare.com/profile/api-tokens).
 
 2. Under the `API Keys` section, create a global API Key.
 
 3. Use the API Key in the configuration section below.
 
-📍 You may wish to update this later on to a Cloudflare **API Token** which can be scoped to certain resources. I do not recommend using a Cloudflare **API Key**, however for the purposes of this template it is easier getting started without having to define which scopes and resources are needed. For more information see the [Cloudflare docs on API Keys and Tokens](https://developers.cloudflare.com/api/).
+📍 You may wish to update this later on to a Cloudflare **API Token** which can be scoped to certain resources. For more information see the [Cloudflare docs on API Keys and Tokens](https://developers.cloudflare.com/api/).
 
 ### 📄 Configuration
 
-📍 The `.config.env` file contains necessary configuration that is needed by Ansible, Terraform and Flux.
+📍 The `.config.env` file contains configuration that is needed by Ansible, Terraform and Flux.
 
 1. Copy the `.config.sample.env` to `.config.env` and start filling out all the environment variables.
 
@@ -191,7 +178,7 @@ In order to use Terraform and `cert-manager` with the Cloudflare DNS challenge y
 
 ### ⚡ Preparing Ubuntu with Ansible
 
-📍 Here we will be running a Ansible Playbook to prepare Ubuntu for running a Kubernetes cluster.
+📍 Here we will be running an Ansible Playbook to prepare Ubuntu for running a Kubernetes cluster.
 
 📍 Nodes are not security hardened by default, you can do this with [dev-sec/ansible-collection-hardening](https://github.com/dev-sec/ansible-collection-hardening) or similar if it supports Ubuntu 22.04.
 
@@ -231,7 +218,7 @@ In order to use Terraform and `cert-manager` with the Cloudflare DNS challenge y
 
 ### ⛵ Installing k3s with Ansible
 
-📍 Here we will be running a Ansible Playbook to install [k3s](https://k3s.io/) with [this](https://galaxy.ansible.com/xanmanning/k3s) wonderful k3s Ansible galaxy role. After completion, Ansible will drop a `kubeconfig` in `./provision/kubeconfig` for use with interacting with your cluster with `kubectl`.
+📍 Here we will be running an Ansible Playbook to install [k3s](https://k3s.io/) with [this](https://galaxy.ansible.com/xanmanning/k3s) wonderful k3s Ansible galaxy role. After completion, Ansible will drop a `kubeconfig` in `./provision/kubeconfig` for interacting with your cluster via `kubectl`.
 
 ☢️ If you run into problems, you can run `task ansible:nuke` to destroy the k3s cluster and start over.
 
@@ -260,11 +247,12 @@ In order to use Terraform and `cert-manager` with the Cloudflare DNS challenge y
     # NAME           STATUS   ROLES                       AGE     VERSION
     # k8s-0          Ready    control-plane,master      4d20h   v1.21.5+k3s1
     # k8s-1          Ready    worker                    4d20h   v1.21.5+k3s1
+    # k8s-2          Ready    worker                    4d20h   v1.21.5+k3s1
     ```
 
 ### ☁️ Configuring Cloudflare DNS with Terraform
 
-📍 Review the Terraform scripts under `./provision/terraform/cloudflare/` and make sure you understand what it's doing (no really review it).
+📍 Review the Terraform scripts under `./provision/terraform/cloudflare/` and make sure you understand what it's doing (no really, review it).
 
 If your domain already has existing DNS records **be sure to export those DNS settings before you continue**.
 
@@ -421,7 +409,7 @@ Now if nothing is working, that is expected. This is DNS after all!
 
 ### 🔐 SSL
 
-By default in this template Kubernetes ingresses are set to use the [Let's Encrypt Staging Environment](https://letsencrypt.org/docs/staging-environment/). This will hopefully reduce issues from ACME on requesting certificates until you are ready to use this in "Production".
+SSL certificates are managed by [cert-manager](https://cert-manager.io/docs/). When testing new configuration, you may use the [Let's Encrypt Staging Environment](https://letsencrypt.org/docs/staging-environment/). This will hopefully reduce issues from ACME on requesting certificates until you are ready to use this in "Production".
 
 Once you have confirmed there are no issues requesting your certificates replace `letsencrypt-staging` with `letsencrypt-production` in your ingress annotations for `cert-manager.io/cluster-issuer`
 
@@ -551,15 +539,11 @@ The benefits of a public repository include:
 
 ## 👉 Troubleshooting
 
-Our [wiki](https://github.com/k8s-at-home/template-cluster-k3s/wiki) (WIP, contributions welcome) is a good place to start troubleshooting issues. If that doesn't cover your issue, come join and say Hi in our [Discord](https://discord.gg/k8s-at-home) server by starting a new thread in the #kubernetes support channel.
-
-You may also open a issue on this GitHub repo or open a [discussion on GitHub](https://github.com/k8s-at-home/organization/discussions).
+The k8s-at-home [wiki](https://github.com/k8s-at-home/template-cluster-k3s/wiki) (WIP, contributions welcome) is a good place to start troubleshooting issues.
 
 ## ❔ What's next
 
-The world is your cluster, see below for important things you could work on adding.
-
-Our Check out our [wiki](https://github.com/k8s-at-home/template-cluster-k3s/wiki) (WIP, contributions welcome) for more integrations!
+The world is your cluster!
 
 ## 🤝 Thanks
 
