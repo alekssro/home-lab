@@ -9,6 +9,7 @@ resources:
   # the below line
   # - system-upgrade
   - default
+  - bitwarden
   - kube-system
   - networking
   - flux-system
