@@ -9,4 +9,4 @@ resources:
   - bitwarden-svc.yaml
   - statefulset.yaml
   - rbac.yaml
-  - ingress.yaml
+#   - ingress.yaml
