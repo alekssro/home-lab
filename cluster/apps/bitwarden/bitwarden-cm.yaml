@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: bitwarden-config
+  namespace: bitwarden
+data:
+  DOMAIN: "bitwarden.${SECRET_DOMAIN}"
+  SMTP_HOST: "smtp.gmail.com"
+  SMTP_FROM: "alekss.ro.noreply@gmail.com"
+  SMTP_PORT: "587"
+  SMTP_SECURITY: "starttls"
+  # Enable Vault interface, when disabled, only API is served
+  WEB_VAULT_ENABLED: 'true'
+  SIGNUPS_ALLOWED: "false"
+  INVITATIONS_ALLOWED: "true"
+  globalSettings__selfHosted: "true"
