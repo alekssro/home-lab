@@ -4,7 +4,7 @@ metadata:
   name: bitwarden-config
   namespace: bitwarden
 data:
-  DOMAIN: "bitwarden.${SECRET_DOMAIN}"
+  DOMAIN: "https://bitwarden.${SECRET_DOMAIN}"
   SMTP_HOST: "smtp.gmail.com"
   SMTP_FROM: "alekss.ro.noreply@gmail.com"
   SMTP_PORT: "587"
