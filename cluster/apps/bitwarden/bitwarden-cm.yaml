@@ -11,7 +11,7 @@ data:
   SMTP_SECURITY: "starttls"
   # Enable Vault interface, when disabled, only API is served
   WEB_VAULT_ENABLED: "true"
-  SIGNUPS_ALLOWED: "false"
+  SIGNUPS_ALLOWED: "true"
   INVITATIONS_ALLOWED: "true"
   # Number of workers to spin up for the service
   ROCKET_WORKERS: "10"
