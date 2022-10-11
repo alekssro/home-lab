@@ -5,13 +5,14 @@ metadata:
   namespace: bitwarden
 data:
   DOMAIN: "https://bitwarden.${SECRET_DOMAIN}"
+  SMTP_FROM_NAME: "AlekssRo's Vault"
   SMTP_HOST: "smtp.gmail.com"
   SMTP_FROM: "alekss.ro.noreply@gmail.com"
   SMTP_PORT: "587"
   SMTP_SECURITY: "starttls"
   # Enable Vault interface, when disabled, only API is served
   WEB_VAULT_ENABLED: "true"
-  SIGNUPS_ALLOWED: "true"
+  SIGNUPS_ALLOWED: "false"
   INVITATIONS_ALLOWED: "true"
   # Number of workers to spin up for the service
   ROCKET_WORKERS: "10"
