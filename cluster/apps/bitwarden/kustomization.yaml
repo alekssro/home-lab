@@ -8,5 +8,5 @@ resources:
   - bitwarden-pvc.yaml
   - bitwarden-svc.yaml
   - statefulset.yaml
-  # - rbac.yaml
+  - rbac.yaml
   - ingress.yaml
