@@ -3,19 +3,19 @@ kind: StatefulSet
 metadata:
   name: bitwarden
   labels:
-    app: bitwarden
+    service: bitwarden
 spec:
   serviceName: bitwarden
   replicas: 1
   selector:
     matchLabels:
-      app: bitwarden
+      service: bitwarden
   updateStrategy:
     type: RollingUpdate
   template:
     metadata:
       labels:
-        app: bitwarden
+        service: bitwarden
     spec:
       serviceAccountName: bitwarden
       securityContext:
