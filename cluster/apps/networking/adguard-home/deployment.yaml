@@ -43,7 +43,7 @@ spec:
             runAsUser: 0
       containers:
         - name: adguard-home
-          image: adguard/adguardhome:v0.107.7
+          image: adguard/adguardhome:v0.107.17
           env:
             - name: TZ
               value: "Europe/Madrid"
