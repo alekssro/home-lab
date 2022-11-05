@@ -26,7 +26,7 @@ spec:
     replicaCount: 2
     image:
       repository: linuxserver/heimdall
-      tag: 2.4.13
+      tag: 2.4.14
       pullPolicy: IfNotPresent
     env:
       TZ: Europe/Madrid
