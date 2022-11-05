@@ -4,4 +4,4 @@ kind: Kustomization
 resources:
   - echo-server
   - heimdall
-  # - hajimari
+  - hajimari
