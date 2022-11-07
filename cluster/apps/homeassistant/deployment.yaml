@@ -12,6 +12,8 @@ spec:
       app: homeassistant
   template:
     metadata:
+      annotations:
+        configmap.reloader.stakater.com/reload: home-assistant-config
       labels:
         app: homeassistant
     spec:
