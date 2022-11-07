@@ -45,8 +45,8 @@ spec:
             - name: home-assistant-mysql-pvc
               mountPath: /var/lib/mysql
 
-      # nodeSelector:
-      #   kubernetes.io/arch: amd64
+      nodeSelector:
+        kubernetes.io/arch: amd64
       volumes:
         - name: home-assistant-pvc
           persistentVolumeClaim:
