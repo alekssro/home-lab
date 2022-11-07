@@ -14,4 +14,4 @@ resources:
   - networking
   - flux-system
   - filerun
-  - homeassistant
+  # - homeassistant
