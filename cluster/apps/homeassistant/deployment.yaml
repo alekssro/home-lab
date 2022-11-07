@@ -1,0 +1,56 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: homeassistant
+  namespace: homeassistant
+  labels:
+    app: homeassistant
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: homeassistant
+  template:
+    metadata:
+      labels:
+        app: homeassistant
+    spec:
+      containers:
+        - image: ghcr.io/home-assistant/home-assistant:2022.11
+          name: home-assistant
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "256Mi"
+            limits:
+              memory: "1Gi"
+          volumeMounts:
+            - mountPath: "/config"
+              name: home-assistant-pvc
+        - image: mysql:8.0.31
+          name: mysql
+          env:
+            - name: MYSQL_ROOT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: home-assistant-secret
+                  key: MYSQL_ROOT_PASSWORD
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+            limits:
+              memory: "500Mi"
+          volumeMounts:
+            - name: home-assistant-mysql-pvc
+              mountPath: /var/lib/mysql
+
+      # nodeSelector:
+      #   kubernetes.io/arch: amd64
+      volumes:
+        - name: home-assistant-pvc
+          persistentVolumeClaim:
+            claimName: home-assistant-pvc
+        - name: home-assistant-mysql-pvc
+          persistentVolumeClaim:
+            claimName: home-assistant-mysql-pvc
