@@ -67,7 +67,7 @@ resource "cloudflare_record" "root" {
   value   = "ipv4.${data.sops_file.cloudflare_secrets.data["cloudflare_domain"]}"
   proxied = true
   type    = "CNAME"
-  ttl     = 30
+  ttl     = 1
 }
 
 resource "cloudflare_record" "vpn" {
@@ -76,7 +76,7 @@ resource "cloudflare_record" "vpn" {
   value   = "ipv4.${data.sops_file.cloudflare_secrets.data["cloudflare_domain"]}"
   proxied = true
   type    = "CNAME"
-  ttl     = 30
+  ttl     = 1
 }
 
 # Removed from tf state (managed by cloudflare-ddns cronjob in k8s cluster)
