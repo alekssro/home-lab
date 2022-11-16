@@ -63,7 +63,7 @@ spec:
             - mountPath: /user-files
               name: filerun-web-userfiles-pvc
       nodeSelector:
-        kubernetes.io/arch: amd64
+        kubernetes.io/hostname: NUC7PJYHN
       restartPolicy: Always
       volumes:
         - name: filerun-web-html-pvc
