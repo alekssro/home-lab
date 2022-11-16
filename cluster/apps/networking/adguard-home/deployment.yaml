@@ -34,11 +34,11 @@ spec:
             - "sh"
             - "-c"
             - "mkdir -p /opt/adguardhome/conf && cp /tmp/AdGuardHome.yaml /opt/adguardhome/conf/AdGuardHome.yaml"
-          volumeMounts:
-            - name: adguard-home-configmap
-              mountPath: /tmp
-            - name: adguard-home-config
-              mountPath: /opt/adguardhome/conf
+          # volumeMounts:
+          #   - name: adguard-home-configmap
+          #     mountPath: /tmp
+          #   - name: adguard-home-config
+          #     mountPath: /opt/adguardhome/conf
           securityContext:
             runAsUser: 0
       containers:
@@ -72,23 +72,23 @@ spec:
               cpu: "200m"
             limits:
               memory: "256Mi"
-          volumeMounts:
-            - name: adguard-home-config
-              mountPath: /opt/adguardhome/conf
-            - name: adguard-home-logs
-              mountPath: /opt/adguardhome/work
-      volumes:
-        - name: adguard-home-configmap
-          configMap:
-            name: adguard-home
-            items:
-              - key: AdGuardHome.yaml
-                path: AdGuardHome.yaml
+      #     volumeMounts:
+      #       - name: adguard-home-config
+      #         mountPath: /opt/adguardhome/conf
+      #       - name: adguard-home-logs
+      #         mountPath: /opt/adguardhome/work
+      # volumes:
+      #   - name: adguard-home-configmap
+      #     configMap:
+      #       name: adguard-home
+      #       items:
+      #         - key: AdGuardHome.yaml
+      #           path: AdGuardHome.yaml
 
-        - name: adguard-home-config
-          persistentVolumeClaim:
-            claimName: adguard-home
+      #   - name: adguard-home-config
+      #     persistentVolumeClaim:
+      #       claimName: adguard-home
 
-        - name: adguard-home-logs
-          persistentVolumeClaim:
-            claimName: adguard-home-logs
+      #   - name: adguard-home-logs
+      #     persistentVolumeClaim:
+      #       claimName: adguard-home-logs
