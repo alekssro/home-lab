@@ -24,7 +24,7 @@ spec:
         service: adguard-home
     spec:
       nodeSelector:
-        kubernetes.io/arch: amd64
+        kubernetes.io/hostname: nuc7pjyhn
       hostNetwork: true
       initContainers:
         - name: copy-configmap
