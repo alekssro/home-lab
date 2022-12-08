@@ -28,9 +28,6 @@ spec:
             - name: uptime-kuma
               containerPort: 3001
               protocol: TCP
-          volumeMounts:
-            - name: kuma-data
-              mountPath: /app/data
           resources:
             requests:
               cpu: "100m"
@@ -45,8 +42,11 @@ spec:
             initialDelaySeconds: 180
             periodSeconds: 60
             timeoutSeconds: 30
+          volumeMounts:
+            - name: kuma-data
+              mountPath: /app/data
 
-  volumes:
-    - name: kuma-data
-      persistentVolumeClaim:
-        claimName: uptime-kuma-pvc
+      volumes:
+        - name: kuma-data
+          persistentVolumeClaim:
+            claimName: uptime-kuma-pvc
