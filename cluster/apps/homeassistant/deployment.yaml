@@ -13,7 +13,7 @@ spec:
   template:
     metadata:
       annotations:
-        configmap.reloader.stakater.com/reload: home-assistant-config
+        configmap.reloader.stakater.com/reload: homeassistant-config
       labels:
         app: homeassistant
     spec:
@@ -32,7 +32,7 @@ spec:
             - mountPath: "/config/configuration.yaml"
               name: home-assistant-config
               subPath: configuration.yaml
-        - image: mysql:8.0.31
+        - image: mysql:8.0
           name: mysql
           env:
             - name: MYSQL_ROOT_PASSWORD
