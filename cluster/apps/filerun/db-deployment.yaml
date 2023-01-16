@@ -41,7 +41,7 @@ spec:
                 secretKeyRef:
                   key: MYSQL_DATABASE
                   name: filerun-secret
-          image: mariadb:10.8
+          image: mariadb:10.10
           name: filerun-db
           resources: {}
           volumeMounts:
