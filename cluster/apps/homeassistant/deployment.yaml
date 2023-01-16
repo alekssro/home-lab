@@ -18,7 +18,7 @@ spec:
         app: homeassistant
     spec:
       containers:
-        - image: ghcr.io/home-assistant/home-assistant:2022.11
+        - image: ghcr.io/home-assistant/home-assistant:2023.1
           name: home-assistant
           resources:
             requests:
