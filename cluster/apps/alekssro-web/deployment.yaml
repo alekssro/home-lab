@@ -29,13 +29,6 @@ spec:
               memory: "128Mi"
             limits:
               memory: "256Mi"
-          # readinessProbe:
-          #   httpGet:
-          #     scheme: HTTP
-          #     path: /healthz
-          #     port: 80
-            initialDelaySeconds: 10
-            periodSeconds: 5
           volumeMounts:
             - name: alekssro-web-index
               mountPath: /usr/share/nginx/html/
