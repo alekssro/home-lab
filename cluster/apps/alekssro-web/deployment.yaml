@@ -1,0 +1,46 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: alekssro-web
+  namespace: alekssro-web
+spec:
+  replicas: 2
+  strategy:
+    type: RollingUpdate
+  selector:
+    matchLabels:
+      app: alekssro-web
+  template:
+    metadata:
+      labels:
+        app: alekssro-web
+    spec:
+      containers:
+        - name: alekssro-web
+          image: nginx:1.16.1
+          ports:
+            - name: alekssro-web
+              containerPort: 80
+              protocol: TCP
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+            limits:
+              memory: "256Mi"
+          readinessProbe:
+            httpGet:
+              scheme: HTTPS
+              path: /healthz
+              port: 80
+            initialDelaySeconds: 10
+            periodSeconds: 5
+          volumeMounts:
+            - name: alekssro-web-index
+              mountPath: /usr/share/nginx/html/
+
+      volumes:
+        - name: alekssro-web-index
+          configMap:
+            name: alekssro-web-index

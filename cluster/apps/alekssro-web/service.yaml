@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: alekssro-web-service
+  namespace: alekssro-web
+spec:
+  selector:
+    app: alekssro-web
+  ports:
+  - name: alekssro-web
+    port: 80
