@@ -7,5 +7,5 @@ spec:
   selector:
     app: alekssro-web
   ports:
-  - name: alekssro-web
-    port: 80
+    - name: alekssro-web
+      port: 80
