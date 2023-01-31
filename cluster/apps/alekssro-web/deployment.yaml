@@ -31,7 +31,7 @@ spec:
               memory: "256Mi"
           readinessProbe:
             httpGet:
-              scheme: HTTPS
+              scheme: HTTP
               path: /healthz
               port: 80
             initialDelaySeconds: 10
