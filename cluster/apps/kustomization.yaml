@@ -16,3 +16,4 @@ resources:
   - filerun
   - homeassistant
   - uptime-kuma
+  - alekssro-web
