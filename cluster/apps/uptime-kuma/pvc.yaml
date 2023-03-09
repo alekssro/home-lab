@@ -8,7 +8,7 @@ metadata:
     app: uptime-kuma
 spec:
   accessModes:
-    - ReadWriteMany
+    - ReadWriteOnce
   storageClassName: longhorn
   resources:
     requests:
