@@ -1,3 +1,4 @@
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -43,7 +44,12 @@ spec:
                   name: filerun-secret
           image: mariadb:10.10
           name: filerun-db
-          resources: {}
+          resources:
+            requests:
+              cpu: 100m
+              memory: 256Mi
+            limits:
+              memory: 256Mi
           volumeMounts:
             - mountPath: /var/lib/mysql
               name: filerun-db-pvc

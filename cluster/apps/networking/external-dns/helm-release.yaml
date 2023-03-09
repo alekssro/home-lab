@@ -44,7 +44,7 @@ spec:
       - "${SECRET_DOMAIN}"
     resources:
       requests:
-        memory: 100Mi
         cpu: 25m
+        memory: 128Mi
       limits:
-        memory: 250Mi
+        memory: 128Mi

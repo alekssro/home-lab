@@ -1,3 +1,4 @@
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -23,9 +24,9 @@ spec:
           resources:
             requests:
               cpu: "100m"
-              memory: "256Mi"
+              memory: "512Mi"
             limits:
-              memory: "1Gi"
+              memory: "512Mi"
           volumeMounts:
             - mountPath: "/config"
               name: home-assistant-pvc
@@ -43,9 +44,9 @@ spec:
           resources:
             requests:
               cpu: "100m"
-              memory: "128Mi"
+              memory: "256Mi"
             limits:
-              memory: "500Mi"
+              memory: "256Mi"
           volumeMounts:
             - name: home-assistant-mysql-pvc
               mountPath: /var/lib/mysql

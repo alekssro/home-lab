@@ -34,7 +34,7 @@ spec:
       SHOW_DETAILS: "false"
     resources:
       requests:
-        memory: 100Mi
-        cpu: 100m
+        cpu: 50m
+        memory: 64Mi
       limits:
-        memory: 250Mi
+        memory: 64Mi

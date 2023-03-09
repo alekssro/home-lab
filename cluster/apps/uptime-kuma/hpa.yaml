@@ -2,17 +2,15 @@
 apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
 metadata:
-  name: filerun-web
-  namespace: filerun
-  labels:
-    service: filerun-web
+  name: uptime-kuma
+  namespace: kuma
 spec:
   scaleTargetRef:
     apiVersion: apps/v1
     kind: Deployment
-    name: filerun-web
+    name: uptime-kuma
   minReplicas: 1
-  maxReplicas: 5
+  maxReplicas: 3
   metrics:
     - type: Resource
       resource:

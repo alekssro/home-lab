@@ -27,10 +27,10 @@ spec:
               protocol: TCP
           resources:
             requests:
-              cpu: "100m"
+              cpu: "50m"
               memory: "128Mi"
             limits:
-              memory: "256Mi"
+              memory: "128Mi"
           volumeMounts:
             - name: alekssro-web-index
               mountPath: /usr/share/nginx/html/

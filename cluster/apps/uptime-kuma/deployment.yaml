@@ -31,9 +31,9 @@ spec:
           resources:
             requests:
               cpu: "100m"
-              memory: "128Mi"
+              memory: "448Mi"
             limits:
-              memory: "500Mi"
+              memory: "448Mi"
           livenessProbe:
             exec:
               command:

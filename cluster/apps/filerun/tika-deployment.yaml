@@ -1,3 +1,4 @@
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -19,7 +20,12 @@ spec:
       containers:
         - image: logicalspark/docker-tikaserver
           name: filerun-tika
-          resources: {}
+          resources:
+            requests:
+              cpu: 100m
+              memory: 256Mi
+            limits:
+              memory: 256Mi
       nodeSelector:
         kubernetes.io/arch: amd64
       restartPolicy: Always
