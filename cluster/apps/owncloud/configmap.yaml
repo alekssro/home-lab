@@ -10,7 +10,7 @@ data:
   OCIS_LOG_COLOR: "true"
   PROXY_TLS: "false" # do not use SSL between Traefik and oCIS
   # INSECURE: needed if oCIS / Traefik is using self generated certificates
-  OCIS_INSECURE: "false"
+  OCIS_INSECURE: "true"
   # basic auth (not recommended, but needed for eg. WebDav clients that do not support OpenID Connect)
   PROXY_ENABLE_BASIC_AUTH: "false"
   # demo users
