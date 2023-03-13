@@ -52,7 +52,7 @@ spec:
               name: owncloud-data-pvc
       restartPolicy: Always
       nodeSelector:
-        kubernetes.io/hostname: nuc7pjyhn-rookie
+        kubernetes.io/hostname: nuc7pjyhn
       volumes:
         - name: owncloud-config-pvc
           persistentVolumeClaim:
