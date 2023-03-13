@@ -4,6 +4,8 @@ kind: PersistentVolumeClaim
 metadata:
   name: owncloud-config-pvc
   namespace: owncloud
+  labels:
+    service: owncloud
 spec:
   accessModes:
     - ReadWriteOnce
@@ -18,10 +20,11 @@ kind: PersistentVolumeClaim
 metadata:
   name: owncloud-data-pvc
   namespace: owncloud
+  labels:
+    service: owncloud
 spec:
   accessModes:
     - ReadWriteOnce
-  volumeMode: Filesystem
   storageClassName: longhorn
   resources:
     requests:
