@@ -4,8 +4,8 @@ kind: Kustomization
 resources:
   - namespace.yaml
   - configmap.yaml
-  # - pvc.yaml
+  - pvc.yaml
   - service.yaml
   - ingress.yaml
-  # - deploy.yaml
+  - deploy.yaml
   - secret.sops.yaml
