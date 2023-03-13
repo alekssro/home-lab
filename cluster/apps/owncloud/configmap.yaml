@@ -1,0 +1,17 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: owncloud-config
+  namespace: owncloud
+data:
+  OCIS_URL: "https://drive-beta.${SECRET_DOMAIN}"
+  OCIS_LOG_LEVEL: "info"
+  OCIS_LOG_COLOR: "true"
+  PROXY_TLS: "false" # do not use SSL between Traefik and oCIS
+  # INSECURE: needed if oCIS / Traefik is using self generated certificates
+  OCIS_INSECURE: "false"
+  # basic auth (not recommended, but needed for eg. WebDav clients that do not support OpenID Connect)
+  PROXY_ENABLE_BASIC_AUTH: "false"
+  # demo users
+  IDM_CREATE_DEMO_USERS: "false"

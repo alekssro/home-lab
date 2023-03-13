@@ -1,0 +1,60 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: owncloud
+  namespace: owncloud
+  labels:
+    service: owncloud
+spec:
+  strategy:
+    type: RollingUpdate
+  selector:
+    matchLabels:
+      service: owncloud
+  template:
+    metadata:
+      annotations:
+        configmap.reloader.stakater.com/reload: owncloud-config
+      labels:
+        service: owncloud
+    spec:
+      containers:
+        - name: owncloud
+          image: owncloud/ocis:3.0.0-alpha.1
+          imagePullPolicy: IfNotPresent
+          command:
+            # run ocis init to initialize a configuration file with random secrets
+            # it will fail on subsequent runs, because the config file already exists
+            # therefore we ignore the error and then start the ocis server
+            ["/bin/sh", "-c", "ocis init || true; ocis server"]
+          env:
+            - name: IDM_ADMIN_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: IDM_ADMIN_PASSWORD
+                  name: owncloud-secret
+          envFrom:
+            - configMapRef:
+                name: owncloud-config
+          ports:
+            - containerPort: 80
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "256Mi"
+            limits:
+              memory: "256Mi"
+          volumeMounts:
+            - mountPath: /etc/ocis
+              name: owncloud-config-pvc
+            - mountPath: /var/lib/ocis
+              name: owncloud-data-pvc
+      restartPolicy: Always
+      volumes:
+        - name: owncloud-config-pvc
+          persistentVolumeClaim:
+            claimName: owncloud-config-pvc
+        - name: owncloud-data-pvc
+          persistentVolumeClaim:
+            claimName: owncloud-data-pvc
