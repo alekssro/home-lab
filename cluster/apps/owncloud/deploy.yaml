@@ -51,6 +51,8 @@ spec:
             - mountPath: /var/lib/ocis
               name: owncloud-data-pvc
       restartPolicy: Always
+      nodeSelector:
+        kubernetes.io/hostname: nuc7pjyhn-rookie
       volumes:
         - name: owncloud-config-pvc
           persistentVolumeClaim:
