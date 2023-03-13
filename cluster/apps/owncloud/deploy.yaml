@@ -46,7 +46,7 @@ spec:
             limits:
               memory: "256Mi"
           volumeMounts:
-            - mountPath: /etc/ocis
+            - mountPath: /etc/ocis/
               name: owncloud-config-pvc
             - mountPath: /var/lib/ocis
               name: owncloud-data-pvc
