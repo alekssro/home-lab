@@ -33,6 +33,11 @@ spec:
             # therefore we ignore the error and then start the ocis server
             ["/bin/sh", "-c", "ocis init || true; ocis server"]
           env:
+            - name: IDM_ADMIN_USER_ID
+              valueFrom:
+                secretKeyRef:
+                  key: IDM_ADMIN_USER_ID
+                  name: owncloud-secret
             - name: IDM_ADMIN_PASSWORD
               valueFrom:
                 secretKeyRef:
