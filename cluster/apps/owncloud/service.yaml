@@ -8,8 +8,8 @@ metadata:
     service: owncloud-web
 spec:
   ports:
-    - name: "80"
-      port: 80
+    - name: "web"
+      port: 9200
       targetPort: 9200
   selector:
     service: owncloud-web
