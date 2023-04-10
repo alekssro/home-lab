@@ -1,0 +1,30 @@
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: goldilocks-dashboard
+  namespace: goldilocks
+  labels:
+    app.kubernetes.io/name: goldilocks
+    app.kubernetes.io/component: dashboard
+  annotations:
+    cert-manager.io/cluster-issuer: "letsencrypt-staging"
+    traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
+    traefik.ingress.kubernetes.io/router.middlewares: "networking-internal-only@kubernetescrd"
+spec:
+  ingressClassName: traefik
+  tls:
+    - hosts:
+        - "goldilocks.${SECRET_DOMAIN}"
+      secretName: goldilocks-tls
+  rules:
+    - host: "goldilocks.${SECRET_DOMAIN}"
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: goldilocks-dashboard
+                port:
+                  number: 80
