@@ -8,11 +8,11 @@ spec:
   interval: 5m
   chart:
     spec:
-      chart: fairwinds
+      chart: insights-agent
       version: 2.15.1
       sourceRef:
         kind: HelmRepository
-        name: fairwinds-charts
+        name: insights-agent
         namespace: flux-system
       interval: 5m
   install:
