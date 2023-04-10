@@ -43,11 +43,11 @@ spec:
               protocol: TCP
           resources:
             requests:
-              cpu: 25m
-              memory: 32Mi
+              cpu: 50m
+              memory: 64Mi
             limits:
               # cpu: 25m
-              memory: 32Mi
+              memory: 64Mi
           livenessProbe:
             httpGet:
               path: /health
@@ -56,3 +56,5 @@ spec:
             httpGet:
               path: /health
               port: http
+      nodeSelector:
+        kubernetes.io/arch: amd64
