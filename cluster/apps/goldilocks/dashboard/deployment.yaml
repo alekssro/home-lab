@@ -8,7 +8,7 @@ metadata:
     app.kubernetes.io/name: goldilocks
     app.kubernetes.io/component: dashboard
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app.kubernetes.io/name: goldilocks
@@ -46,7 +46,7 @@ spec:
               cpu: 25m
               memory: 32Mi
             limits:
-              cpu: 25m
+              # cpu: 25m
               memory: 32Mi
           livenessProbe:
             httpGet:
