@@ -23,9 +23,9 @@ spec:
       retries: 3
   values:
     insights:
-      organization: "${insights-org}"
-      cluster: "${insights-cluster}"
-      base64token: "${insights-base64token}"
+      organization: "${ORGANIZATION}"
+      cluster: "${CLUSTER}"
+      base64token: "${BASE64TOKEN}"
     goldilocks:
       enabled: true
     polaris:
