@@ -1,0 +1,32 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: insights-agent
+  namespace: insights-agent
+spec:
+  interval: 5m
+  chart:
+    spec:
+      chart: fairwinds
+      version: 2.10
+      sourceRef:
+        kind: HelmRepository
+        name: fairwinds-charts
+        namespace: flux-system
+  install:
+    createNamespace: true
+    remediation:
+      retries: 3
+  upgrade:
+    remediation:
+      retries: 3
+  values:
+    insights:
+      organization: "${ORGANIZATION}"
+      cluster: "${CLUSTER}"
+      base64token: "${BASE64TOKEN}"
+    goldilocks:
+      enabled: true
+    polaris:
+      enabled: true
