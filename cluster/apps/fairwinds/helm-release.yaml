@@ -21,6 +21,12 @@ spec:
   upgrade:
     remediation:
       retries: 3
-  valuesFrom:
-    - kind: Secret
-      name: insights-agent
+  values:
+    insights:
+      organization: "${insights-org}"
+      cluster: "${insights-cluster}"
+      base64token: "${insights-base64token}"
+    goldilocks:
+      enabled: true
+    polaris:
+      enabled: true
