@@ -18,9 +18,6 @@ spec:
       labels:
         app: obsidian-sync
     spec:
-      nodeSelector:
-        kubernetes.io/arch: arm64
-        persistant-prefered: '1'
       containers:
       - image: syncthing/syncthing:1.23
         name: syncthing
@@ -45,6 +42,6 @@ spec:
         - name: obsidian-sync-pv
           mountPath: /var/syncthing
       volumes:
-      - name: obsidian-sync-pv
+      - name: obsidian-sync-pvc
         persistentVolumeClaim:
           claimName: obsidian-sync-pvc
