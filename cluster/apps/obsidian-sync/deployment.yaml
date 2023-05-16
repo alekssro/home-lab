@@ -39,7 +39,7 @@ spec:
           protocol: UDP
           name: to-discover
         volumeMounts:
-        - name: obsidian-sync-pv
+        - name: obsidian-sync-pvc
           mountPath: /var/syncthing
       volumes:
       - name: obsidian-sync-pvc
