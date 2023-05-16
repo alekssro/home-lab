@@ -18,6 +18,6 @@ resources:
   - uptime-kuma
   - alekssro-web
   - owncloud
-  - obsidian-sync
+  # - obsidian-sync
   # - goldilocks
   # - fairwinds
