@@ -1,0 +1,49 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: obsidian-sync
+  labels:
+    app: obsidian-sync
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: obsidian-sync
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: obsidian-sync
+    spec:
+      nodeSelector:
+        kubernetes.io/arch: arm64
+        persistant-prefered: '1'
+      containers:
+      - image: syncthing/syncthing:1.23
+        name: syncthing
+        resources:
+          requests:
+            cpu: 50m
+            memory: 256Mi
+          limits:
+            cpu: 500m
+            memory: 256Mi
+        ports:
+        - containerPort: 8384
+          name: syncthing
+          protocol: TCP
+        - containerPort: 22000
+          protocol: TCP
+          name: to-listen
+        - containerPort: 22000
+          protocol: UDP
+          name: to-discover
+        volumeMounts:
+        - name: obsidian-sync-pv
+          mountPath: /var/syncthing
+      volumes:
+      - name: obsidian-sync-pv
+        persistentVolumeClaim:
+          claimName: obsidian-sync-pvc
