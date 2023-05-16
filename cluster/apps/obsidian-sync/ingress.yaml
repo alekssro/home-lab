@@ -1,7 +1,7 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: syncthing
+  name: obsidian-sync
   namespace: syncthing
   annotations:
     cert-manager.io/cluster-issuer: "letsencrypt-production"
@@ -12,7 +12,7 @@ spec:
   tls:
     - hosts:
         - "obsidian-sync.${SECRET_DOMAIN}"
-      secretName: syncthing-tls
+      secretName: obsidian-sync-tls
   rules:
     - host: "obsidian-sync.${SECRET_DOMAIN}"
       http:
