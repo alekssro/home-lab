@@ -25,7 +25,7 @@ spec:
         fsGroup: 1000
       containers:
         - name: owncloud
-          image: owncloud/ocis # https://hub.docker.com/r/owncloud/ocis
+          image: owncloud/ocis:2.0.0 # https://hub.docker.com/r/owncloud/ocis
           imagePullPolicy: IfNotPresent
           command:
             # run ocis init to initialize a configuration file with random secrets
