@@ -48,7 +48,7 @@ spec:
               value: www-data
             - name: APACHE_RUN_GROUP_ID
               value: "33"
-          image: filerun/filerun
+          image: filerun/filerun:7.4
           name: filerun-web
           ports:
             - containerPort: 80
