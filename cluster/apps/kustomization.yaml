@@ -17,7 +17,7 @@ resources:
   # - homeassistant
   - uptime-kuma
   - alekssro-web
-  - owncloud
-  # - obsidian-sync
+  # - owncloud
+  - obsidian-sync
   # - goldilocks
   # - fairwinds
