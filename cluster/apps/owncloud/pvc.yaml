@@ -8,11 +8,11 @@ metadata:
     service: owncloud
 spec:
   accessModes:
-    - ReadWriteOnce
+    - ReadWriteMany
   storageClassName: longhorn
   resources:
     requests:
-      storage: 128Mi
+      storage: 1Gi
 
 ---
 apiVersion: v1
@@ -24,8 +24,8 @@ metadata:
     service: owncloud
 spec:
   accessModes:
-    - ReadWriteOnce
+    - ReadWriteMany
   storageClassName: longhorn
   resources:
     requests:
-      storage: 20Gi
+      storage: 1Ti
