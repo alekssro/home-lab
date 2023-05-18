@@ -14,10 +14,10 @@ resources:
   - networking
   - flux-system
   - filerun
-  # - homeassistant
   - uptime-kuma
   - alekssro-web
   # - owncloud
+  # - homeassistant
   # - obsidian-sync
   # - goldilocks
   # - fairwinds
