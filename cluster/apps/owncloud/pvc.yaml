@@ -24,7 +24,7 @@ metadata:
     service: owncloud
 spec:
   accessModes:
-    - ReadWriteMany
+    - ReadWriteOnce
   storageClassName: longhorn-large
   resources:
     requests:
