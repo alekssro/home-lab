@@ -7,5 +7,5 @@ resources:
   - pvc.yaml
   - service.yaml
   - ingress.yaml
-  - deploy.yaml
+  # - deploy.yaml
   - secret.sops.yaml
