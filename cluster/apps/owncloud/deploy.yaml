@@ -48,6 +48,9 @@ spec:
                 name: owncloud-config
           ports:
             - containerPort: 9100
+              name: ocis-backend
+            - containerPort: 9200
+              name: ocis-web
           resources:
             requests:
               cpu: "100m"
@@ -55,17 +58,17 @@ spec:
             limits:
               memory: "256Mi"
           volumeMounts:
-            # - mountPath: /etc/ocis
-            #   name: owncloud-config-pvc
+            - mountPath: /etc/ocis
+              name: owncloud-config-pvc
             - mountPath: /var/lib/ocis
               name: owncloud-data-pvc
       restartPolicy: Always
       nodeSelector:
         kubernetes.io/hostname: nuc7pjyhn
       volumes:
-        # - name: owncloud-config-pvc
-        #   persistentVolumeClaim:
-        #     claimName: owncloud-config-pvc
+        - name: owncloud-config-pvc
+          persistentVolumeClaim:
+            claimName: owncloud-config-pvc
         - name: owncloud-data-pvc
           persistentVolumeClaim:
             claimName: owncloud-data-pvc
