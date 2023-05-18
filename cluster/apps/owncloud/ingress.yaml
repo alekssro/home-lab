@@ -21,7 +21,7 @@ spec:
               service:
                 name: owncloud-web
                 port:
-                  number: 9200
+                  number: 9100
   tls:
     - hosts:
         - "drive-beta.${SECRET_DOMAIN}"
