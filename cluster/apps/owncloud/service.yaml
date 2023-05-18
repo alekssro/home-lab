@@ -9,7 +9,7 @@ metadata:
 spec:
   ports:
     - name: "web"
-      port: 9100
-      targetPort: 9100
+      port: 9200
+      targetPort: 9200
   selector:
     service: owncloud

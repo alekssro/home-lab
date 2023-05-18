@@ -47,7 +47,7 @@ spec:
             - configMapRef:
                 name: owncloud-config
           ports:
-            - containerPort: 9100
+            - containerPort: 9200
           resources:
             requests:
               cpu: "100m"
