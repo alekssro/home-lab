@@ -19,31 +19,14 @@ spec:
         service: filerun-db
     spec:
       containers:
-        - env:
+        - name: filerun-db
+          image: mariadb:10.11
+          envFrom:
+            - secretRef:
+                name: filerun-secrets
+          env:
             - name: TZ
               value: "Europe/Madrid"
-            - name: MYSQL_ROOT_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  key: MYSQL_ROOT_PASSWORD
-                  name: filerun-secret
-            - name: MYSQL_USER
-              valueFrom:
-                secretKeyRef:
-                  key: MYSQL_USER
-                  name: filerun-secret
-            - name: MYSQL_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  key: MYSQL_PASSWORD
-                  name: filerun-secret
-            - name: MYSQL_DATABASE
-              valueFrom:
-                secretKeyRef:
-                  key: MYSQL_DATABASE
-                  name: filerun-secret
-          image: mariadb:10.11
-          name: filerun-db
           resources:
             requests:
               cpu: 100m
