@@ -16,6 +16,7 @@ resources:
   - filerun
   - uptime-kuma
   - alekssro-web
+  - drive
   # - owncloud
   # - homeassistant
   # - obsidian-sync

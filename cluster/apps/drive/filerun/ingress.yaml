@@ -1,0 +1,28 @@
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: filerun-web
+  namespace: drive
+  annotations:
+    cert-manager.io/cluster-issuer: "letsencrypt-production"
+    external-dns/is-public: "true"
+    external-dns.alpha.kubernetes.io/target: "ipv4.${SECRET_DOMAIN}"
+    traefik.ingress.kubernetes.io/router.middlewares: "networking-cloudflare-only@kubernetescrd"
+spec:
+  ingressClassName: traefik
+  rules:
+    - host: "drive.${SECRET_DOMAIN}"
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: filerun-web
+                port:
+                  number: 80
+  tls:
+    - hosts:
+        - "drive.${SECRET_DOMAIN}"
+      secretName: drive-tls

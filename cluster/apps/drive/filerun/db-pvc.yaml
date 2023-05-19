@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: filerun-db-pvc
+  namespace: drive
+  labels:
+    service: filerun-db
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: longhorn-large
+  resources:
+    requests:
+      storage: 1Gi

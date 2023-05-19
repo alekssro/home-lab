@@ -1,0 +1,75 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: filerun-web
+  namespace: drive
+  labels:
+    service: filerun-web
+spec:
+  selector:
+    matchLabels:
+      service: filerun-web
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        service: filerun-web
+    spec:
+      containers:
+        - env:
+            - name: TZ
+              value: "Europe/Madrid"
+            - name: FR_DB_HOST
+              value: filerun-db
+            - name: FR_DB_PORT
+              value: "3306"
+            - name: FR_DB_NAME
+              valueFrom:
+                secretKeyRef:
+                  key: MYSQL_DATABASE
+                  name: filerun-secret
+            - name: FR_DB_USER
+              valueFrom:
+                secretKeyRef:
+                  key: MYSQL_USER
+                  name: filerun-secret
+            - name: FR_DB_PASS
+              valueFrom:
+                secretKeyRef:
+                  key: MYSQL_PASSWORD
+                  name: filerun-secret
+            - name: APACHE_RUN_USER
+              value: www-data
+            - name: APACHE_RUN_USER_ID
+              value: "33"
+            - name: APACHE_RUN_GROUP
+              value: www-data
+            - name: APACHE_RUN_GROUP_ID
+              value: "33"
+          image: filerun/filerun:8.1
+          name: filerun-web
+          ports:
+            - containerPort: 80
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "256Mi"
+            limits:
+              memory: "256Mi"
+          volumeMounts:
+            - mountPath: /var/www/html
+              name: filerun-web-html-pvc
+            - mountPath: /user-files
+              name: filerun-web-userfiles-pvc
+      nodeSelector:
+        kubernetes.io/hostname: nuc7pjyhn
+      restartPolicy: Always
+      volumes:
+        - name: filerun-web-html-pvc
+          persistentVolumeClaim:
+            claimName: filerun-web-html-pvc
+        - name: filerun-web-userfiles-pvc
+          persistentVolumeClaim:
+            claimName: filerun-web-userfiles-pvc

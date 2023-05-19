@@ -1,0 +1,46 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: filerun-elasticsearch
+  namespace: drive
+  labels:
+    service: filerun-elasticsearch
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      service: filerun-elasticsearch
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        service: filerun-elasticsearch
+    spec:
+      containers:
+        - env:
+            - name: cluster.name
+              value: filerun
+            - name: bootstrap.memory_lock
+              value: "false"
+            - name: ES_JAVA_OPTS
+              value: -Xms512m -Xmx512m
+          image: docker.elastic.co/elasticsearch/elasticsearch:8.6.1
+          name: filerun-elasticsearch
+          resources:
+            requests:
+              cpu: 100m
+              memory: 1Gi
+            limits:
+              memory: 1Gi
+          volumeMounts:
+            - mountPath: /usr/share/elasticsearch/data
+              name: filerun-elasticsearch-pvc
+      nodeSelector:
+        kubernetes.io/arch: amd64
+      restartPolicy: Always
+      volumes:
+        - name: filerun-elasticsearch-pvc
+          persistentVolumeClaim:
+            claimName: filerun-elasticsearch-pvc
