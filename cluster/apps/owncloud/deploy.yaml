@@ -32,20 +32,11 @@ spec:
             # it will fail on subsequent runs, because the config file already exists
             # therefore we ignore the error and then start the ocis server
             ["/bin/sh", "-c", "ocis init || true; ocis server"]
-          env:
-            - name: IDM_ADMIN_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  key: IDM_ADMIN_PASSWORD
-                  name: owncloud-secret
-            - name: OCIS_JWT_SECRET
-              valueFrom:
-                secretKeyRef:
-                  key: OCIS_JWT_SECRET
-                  name: owncloud-secret
           envFrom:
             - configMapRef:
                 name: owncloud-config
+            - secretRef:
+                name: owncloud-secret
           ports:
             - containerPort: 9100
               name: ocis-backend
@@ -53,7 +44,7 @@ spec:
               name: ocis-web
           resources:
             requests:
-              cpu: "100m"
+              cpu: "300m"
               memory: "256Mi"
             limits:
               memory: "256Mi"

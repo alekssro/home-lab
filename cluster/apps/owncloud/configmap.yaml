@@ -15,3 +15,8 @@ data:
   PROXY_ENABLE_BASIC_AUTH: "false"
   # demo users
   IDM_CREATE_DEMO_USERS: "false"
+  # SMTP settings
+  NOTIFICATIONS_SMTP_HOST: "smtp.gmail.com"
+  NOTIFICATIONS_SMTP_PORT: "587"
+  NOTIFICATIONS_SMTP_AUTHENTICATION: "login"
+  NOTIFICATIONS_SMTP_SENDER: "Alekss Drive"
