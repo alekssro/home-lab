@@ -32,17 +32,17 @@ spec:
               valueFrom:
                 secretKeyRef:
                   key: MYSQL_DATABASE
-                  name: filerun-secret
+                  name: filerun-secrets
             - name: FR_DB_USER
               valueFrom:
                 secretKeyRef:
                   key: MYSQL_USER
-                  name: filerun-secret
+                  name: filerun-secrets
             - name: FR_DB_PASS
               valueFrom:
                 secretKeyRef:
                   key: MYSQL_PASSWORD
-                  name: filerun-secret
+                  name: filerun-secrets
             - name: APACHE_RUN_USER
               value: www-data
             - name: APACHE_RUN_USER_ID
