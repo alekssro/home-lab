@@ -16,6 +16,7 @@ spec:
     metadata:
       annotations:
         configmap.reloader.stakater.com/reload: owncloud-config
+        secret.reloader.stakater.com/reload: owncloud-secret
       labels:
         service: owncloud
     spec:
