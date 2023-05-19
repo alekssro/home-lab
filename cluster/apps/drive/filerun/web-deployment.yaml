@@ -18,7 +18,10 @@ spec:
         service: filerun-web
     spec:
       containers:
-        - env:
+        - name: filerun-web
+          image: filerun/filerun:7.4
+          imagePullPolicy: IfNotPresent
+          env:
             - name: TZ
               value: "Europe/Madrid"
             - name: FR_DB_HOST
@@ -48,8 +51,6 @@ spec:
               value: www-data
             - name: APACHE_RUN_GROUP_ID
               value: "33"
-          image: filerun/filerun:7.4
-          name: filerun-web
           ports:
             - containerPort: 80
           resources:
