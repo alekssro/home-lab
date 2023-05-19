@@ -4,7 +4,7 @@ resources:
   - filerun-ns.yaml
   - ingress.yaml
   - db-deployment.yaml
-  # - db-pvc.yaml
+  - db-pvc.yaml
   - db-service.yaml
   - secret.sops.yaml
   - web-deployment.yaml
