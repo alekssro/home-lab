@@ -47,9 +47,9 @@ spec:
           resources:
             requests:
               cpu: 100m
-              memory: 256Mi
+              memory: 384Mi
             limits:
-              memory: 256Mi
+              memory: 384Mi
           volumeMounts:
             - mountPath: /var/lib/mysql
               name: filerun-db-pvc
