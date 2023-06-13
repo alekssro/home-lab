@@ -49,6 +49,7 @@ spec:
             - name: APACHE_RUN_GROUP_ID
               value: "33"
           image: filerun/filerun:8.1
+          imagePullPolicy: IfNotPresent
           name: filerun-web
           ports:
             - containerPort: 80
