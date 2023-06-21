@@ -8,7 +8,7 @@ resources:
   # To enable automatic Kubernetes upgrades uncomment
   # the below line
   # - system-upgrade
-  - default
+  # - default
   - bitwarden
   - kube-system
   - networking
