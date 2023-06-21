@@ -10,7 +10,7 @@ resources:
   - web-deployment.yaml
   - web-hpa.yaml
   - web-html-pvc.yaml
-  - web-userfiles-pvc.yaml
+  # - web-userfiles-pvc.yaml
   - web-service.yaml
   # - elasticsearch-deployment.yaml
   # - elasticsearch-pvc.yaml
