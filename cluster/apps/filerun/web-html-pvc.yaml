@@ -6,9 +6,9 @@ metadata:
   labels:
     service: filerun-web
 spec:
+  storageClassName: longhorn
   accessModes:
     - ReadWriteOnce
-  storageClassName: longhorn
   resources:
     requests:
-      storage: 2Gi
+      storage: 10Gi
