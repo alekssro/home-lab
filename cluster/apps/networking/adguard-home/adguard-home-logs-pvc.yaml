@@ -6,7 +6,7 @@ metadata:
   labels:
     service: adguard-home
 spec:
-  storageClassName: longhorn-static
+  storageClassName: longhorn
   accessModes:
     - ReadWriteMany
   resources:
