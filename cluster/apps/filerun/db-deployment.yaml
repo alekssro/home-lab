@@ -54,7 +54,7 @@ spec:
             - mountPath: /var/lib/mysql
               name: filerun-db-pvc
       nodeSelector:
-        kubernetes.io/arch: amd64
+        kubernetes.io/hostname: nuc7pjyhn
       restartPolicy: Always
       volumes:
         - name: filerun-db-pvc
