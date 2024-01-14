@@ -1,9 +1,9 @@
 ---
-- include: locale.yml
+- include_tasks: locale.yml
   tags:
     - locale
 
-- include: packages.yml
+- include_tasks: packages.yml
   tags:
     - packages
 
@@ -11,18 +11,18 @@
   tags:
     - kernel
 
-- include: network.yml
+- include_tasks: network.yml
   tags:
     - network
 
-- include: filesystem.yml
+- include_tasks: filesystem.yml
   tags:
     - filesystem
 
-- include: unattended-upgrades.yml
+- include_tasks: unattended-upgrades.yml
   tags:
     - unattended-upgrades
 
-- include: user.yml
+- include_tasks: user.yml
   tags:
     - user
