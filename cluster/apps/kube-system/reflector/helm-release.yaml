@@ -26,9 +26,9 @@ spec:
     resources:
       requests:
         cpu: 50m
-        memory: 128Mi
+        memory: 192Mi
       limits:
-        memory: 128Mi
+        memory: 192Mi
     configuration:
       logging:
         minimumLevel: Debug
