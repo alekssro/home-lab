@@ -1,6 +1,6 @@
 kind: Secret
-ansible_user: ENC[AES256_GCM,data:2rh6vG4LfihpIrc=,iv:CY2qrYERCL7tkP56qDomBvaq/syedOD0rW9mGfO/BNM=,tag:LRkQdPqGR524lmzRE1QD8g==,type:str]
-ansible_become_pass: ENC[AES256_GCM,data:/BQsTtMTT6yPA5Aj2e/HoDhX9Ww=,iv:PD5u07HdtToe9FO/aszguyWSRwWjtw/l88uTUYd2i/8=,tag:kCS0UXvAQuwx6tmwYcem+A==,type:str]
+ansible_user: ENC[AES256_GCM,data:SLzNh6FCzmpB3AQ=,iv:cOm+3gWf/rv2VlLDRI91ejjr+F0wMDlGXDN58kiOtOY=,tag:QWi8fAkiRZzEWOrArLYFJg==,type:str]
+ansible_become_pass: ENC[AES256_GCM,data:kqnGFE5xKU3TjZemdOuhqIAqqHE=,iv:VMjMM8/Emxu86d27fvYxorA6o12jXBxMzgQNNvW84es=,tag:M9Qlr3D+T2zfwlPRAP5D+w==,type:str]
 sops:
     kms: []
     gcp_kms: []
@@ -10,14 +10,14 @@ sops:
         - recipient: age1lmvps8d0k8y4dx5wke4r2nqrhr4gvhu2wtpmlm8dsvtyj36kk5rsd7eefp
           enc: |
             -----BEGIN AGE ENCRYPTED FILE-----
-            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBhOWRjdStWSUd0ZjhpejdH
-            Sm5VVVp2U1VKYldGekpBZWtqYisvUmFWa1Q4CnFMNWlUV0FuT3pWZDVqVTVyOFBB
-            RDVpaTJlQnh6UEdqQnJnYVQ2TERBOFUKLS0tIGx0RnBkTmlvTll2b1JoYTZselF3
-            cWJrdDlGdTZaNFZXUTNGSmhTLzl2R0UKthBpCzLhh9qFhYSJ1TVC7If/Bbd6ijRS
-            veYZfNDbJO9cZLJPvC6RjRLSaMuqpHpBgwEL3JKn+DFdtib/vDTW1Q==
+            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSA2WTMveVVHZXpYa1JOVmZQ
+            NUhVelRRTlJncHgwSGw5bW9oM2xyaGF1YlcwCjNVdHlwTDhYa081a0t4a0lrMlll
+            SVVrckg3bWZpeUsxU1Jua0NPQkF5cHMKLS0tIHhscVpudGszWXZBSmpRZUs4b3lG
+            NHhVb2JubS9kaklqTHVSdU9sOURTYU0KejNnl9ZnkSc7Kl/Lou9j+/785s3eBYFd
+            rbed/negA3ErxCXAOVmHRlRi+eAZUv5vCcbac9y0596aaQ9EYjy1yA==
             -----END AGE ENCRYPTED FILE-----
-    lastmodified: "2023-07-30T02:30:42Z"
-    mac: ENC[AES256_GCM,data:1uOd5UGb3qZs4riH62szXWpWeX4XdYDEgNLCE3VNI2fPnk65THWrlm0zhc3l/3ULLX1gsuQvjQIgybYiRBtIK6rx2fP2vWskcsW7ZaM6SvVPBShRpmjafPXDufXnDsQK/10vTBCr3C2yvXS4XmYAwnyKfy7lnLtBcKI8s5pn2VQ=,iv:NY0s5+gvB4NIlWD482lmTgSBIFLm5CBoAz3q/x5FRXg=,tag:UjHA8b72VwMo0LsVs8SQ0Q==,type:str]
+    lastmodified: "2024-01-14T22:06:01Z"
+    mac: ENC[AES256_GCM,data:TNvRdi4IYrVj+Uew2cV0wk+MUiHOCOKGzJAlqxF8dRup51q91Hg0tS/OZ7V6abDLM3i0gldlTmJT0WhHJX73G++MfGoyc6uKw+zSYgbsBTDwrEJ2hzLDF/bX/vGQOfU5+d1qCGGgvoR5y0p6M/eHsVBvx0cAbEaLZPR/bod/U1c=,iv:zq8/4SDJWVxsMEDLSDdO5WfYb+4x6goJYA7aZHsRWsQ=,tag:Re0jjYJStPtQ5a+WDFqcig==,type:str]
     pgp: []
     unencrypted_regex: ^(kind)$
-    version: 3.7.3
+    version: 3.8.1
