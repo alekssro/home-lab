@@ -51,8 +51,8 @@ For provisioning, the following tools are used:
 The home lab consists of the follwing hardware:
 
 - [Intel NUC7PJYHN](https://ark.intel.com/content/www/us/en/ark/products/130394/intel-nuc-kit-nuc7pjyhn.html) - 4 core, 8 thread, 8GB RAM, 256GB SSD (Ubuntu 22.04 LTS) - Master node
+- 2 x [Intel NUC7PJYHN](https://ark.intel.com/content/www/us/en/ark/products/130394/intel-nuc-kit-nuc7pjyhn.html) - 4 core, 8 thread, 8GB RAM, 512GB SSD (Ubuntu 22.04 LTS) - Worker node
 - [Raspberry Pi 4B](https://www.raspberrypi.org/products/raspberry-pi-4-model-b/) - 4 core, 4 thread, 4GB RAM, 128GB SD card (Ubuntu Server 22.04 LTS) - Worker node
-- [Raspberry Pi 3B+](https://www.raspberrypi.org/products/raspberry-pi-3-model-b-plus/) - 4 core, 4 thread, 1GB RAM, 64GB SD card (Ubuntu Server 22.04 LTS) - Worker node
 
 As you can see, there are two different architectures (ARM64/AMD64) involved, which means a large number of ~~headaches~~ opportunities for learning.
 
