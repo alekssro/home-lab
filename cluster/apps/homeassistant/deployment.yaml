@@ -33,24 +33,6 @@ spec:
             - mountPath: "/config/configuration.yaml"
               name: home-assistant-config
               subPath: configuration.yaml
-        - image: mysql:8.0
-          name: mysql
-          env:
-            - name: MYSQL_ROOT_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: home-assistant-secret
-                  key: MYSQL_ROOT_PASSWORD
-          resources:
-            requests:
-              cpu: "100m"
-              memory: "256Mi"
-            limits:
-              memory: "256Mi"
-          volumeMounts:
-            - name: home-assistant-mysql-pvc
-              mountPath: /var/lib/mysql
-
       nodeSelector:
         kubernetes.io/arch: amd64
       volumes:
@@ -60,6 +42,3 @@ spec:
         - name: home-assistant-pvc
           persistentVolumeClaim:
             claimName: home-assistant-pvc
-        - name: home-assistant-mysql-pvc
-          persistentVolumeClaim:
-            claimName: home-assistant-mysql-pvc

@@ -13,19 +13,3 @@ spec:
   resources:
     requests:
       storage: 500Mi
-
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: home-assistant-mysql-pvc
-  namespace: homeassistant
-  labels:
-    app: homeassistant
-spec:
-  accessModes:
-    - ReadWriteOnce
-  storageClassName: longhorn
-  resources:
-    requests:
-      storage: 500Mi
