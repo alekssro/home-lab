@@ -16,9 +16,9 @@ resources:
   - filerun
   - uptime-kuma
   - alekssro-web
+  - homeassistant
   # - drive
   # - owncloud
-  # - homeassistant
   # - obsidian-sync
   # - goldilocks
   # - fairwinds
