@@ -33,6 +33,9 @@ spec:
             - mountPath: "/config/configuration.yaml"
               name: home-assistant-config
               subPath: configuration.yaml
+            - mountPath: "/config/SERVICE_ACCOUNT.JSON"
+              name: home-assistant-secret
+              subPath: SERVICE_ACCOUNT.JSON
       nodeSelector:
         kubernetes.io/arch: amd64
       volumes:
