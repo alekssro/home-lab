@@ -48,3 +48,4 @@ spec:
         - name: home-assistant-pvc
           persistentVolumeClaim:
             claimName: home-assistant-pvc
+
