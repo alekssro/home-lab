@@ -8,9 +8,10 @@ data:
     default_config:
     tts:
       - platform: google_translate
+
     automation: !include automations.yaml
-    script: !include scripts.yaml
-    scene: !include scenes.yaml
+    # script: !include scripts.yaml
+    # scene: !include scenes.yaml
 
     http:
       ip_ban_enabled: false
