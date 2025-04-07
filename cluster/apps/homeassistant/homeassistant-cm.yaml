@@ -12,8 +12,8 @@ data:
       use_x_forwarded_for: true
       trusted_proxies:
         - 10.42.0.0/16 # cluster cidr
-        - 192.168.1.1/16 # home network
-        - 192.168.86.1/16 # home network
+        - 192.168.1.0/24 # home assistant
+        - 192.168.86.0/24 # google wifi
         #cloudflare ipv4
         - 103.21.244.0/22
         - 103.22.200.0/22
