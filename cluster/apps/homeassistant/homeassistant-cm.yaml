@@ -38,3 +38,7 @@ data:
         - 2c0f:f248::/32
     tts:
       - platform: google_translate
+    google_assistant:
+      project_id: homeassistant-88a71
+      service_account: !include SERVICE_ACCOUNT.JSON
+      report_state: true
