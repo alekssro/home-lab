@@ -12,6 +12,8 @@ data:
       use_x_forwarded_for: true
       trusted_proxies:
         - 10.42.0.0/16 # cluster cidr
+        - 192.168.1.1/16 # home network
+        - 192.168.86.1/16 # home network
         #cloudflare ipv4
         - 103.21.244.0/22
         - 103.22.200.0/22
@@ -38,6 +40,7 @@ data:
         - 2c0f:f248::/32
     sensor:
       - platform: google_wifi
+        host: 192.168.86.1
     google_assistant:
       project_id: homeassistant-88a71
       service_account: !include SERVICE_ACCOUNT.JSON
