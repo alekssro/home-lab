@@ -6,6 +6,12 @@ metadata:
 data:
   configuration.yaml: |
     default_config:
+    tts:
+      - platform: google_translate
+    automation: !include automations.yaml
+    script: !include scripts.yaml
+    scene: !include scenes.yaml
+
     http:
       ip_ban_enabled: false
       login_attempts_threshold: 5
@@ -38,6 +44,9 @@ data:
         - 2405:8100::/32
         - 2a06:98c0::/29
         - 2c0f:f248::/32
+    sensor:
+      - platform: google_wifi
+        host: 192.168.86.1
     google_assistant:
       project_id: homeassistant-88a71
       service_account: !include SERVICE_ACCOUNT.JSON
