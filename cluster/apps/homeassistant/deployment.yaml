@@ -23,6 +23,13 @@ spec:
       containers:
         - image: ghcr.io/home-assistant/home-assistant:2025.4
           name: home-assistant
+          securityContext:
+            privileged: true
+            capabilities:
+              add:
+                - NET_ADMIN
+                - NET_RAW
+                - SYS_ADMIN
           resources:
             requests:
               cpu: "100m"
