@@ -19,6 +19,7 @@ spec:
       labels:
         app: homeassistant
     spec:
+      hostNetwork: true
       containers:
         - image: ghcr.io/home-assistant/home-assistant:2025.4
           name: home-assistant
