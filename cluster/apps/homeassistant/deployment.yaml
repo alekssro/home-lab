@@ -38,6 +38,8 @@ spec:
             - mountPath: "/config/SERVICE_ACCOUNT.JSON"
               name: home-assistant-secret
               subPath: SERVICE_ACCOUNT.JSON
+            - mountPath: "/var/run/dbus"
+              name: dbus
       nodeSelector:
         kubernetes.io/arch: amd64
       volumes:
@@ -50,3 +52,6 @@ spec:
         - name: home-assistant-pvc
           persistentVolumeClaim:
             claimName: home-assistant-pvc
+        - name: dbus
+          hostPath:
+            path: "/var/run/dbus"
