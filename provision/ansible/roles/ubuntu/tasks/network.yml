@@ -38,3 +38,69 @@
       net.ipv4.conf.default.rp_filter: 0
       net.ipv4.conf.all.rp_filter: 0
 
+- name: Configure Bluetooth
+  tasks:
+    - name: Update APT package cache
+      ansible.builtin.apt:
+        update_cache: true
+      changed_when: false # Don't report change for cache update alone
+
+    - name: Install Bluetooth required packages
+      ansible.builtin.apt:
+        name:
+          - dbus-broker
+          - bluez
+        state: present
+
+- name: Configure WiFi
+  vars:
+    wifi_config_content: |
+      network:
+        version: 2
+        wifis:
+          wlo2:
+            dhcp4: true
+            optional: true
+            access-points:
+              "{{ wifi_ssid }}":
+                password: {{ wifi_pass }}
+
+  tasks:
+    - name: Check for Netplan config file /etc/netplan/00-installer-config-wifi.yaml
+      ansible.builtin.stat:
+        path: /etc/netplan/00-installer-config-wifi.yaml
+      register: netplan_config_00
+
+    - name: Configure WiFi in /etc/netplan/00-installer-config-wifi.yaml if it exists
+      ansible.builtin.copy:
+        dest: /etc/netplan/00-installer-config-wifi.yaml
+        content: "{{ wifi_config_content }}"
+        owner: root
+        group: root
+        mode: '0600'
+      when: netplan_config_00.stat.exists
+      notify: Apply Netplan Configuration
+
+    - name: Check for Netplan config file /etc/netplan/01-network-manager-all.yaml
+      ansible.builtin.stat:
+        path: /etc/netplan/01-network-manager-all.yaml
+      register: netplan_config_01
+      when: not netplan_config_00.stat.exists
+
+    - name: Configure WiFi in /etc/netplan/01-network-manager-all.yaml if it exists (and 00 did not)
+      ansible.builtin.copy:
+        dest: /etc/netplan/01-network-manager-all.yaml
+        content: "{{ wifi_config_content }}"
+        owner: root
+        group: root
+        mode: '0600'
+      when:
+        - not netplan_config_00.stat.exists
+        - netplan_config_01.stat.exists
+      notify: Apply Netplan Configuration
+
+  handlers:
+    - name: Apply Netplan Configuration
+      listen: Apply Netplan Configuration
+      ansible.builtin.command: netplan apply
+      become: true
