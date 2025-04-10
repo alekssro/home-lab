@@ -57,6 +57,10 @@
     wifi_config_content: |
       network:
         version: 2
+        ethernets:
+          eno1:
+            dhcp4: true
+            optional: true
         wifis:
           wlo2:
             dhcp4: true
