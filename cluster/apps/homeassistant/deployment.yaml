@@ -79,7 +79,7 @@ spec:
   template:
     metadata:
       labels:
-        app: homeassistant
+        app: homeassistant-matter
     spec:
       hostNetwork: true
       containers:
