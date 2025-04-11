@@ -42,6 +42,9 @@ spec:
             - mountPath: "/config/configuration.yaml"
               name: home-assistant-config
               subPath: configuration.yaml
+            - mountPath: "/etc/resolv.conf"
+              name: home-assistant-config
+              subPath: resolv.conf
             - mountPath: "/config/SERVICE_ACCOUNT.JSON"
               name: home-assistant-secret
               subPath: SERVICE_ACCOUNT.JSON
