@@ -6690,10 +6690,10 @@ spec:
         - containerPort: 9440
           name: healthz
           protocol: TCP
-        readinessProbe:
-          httpGet:
-            path: /readyz
-            port: healthz
+        # readinessProbe:
+        #   httpGet:
+        #     path: /readyz
+        #     port: healthz
         resources:
           limits:
             cpu: 1000m
