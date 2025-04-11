@@ -62,3 +62,53 @@ spec:
         - name: dbus
           hostPath:
             path: "/var/run/dbus"
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: homeassistant-matter
+  namespace: homeassistant
+  labels:
+    app: homeassistant-matter
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: homeassistant-matter
+  template:
+    metadata:
+      labels:
+        app: homeassistant
+    spec:
+      hostNetwork: true
+      containers:
+        - image: ghcr.io/home-assistant-libs/python-matter-server:stable
+          name: home-assistant-matter
+          securityContext:
+            privileged: true
+            capabilities:
+              add:
+                - NET_ADMIN
+                - NET_RAW
+                - SYS_ADMIN
+          resources:
+            requests:
+              cpu: "50m"
+              memory: "128Mi"
+            limits:
+              memory: "128Mi"
+          volumeMounts:
+            - mountPath: "/data"
+              name: home-assistant-matter-pvc
+            - mountPath: "/var/run/dbus"
+              name: dbus
+      nodeSelector:
+        kubernetes.io/arch: amd64
+      volumes:
+        - name: home-assistant-matter-pvc
+          persistentVolumeClaim:
+            claimName: home-assistant-matter-pvc
+        - name: dbus
+          hostPath:
+            path: "/var/run/dbus"

@@ -10,3 +10,17 @@ spec:
     - protocol: TCP
       port: 8123
       name: http
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: homeassistant-matter
+  namespace: homeassistant
+spec:
+  selector:
+    app: homeassistant-matter
+  ports:
+    - protocol: TCP
+      port: 5580
+      name: matter
