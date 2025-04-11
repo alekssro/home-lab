@@ -4,6 +4,9 @@ metadata:
   name: homeassistant-config
   namespace: homeassistant
 data:
+  resolv.conf: |
+    nameserver 192.168.1.121
+    nameserver 8.8.8.8
   configuration.yaml: |
     default_config:
     tts:
