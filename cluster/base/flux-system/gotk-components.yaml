@@ -6675,10 +6675,10 @@ spec:
           value: /tmp/.sigstore
         image: ghcr.io/fluxcd/source-controller:v0.35.1
         imagePullPolicy: IfNotPresent
-        livenessProbe:
-          httpGet:
-            path: /healthz
-            port: healthz
+        # livenessProbe:
+        #   httpGet:
+        #     path: /healthz
+        #     port: healthz
         name: manager
         ports:
         - containerPort: 9090
