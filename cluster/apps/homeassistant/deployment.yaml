@@ -33,9 +33,9 @@ spec:
           resources:
             requests:
               cpu: "200m"
-              memory: "1Gi"
+              memory: "2Gi"
             limits:
-              memory: "1Gi"
+              memory: "2Gi"
           volumeMounts:
             - mountPath: "/config"
               name: home-assistant-pvc
@@ -97,10 +97,10 @@ spec:
                 - SYS_ADMIN
           resources:
             requests:
-              cpu: "50m"
-              memory: "128Mi"
+              cpu: "100m"
+              memory: "256Mi"
             limits:
-              memory: "128Mi"
+              memory: "256Mi"
           volumeMounts:
             - mountPath: "/data"
               name: home-assistant-matter-pvc
