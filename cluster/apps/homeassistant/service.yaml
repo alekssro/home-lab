@@ -24,3 +24,20 @@ spec:
     - protocol: TCP
       port: 5580
       name: matter
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: homeassistant-mqtt
+  namespace: homeassistant
+spec:
+  selector:
+    app: mosquitto
+  ports:
+    - protocol: TCP
+      port: 1883
+      name: mqtt
+    - protocol: TCP
+      port: 9001
+      name: mqtt-websocket

@@ -115,3 +115,45 @@ spec:
         - name: dbus
           hostPath:
             path: "/var/run/dbus"
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mosquitto
+  namespace: homeassistant
+  labels:
+    app: mosquitto
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mosquitto
+  template:
+    metadata:
+      labels:
+        app: mosquitto
+    spec:
+      containers:
+        - image: eclipse-mosquitto:latest
+          name: mosquitto
+          ports:
+            - containerPort: 1883
+              name: mqtt
+            - containerPort: 9001
+              name: mqtt-websocket
+          resources:
+            requests:
+              cpu: "50m"
+              memory: "128Mi"
+            limits:
+              memory: "128Mi"
+          volumeMounts:
+            - mountPath: "/mosquitto"
+              name: home-assistant-mqtt-pvc
+      nodeSelector:
+        kubernetes.io/arch: amd64
+      volumes:
+        - name: home-assistant-mqtt-pvc
+          persistentVolumeClaim:
+            claimName: home-assistant-mqtt-pvc
