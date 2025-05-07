@@ -12,7 +12,7 @@ data:
     persistence_location /mosquitto/data/
 
     # MQTT with TLS (MQTTS)
-    listener 8883
+    listener 1883
     protocol mqtt
 
     # Username and password
