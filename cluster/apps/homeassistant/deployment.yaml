@@ -51,7 +51,7 @@ spec:
             - mountPath: "/var/run/dbus"
               name: dbus
       nodeSelector:
-        kubernetes.io/arch: amd64
+        kubernetes.io/hostname: nuc7pjyhn-rookie
       volumes:
         - name: home-assistant-config
           configMap:
@@ -107,7 +107,7 @@ spec:
             - mountPath: "/var/run/dbus"
               name: dbus
       nodeSelector:
-        kubernetes.io/arch: amd64
+        kubernetes.io/hostname: nuc7pjyhn-rookie
       volumes:
         - name: home-assistant-matter-pvc
           persistentVolumeClaim:
@@ -162,7 +162,7 @@ spec:
               name: home-assistant-secret
               subPath: MOSQUITTO_PASSWORD_FILE
       nodeSelector:
-        kubernetes.io/arch: amd64
+        kubernetes.io/hostname: nuc7pjyhn-rookie
       volumes:
         - name: home-assistant-mqtt-pvc
           persistentVolumeClaim:
