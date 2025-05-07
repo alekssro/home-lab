@@ -151,9 +151,21 @@ spec:
           volumeMounts:
             - mountPath: "/mosquitto"
               name: home-assistant-mqtt-pvc
+            - mountPath: /mosquitto/config/mosquitto.conf
+              subPath: mosquitto.conf
+              name: mosquitto-config
+            - mountPath: "/mosquitto/config/mosquitto.passwd"
+              name: home-assistant-secret
+              subPath: MOSQUITTO_PASSWORD_FILE
       nodeSelector:
         kubernetes.io/arch: amd64
       volumes:
         - name: home-assistant-mqtt-pvc
           persistentVolumeClaim:
             claimName: home-assistant-mqtt-pvc
+        - name: mosquitto-config
+          configMap:
+            name: mosquitto-config
+        - name: home-assistant-secret
+          secret:
+            secretName: home-assistant-secret
