@@ -10,7 +10,6 @@ data:
     allow_anonymous true
     persistence true
     persistence_location /mosquitto/data/
-    log_dest file /mosquitto/log/mosquitto.log
 
     # MQTT with TLS (MQTTS)
     listener 8883
