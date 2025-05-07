@@ -4,6 +4,7 @@ kind: Kustomization
 resources:
   - homeassistant-ns.yaml
   - homeassistant-cm.yaml
+  - mosquitto-cm.yaml
   - pvc.yaml
   - deployment.yaml
   - service.yaml
