@@ -134,6 +134,7 @@ spec:
       labels:
         app: mosquitto
     spec:
+      hostNetwork: true
       containers:
         - image: eclipse-mosquitto:latest
           name: mosquitto
