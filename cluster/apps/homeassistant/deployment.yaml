@@ -135,6 +135,9 @@ spec:
         app: mosquitto
     spec:
       hostNetwork: true
+      securityContext:
+        runAsUser: 1883
+        runAsGroup: 1883
       containers:
         - image: eclipse-mosquitto:latest
           name: mosquitto
@@ -155,11 +158,9 @@ spec:
             - mountPath: /mosquitto/config/mosquitto.conf
               subPath: mosquitto.conf
               name: mosquitto-config
-              readOnly: false
             - mountPath: "/mosquitto/config/mosquitto.passwd"
               name: home-assistant-secret
               subPath: MOSQUITTO_PASSWORD_FILE
-              readOnly: false
       nodeSelector:
         kubernetes.io/arch: amd64
       volumes:
@@ -169,8 +170,6 @@ spec:
         - name: mosquitto-config
           configMap:
             name: mosquitto-config
-            defaultMode: 0777
         - name: home-assistant-secret
           secret:
             secretName: home-assistant-secret
-            defaultMode: 0777
