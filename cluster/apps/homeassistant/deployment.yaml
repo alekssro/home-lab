@@ -167,8 +167,8 @@ spec:
         - name: mosquitto-config
           configMap:
             name: mosquitto-config
-            defaultMode: 0755
+            defaultMode: 0777
         - name: home-assistant-secret
           secret:
             secretName: home-assistant-secret
-            defaultMode: 0755
+            defaultMode: 0777
