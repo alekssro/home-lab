@@ -15,7 +15,7 @@ data:
     automation: !include automations.yaml
     script: !include scripts.yaml
     scene: !include scenes.yaml
-    light: !include lights.yaml
+    # light: !include lights.yaml
 
     frontend:
       themes: !include_dir_merge_named themes
@@ -69,8 +69,8 @@ data:
   lights.yaml: |
     - platform: template
       lights:
-        theater_lights:
-          friendly_name: "Theater Lights"
+        bedroom_fan_ceiling_light:
+          friendly_name: "Luz Ventilador Habitación"
           level_template: "{{ state_attr('sensor.theater_brightness', 'lux')|int }}"
           value_template: "{{ state_attr('sensor.theater_brightness', 'lux')|int > 0 }}"
           temperature_template: "{{states('input_number.temperature_input') | int}}"
