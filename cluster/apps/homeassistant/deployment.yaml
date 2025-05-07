@@ -120,7 +120,7 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: mosquitto
+  name: homeassistant-mqtt
   namespace: homeassistant
   labels:
     app: mosquitto
