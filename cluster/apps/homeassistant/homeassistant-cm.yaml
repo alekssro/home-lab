@@ -94,6 +94,14 @@ data:
             action: script.toggle_luz_ventilador_porche_lado_salon
           turn_off:
             action: script.toggle_luz_ventilador_porche_lado_salon
+        luz_ventilador_salon:
+          friendly_name: "Luz Ventilador Salón"
+          unique_id: "luz_ventilador_salon"
+          value_template: "{{ state('input_boolean.luz_ventilador_salon') }}"
+          turn_on:
+            action: script.toggle_luz_ventilador_salon
+          turn_off:
+            action: script.toggle_luz_ventilador_salon
   fans.yaml: |
     - platform: template
       fans:
@@ -209,10 +217,6 @@ data:
                 {% else %}
                   High
                 {% endif %}
-          preset_modes:
-            - "Low"
-            - "Medium"
-            - "High"
           speed_count: 3
 
         # Fan 3: Living Room Side Fan
@@ -270,8 +274,78 @@ data:
                 {% else %}
                   High
                 {% endif %}
-          preset_modes:
-            - "Low"
-            - "Medium"
-            - "High"
           speed_count: 3
+
+        # Fan 4: Living Room Fan (Updated for 5 speeds and direction)
+        ventilador_salon:
+          friendly_name: "Ventilador Salón"
+          unique_id: "ventilador_salon" # Ensure unique_id
+          value_template: "{{ not is_state('input_select.fan_speed_ventilador_salon', 'Off') }}"
+          percentage_template: >
+            {% set speed = states('input_select.fan_speed_ventilador_salon') %}
+            {% if speed == '1' %}
+              20
+            {% elif speed == '2' %}
+              40
+            {% elif speed == '3' %}
+              60
+            {% elif speed == '4' %}
+              80
+            {% elif speed == '5' %}
+              100
+            {% else %}
+              0
+            {% endif %}
+          preset_mode_template: >
+            {% if is_state('input_select.fan_speed_ventilador_salon', 'Off') %}
+              null
+            {% else %}
+              {{ states('input_select.fan_speed_ventilador_salon') }}
+            {% endif %}
+          direction_template: "{{ states('input_select.fan_direction_ventilador_salon') }}"
+          turn_on:
+            service: input_select.select_option
+            target:
+              entity_id: input_select.fan_speed_ventilador_salon
+            data:
+              option: "2" # Default speed when turned on
+          turn_off:
+            service: input_select.select_option
+            target:
+              entity_id: input_select.fan_speed_ventilador_salon
+            data:
+              option: "Off"
+          set_percentage:
+            service: input_select.select_option
+            target:
+              entity_id: input_select.fan_speed_ventilador_salon
+            data:
+              option: >
+                {% set p = percentage | int %}
+                {% if p == 0 %}
+                  Off
+                {% elif p <= 20 %}
+                  1
+                {% elif p <= 40 %}
+                  2
+                {% elif p <= 60 %}
+                  3
+                {% elif p <= 80 %}
+                  4
+                {% else %}
+                  5
+                {% endif %}
+          set_preset_mode:
+            service: input_select.select_option
+            target:
+              entity_id: input_select.fan_speed_ventilador_salon
+            data:
+              option: "{{ preset_mode }}" # preset_mode will be "1", "2", "3", "4", or "5"
+          set_direction:
+            service: input_select.select_option
+            target:
+              entity_id: input_select.fan_direction_ventilador_salon
+            data:
+              option: "{{ direction }}" # direction will be "forward" or "reverse"
+          speed_count: 5
+          supports_direction: true
