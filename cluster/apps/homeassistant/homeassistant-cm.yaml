@@ -71,6 +71,7 @@ data:
       lights:
         bedroom_fan_ceiling_light:
           friendly_name: "Luz Ventilador Habitación"
+          unique_id: "bedroom_fan_ceiling_light"
           value_template: "{{ is_state('input_boolean.luz_ventilador_habitacion', 'on') }}"
           turn_on:
             action: script.toggle_luz_ventilador_habitacion
