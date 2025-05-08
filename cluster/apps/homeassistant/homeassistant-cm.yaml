@@ -73,7 +73,6 @@ data:
         luz_ventilador_habitacion:
           friendly_name: "Luz Ventilador Habitación"
           unique_id: "luz_ventilador_habitacion"
-          value_template: "{{ not is_state('input_boolean.luz_ventilador_habitacion', 'off') }}"
           turn_on:
             action: script.toggle_luz_ventilador_habitacion
           turn_off:
@@ -81,7 +80,6 @@ data:
         luz_ventilador_porche_lado_cocina:
           friendly_name: "Luz Ventilador Porche Lado Cocina"
           unique_id: "luz_ventilador_porche_lado_cocina"
-          value_template: "{{ not is_state('input_boolean.luz_ventilador_porche_lado_cocina', 'off') }}"
           turn_on:
             action: script.toggle_luz_ventilador_porche_lado_cocina
           turn_off:
@@ -89,7 +87,6 @@ data:
         luz_ventilador_porche_lado_salon:
           friendly_name: "Luz Ventilador Porche Lado Salón"
           unique_id: "luz_ventilador_porche_lado_salon"
-          value_template: "{{ not is_state('input_boolean.luz_ventilador_porche_lado_salon', 'off') }}"
           turn_on:
             action: script.toggle_luz_ventilador_porche_lado_salon
           turn_off:
@@ -97,7 +94,6 @@ data:
         luz_ventilador_salon:
           friendly_name: "Luz Ventilador Salón"
           unique_id: "luz_ventilador_salon"
-          value_template: "{{ not is_state('input_boolean.luz_ventilador_salon', 'off') }}"
           turn_on:
             action: script.toggle_luz_ventilador_salon
           turn_off:
