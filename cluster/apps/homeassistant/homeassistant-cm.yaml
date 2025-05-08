@@ -70,7 +70,7 @@ data:
   lights.yaml: |
     - platform: template
       lights:
-        bedroom_fan_ceiling_light:
+        luz_ventilador_habitacion:
           friendly_name: "Luz Ventilador Habitación"
           unique_id: "luz_ventilador_habitacion"
           value_template: "{{ state('input_boolean.luz_ventilador_habitacion') }}"
@@ -78,6 +78,22 @@ data:
             action: script.toggle_luz_ventilador_habitacion
           turn_off:
             action: script.toggle_luz_ventilador_habitacion
+        luz_ventilador_porche_lado_cocina:
+          friendly_name: "Luz Ventilador Lado Cocina"
+          unique_id: "luz_ventilador_porche_lado_cocina"
+          value_template: "{{ state('input_boolean.luz_ventilador_porche_lado_cocina') }}"
+          turn_on:
+            action: script.toggle_luz_ventilador_porche_lado_cocina
+          turn_off:
+            action: script.toggle_luz_ventilador_porche_lado_cocina
+        luz_ventilador_porche_lado_salon:
+          friendly_name: "Luz Ventilador Lado Salón"
+          unique_id: "luz_ventilador_porche_lado_salon"
+          value_template: "{{ state('input_boolean.luz_ventilador_porche_lado_salon') }}"
+          turn_on:
+            action: script.toggle_luz_ventilador_porche_lado_salon
+          turn_off:
+            action: script.toggle_luz_ventilador_porche_lado_salon
   fans.yaml: |
     - platform: template
       fans:
