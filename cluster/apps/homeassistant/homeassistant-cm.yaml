@@ -74,30 +74,46 @@ data:
           friendly_name: "Luz Ventilador Habitación"
           unique_id: "luz_ventilador_habitacion"
           turn_on:
-            action: button.light_on_off_ventilador_habitacion
+            - service: button.press
+              target:
+                entity_id: button.light_on_off_ventilador_habitacion
           turn_off:
-            action: button.light_on_off_ventilador_habitacion
+            - service: button.press
+              target:
+                entity_id: button.light_on_off_ventilador_habitacion
         luz_ventilador_porche_lado_cocina:
           friendly_name: "Luz Ventilador Porche Lado Cocina"
           unique_id: "luz_ventilador_porche_lado_cocina"
           turn_on:
-            action: button.light_onoff_ventilador_lado_cocina
+            - service: button.press
+              target:
+                entity_id: button.light_onoff_ventilador_lado_cocina
           turn_off:
-            action: button.light_onoff_ventilador_lado_cocina
+            - service: button.press
+              target:
+                entity_id: button.light_onoff_ventilador_lado_cocina
         luz_ventilador_porche_lado_salon:
           friendly_name: "Luz Ventilador Porche Lado Salón"
           unique_id: "luz_ventilador_porche_lado_salon"
           turn_on:
-            action: button.light_onoff_ventilador_lado_salon
+            - service: button.press
+              target:
+                entity_id: button.light_onoff_ventilador_lado_salon
           turn_off:
-            action: button.light_onoff_ventilador_lado_salon
+            - service: button.press
+              target:
+                entity_id: button.light_onoff_ventilador_lado_salon
         luz_ventilador_salon:
           friendly_name: "Luz Ventilador Salón"
           unique_id: "luz_ventilador_salon"
           turn_on:
-            action: button.light_on_off_ventilador_salon
+            - service: button.press
+              target:
+                entity_id: button.light_on_off_ventilador_salon
           turn_off:
-            action: button.light_on_off_ventilador_salon
+            - service: button.press
+              target:
+                entity_id: button.light_on_off_ventilador_salon
   fans.yaml: |
     - platform: template
       fans:
