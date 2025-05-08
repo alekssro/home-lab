@@ -79,7 +79,7 @@ data:
           turn_off:
             action: script.toggle_luz_ventilador_habitacion
         luz_ventilador_porche_lado_cocina:
-          friendly_name: "Luz Ventilador Lado Cocina"
+          friendly_name: "Luz Ventilador Porche Lado Cocina"
           unique_id: "luz_ventilador_porche_lado_cocina"
           value_template: "{{ state('input_boolean.luz_ventilador_porche_lado_cocina') }}"
           turn_on:
@@ -87,7 +87,7 @@ data:
           turn_off:
             action: script.toggle_luz_ventilador_porche_lado_cocina
         luz_ventilador_porche_lado_salon:
-          friendly_name: "Luz Ventilador Lado Salón"
+          friendly_name: "Luz Ventilador Porche Lado Salón"
           unique_id: "luz_ventilador_porche_lado_salon"
           value_template: "{{ state('input_boolean.luz_ventilador_porche_lado_salon') }}"
           turn_on:
@@ -156,7 +156,7 @@ data:
 
       # Fan 2: Kitchen Side Fan
       ventilador_porche_lado_cocina:
-        friendly_name: "Ventilador Lado Cocina"
+        friendly_name: "Ventilador Porche Lado Cocina"
         unique_id: "ventilador_porche_lado_cocina" # Ensure unique_id
         value_template: "{{ not is_state('input_select.fan_speed_ventilador_porche_lado_cocina', 'Off') }}"
         preset_mode_template: >
@@ -217,7 +217,7 @@ data:
 
       # Fan 3: Living Room Side Fan
       ventilador_porche_lado_salon:
-        friendly_name: "Ventilador Lado Salón"
+        friendly_name: "Ventilador Porche Lado Salón"
         unique_id: "ventilador_porche_lado_salon" # Ensure unique_id
         value_template: "{{ not is_state('input_select.fan_speed_ventilador_porche_lado_salon', 'Off') }}"
         preset_mode_template: >
