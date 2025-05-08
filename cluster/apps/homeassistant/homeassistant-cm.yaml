@@ -348,4 +348,3 @@ data:
             data:
               option: "{{ direction }}" # direction will be "forward" or "reverse"
           speed_count: 5
-          supports_direction: true
