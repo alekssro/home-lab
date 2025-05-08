@@ -16,6 +16,7 @@ data:
     script: !include scripts.yaml
     scene: !include scenes.yaml
     light: !include lights.yaml
+    fan: !include fans.yaml
 
     frontend:
       themes: !include_dir_merge_named themes
@@ -71,9 +72,71 @@ data:
       lights:
         bedroom_fan_ceiling_light:
           friendly_name: "Luz Ventilador Habitación"
-          unique_id: "bedroom_fan_ceiling_light"
-          value_template: "{{ is_state('input_boolean.luz_ventilador_habitacion', 'on') }}"
+          unique_id: "luz_ventilador_habitacion"
+          value_template: "{{ state('input_boolean.luz_ventilador_habitacion') }}"
           turn_on:
             action: script.toggle_luz_ventilador_habitacion
           turn_off:
             action: script.toggle_luz_ventilador_habitacion
+  fans.yaml: |
+    - platform: template
+      fans:
+        bedroom_fan:
+          friendly_name: "Ventilador Habitación"
+          unique_id: "ventilador_habitacion"
+          value_template: "{{ not is_state('input_select.fan_speed_ventilador_habitacion', 'Off') }}"
+          preset_mode_template: >
+            {% if is_state('input_select.fan_speed_ventilador_habitacion', 'Off') %}
+              null
+            {% else %}
+              {{ states('input_select.fan_speed_ventilador_habitacion') }}
+            {% endif %}
+          percentage_template: >
+            {% set speed = states('input_select.fan_speed_ventilador_habitacion') %}
+            {% if speed == 'Low' %}
+              33
+            {% elif speed == 'Medium' %}
+              66
+            {% elif speed == 'High' %}
+              100
+            {% else %}
+              0
+            {% endif %}
+          turn_on:
+            service: input_select.select_option
+            target:
+              entity_id: input_select.fan_speed_ventilador_habitacion
+            data:
+              option: "Low" # Default speed when turned on
+          turn_off:
+            service: input_select.select_option
+            target:
+              entity_id: input_select.fan_speed_ventilador_habitacion
+            data:
+              option: "Off"
+          set_preset_mode:
+            service: input_select.select_option
+            target:
+              entity_id: input_select.fan_speed_ventilador_habitacion
+            data:
+              option: "{{ preset_mode }}"
+          set_percentage:
+            service: input_select.select_option
+            target:
+              entity_id: input_select.fan_speed_ventilador_habitacion
+            data:
+              option: >
+                {% if percentage == 0 %}
+                  Off
+                {% elif percentage <= 33 %}
+                  Low
+                {% elif percentage <= 66 %}
+                  Medium
+                {% else %}
+                  High
+                {% endif %}
+          preset_modes:
+            - "Low"
+            - "Medium"
+            - "High"
+          speed_count: 3
