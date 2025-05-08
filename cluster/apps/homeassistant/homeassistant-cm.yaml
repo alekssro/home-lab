@@ -81,7 +81,8 @@ data:
   fans.yaml: |
     - platform: template
       fans:
-        bedroom_fan:
+        # Fan 1: Bedroom Fan
+        ventilador_habitacion:
           friendly_name: "Ventilador Habitación"
           unique_id: "ventilador_habitacion"
           value_template: "{{ not is_state('input_select.fan_speed_ventilador_habitacion', 'Off') }}"
@@ -135,8 +136,126 @@ data:
                 {% else %}
                   High
                 {% endif %}
-          preset_modes:
-            - "Low"
-            - "Medium"
-            - "High"
           speed_count: 3
+
+      # Fan 2: Kitchen Side Fan
+      ventilador_porche_lado_cocina:
+        friendly_name: "Ventilador Lado Cocina"
+        unique_id: "ventilador_porche_lado_cocina" # Ensure unique_id
+        value_template: "{{ not is_state('input_select.fan_speed_ventilador_porche_lado_cocina', 'Off') }}"
+        preset_mode_template: >
+          {% if is_state('input_select.fan_speed_ventilador_porche_lado_cocina', 'Off') %}
+            null
+          {% else %}
+            {{ states('input_select.fan_speed_ventilador_porche_lado_cocina') }}
+          {% endif %}
+        percentage_template: >
+          {% set speed = states('input_select.fan_speed_ventilador_porche_lado_cocina') %}
+          {% if speed == 'Low' %}
+            33
+          {% elif speed == 'Medium' %}
+            66
+          {% elif speed == 'High' %}
+            100
+          {% else %}
+            0
+          {% endif %}
+        turn_on:
+          service: input_select.select_option
+          target:
+            entity_id: input_select.fan_speed_ventilador_porche_lado_cocina
+          data:
+            option: "Low"
+        turn_off:
+          service: input_select.select_option
+          target:
+            entity_id: input_select.fan_speed_ventilador_porche_lado_cocina
+          data:
+            option: "Off"
+        set_preset_mode:
+          service: input_select.select_option
+          target:
+            entity_id: input_select.fan_speed_ventilador_porche_lado_cocina
+          data:
+            option: "{{ preset_mode }}"
+        set_percentage:
+          service: input_select.select_option
+          target:
+            entity_id: input_select.fan_speed_ventilador_porche_lado_cocina
+          data:
+            option: >
+              {% if percentage == 0 %}
+                Off
+              {% elif percentage <= 33 %}
+                Low
+              {% elif percentage <= 66 %}
+                Medium
+              {% else %}
+                High
+              {% endif %}
+        preset_modes:
+          - "Low"
+          - "Medium"
+          - "High"
+        speed_count: 3
+
+      # Fan 3: Living Room Side Fan
+      ventilador_porche_lado_salon:
+        friendly_name: "Ventilador Lado Salón"
+        unique_id: "ventilador_porche_lado_salon" # Ensure unique_id
+        value_template: "{{ not is_state('input_select.fan_speed_ventilador_porche_lado_salon', 'Off') }}"
+        preset_mode_template: >
+          {% if is_state('input_select.fan_speed_ventilador_porche_lado_salon', 'Off') %}
+            null
+          {% else %}
+            {{ states('input_select.fan_speed_ventilador_porche_lado_salon') }}
+          {% endif %}
+        percentage_template: >
+          {% set speed = states('input_select.fan_speed_ventilador_porche_lado_salon') %}
+          {% if speed == 'Low' %}
+            33
+          {% elif speed == 'Medium' %}
+            66
+          {% elif speed == 'High' %}
+            100
+          {% else %}
+            0
+          {% endif %}
+        turn_on:
+          service: input_select.select_option
+          target:
+            entity_id: input_select.fan_speed_ventilador_porche_lado_salon
+          data:
+            option: "Low"
+        turn_off:
+          service: input_select.select_option
+          target:
+            entity_id: input_select.fan_speed_ventilador_porche_lado_salon
+          data:
+            option: "Off"
+        set_preset_mode:
+          service: input_select.select_option
+          target:
+            entity_id: input_select.fan_speed_ventilador_porche_lado_salon
+          data:
+            option: "{{ preset_mode }}"
+        set_percentage:
+          service: input_select.select_option
+          target:
+            entity_id: input_select.fan_speed_ventilador_porche_lado_salon
+          data:
+            option: >
+              {% if percentage == 0 %}
+                Off
+              {% elif percentage <= 33 %}
+                Low
+              {% elif percentage <= 66 %}
+                Medium
+              {% else %}
+                High
+              {% endif %}
+        preset_modes:
+          - "Low"
+          - "Medium"
+          - "High"
+        speed_count: 3
