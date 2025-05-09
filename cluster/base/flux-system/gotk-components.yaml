@@ -6696,10 +6696,10 @@ spec:
         #     port: healthz
         resources:
           limits:
-            memory: 1Gi
+            memory: 2Gi
           requests:
             cpu: 200m
-            memory: 256Mi
+            memory: 1Gi
         securityContext:
           allowPrivilegeEscalation: false
           capabilities:
