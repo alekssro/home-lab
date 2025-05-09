@@ -137,6 +137,9 @@ spec:
       app: mosquitto
   template:
     metadata:
+      annotations:
+        configmap.reloader.stakater.com/reload: mosquitto-config
+        secret.reloader.stakater.com/reload: home-assistant-secret
       labels:
         app: mosquitto
     spec:
