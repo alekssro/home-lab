@@ -6,14 +6,17 @@ metadata:
   namespace: homeassistant
 data:
   mosquitto.conf: |
-    # DO NOT USE IN PRODUCTION
-    allow_anonymous true
+    # Listen on port 1883 on all IPv4 interfaces
+    listener 1883
+    socket_domain ipv4
+
+    # save the in-memory database to disk
     persistence true
     persistence_location /mosquitto/data/
 
-    # MQTT with TLS (MQTTS)
-    listener 1883
-    protocol mqtt
+    # Log to stderr and logfile
+    log_dest stderr
 
-    # Username and password
+    # Require authentication
+    allow_anonymous false
     password_file /mosquitto/config/mosquitto.passwd
