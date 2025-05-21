@@ -23,6 +23,9 @@ spec:
       containers:
         - image: ghcr.io/home-assistant/home-assistant:2025.5.2
           name: home-assistant
+          env:
+            - name: TZ
+              value: "Europe/Madrid"
           securityContext:
             privileged: true
             capabilities:
@@ -94,6 +97,9 @@ spec:
       containers:
         - image: ghcr.io/home-assistant-libs/python-matter-server:stable
           name: home-assistant-matter
+          env:
+            - name: TZ
+              value: "Europe/Madrid"
           securityContext:
             privileged: true
             capabilities:
@@ -150,6 +156,9 @@ spec:
       containers:
         - image: eclipse-mosquitto:latest
           name: mosquitto
+          env:
+            - name: TZ
+              value: "Europe/Madrid"
           ports:
             - containerPort: 1883
               name: mqtt
