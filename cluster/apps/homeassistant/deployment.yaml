@@ -51,6 +51,9 @@ spec:
             - mountPath: "/config/fans.yaml"
               name: home-assistant-config
               subPath: fans.yaml
+            - mountPath: "/config/covers.yaml"
+              name: home-assistant-config
+              subPath: covers.yaml
             - mountPath: "/etc/resolv.conf"
               name: home-assistant-config
               subPath: resolv.conf
