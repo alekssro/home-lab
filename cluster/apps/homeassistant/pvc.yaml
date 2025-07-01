@@ -54,3 +54,10 @@ metadata:
   namespace: homeassistant
   labels:
     app: home-assistant-music-assistant
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: longhorn
+  resources:
+    requests:
+      storage: 5Gi
