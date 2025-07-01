@@ -25,3 +25,10 @@ spec:
                 name: homeassistant
                 port:
                   number: 8123
+          - pathType: Prefix
+            path: /music-assistant
+            backend:
+              service:
+                name: homeassistant-music-assistant
+                port:
+                  number: 8095

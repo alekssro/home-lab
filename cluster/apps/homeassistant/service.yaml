@@ -41,3 +41,17 @@ spec:
     - protocol: TCP
       port: 9001
       name: mqtt-websocket
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: homeassistant-music-assistant
+  namespace: homeassistant
+spec:
+  selector:
+    app: homeassistant-music-assistant
+  ports:
+    - protocol: TCP
+      port: 8095
+      name: http
