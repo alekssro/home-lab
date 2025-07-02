@@ -45,6 +45,9 @@ spec:
             - mountPath: "/config/configuration.yaml"
               name: home-assistant-config
               subPath: configuration.yaml
+            - mountPath: "/config/binary_sensors.yaml"
+              name: home-assistant-config
+              subPath: binary_sensors.yaml
             - mountPath: "/config/lights.yaml"
               name: home-assistant-config
               subPath: lights.yaml
