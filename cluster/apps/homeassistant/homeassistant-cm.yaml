@@ -15,6 +15,7 @@ data:
     automation: !include automations.yaml
     script: !include scripts.yaml
     scene: !include scenes.yaml
+    binary_sensor: !include binary_sensors.yaml
     light: !include lights.yaml
     fan: !include fans.yaml
     cover: !include covers.yaml
@@ -68,6 +69,23 @@ data:
       project_id: homeassistant-88a71
       service_account: !include SERVICE_ACCOUNT.JSON
       report_state: true
+  binary_sensors.yaml: |
+    - platform: template
+      sensors:
+        alekssro_home_wifi:
+          value_template: >-
+            {% if states('sensor.pixel_9_pro_wi_fi_connection') == "R&A Home" %}
+              on
+            {% else %}
+              off
+            {% endif %}
+        raquel_home_wifi:
+          value_template: >-
+            {% if states('sensor.pixel_7_wi_fi_connection') == "R&A Home" %}
+              on
+            {% else %}
+              off
+            {% endif %}
   lights.yaml: |
     - platform: template
       lights:
