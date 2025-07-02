@@ -215,6 +215,27 @@ spec:
     spec:
       hostNetwork: true
       containers:
+        - image: brainicism/bgutil-ytdlp-pot-provider:1.1.0
+          name: bgutil-ytdlp-pot-provider
+          env:
+            - name: TZ
+              value: "Europe/Madrid"
+          securityContext:
+            privileged: true
+            capabilities:
+              add:
+                - NET_ADMIN
+                - NET_RAW
+                - SYS_ADMIN
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "256Mi"
+            limits:
+              memory: "256Mi"
+          volumeMounts:
+            - mountPath: "/data"
+              name: home-assistant-music-assistant-pvc
         - image: ghcr.io/music-assistant/server:2.5.5
           name: music-assistant
           env:
