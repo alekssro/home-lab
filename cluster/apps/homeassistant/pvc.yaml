@@ -46,18 +46,18 @@ spec:
     requests:
       storage: 100Mi
 
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: home-assistant-music-assistant-pvc
-  namespace: homeassistant
-  labels:
-    app: home-assistant-music-assistant
-spec:
-  accessModes:
-    - ReadWriteOnce
-  storageClassName: longhorn
-  resources:
-    requests:
-      storage: 7Gi
+# ---
+# apiVersion: v1
+# kind: PersistentVolumeClaim
+# metadata:
+#   name: home-assistant-music-assistant-pvc
+#   namespace: homeassistant
+#   labels:
+#     app: home-assistant-music-assistant
+# spec:
+#   accessModes:
+#     - ReadWriteOnce
+#   storageClassName: longhorn
+#   resources:
+#     requests:
+#       storage: 7Gi

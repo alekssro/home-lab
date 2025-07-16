@@ -198,71 +198,71 @@ spec:
           secret:
             secretName: home-assistant-secret
 
----
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: homeassistant-music-assistant
-  namespace: homeassistant
-  labels:
-    app: homeassistant-music-assistant
-spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: homeassistant-music-assistant
-  template:
-    metadata:
-      labels:
-        app: homeassistant-music-assistant
-    spec:
-      hostNetwork: true
-      containers:
-        - image: brainicism/bgutil-ytdlp-pot-provider:1.1.0
-          name: bgutil-ytdlp-pot-provider
-          env:
-            - name: TZ
-              value: "Europe/Madrid"
-          securityContext:
-            privileged: true
-            capabilities:
-              add:
-                - NET_ADMIN
-                - NET_RAW
-                - SYS_ADMIN
-          resources:
-            requests:
-              cpu: "100m"
-              memory: "256Mi"
-            limits:
-              memory: "256Mi"
-          volumeMounts:
-            - mountPath: "/data"
-              name: home-assistant-music-assistant-pvc
-        - image: ghcr.io/music-assistant/server:2.5.5
-          name: music-assistant
-          env:
-            - name: TZ
-              value: "Europe/Madrid"
-          securityContext:
-            privileged: true
-            capabilities:
-              add:
-                - NET_ADMIN
-                - NET_RAW
-                - SYS_ADMIN
-          resources:
-            requests:
-              cpu: "100m"
-              memory: "256Mi"
-            limits:
-              memory: "256Mi"
-          volumeMounts:
-            - mountPath: "/data"
-              name: home-assistant-music-assistant-pvc
-      nodeSelector:
-        kubernetes.io/hostname: nuc7pjyhn-rookie
-      volumes:
-        - name: home-assistant-music-assistant-pvc
-          persistentVolumeClaim:
-            claimName: home-assistant-music-assistant-pvc
+# ---
+# apiVersion: apps/v1
+# kind: Deployment
+# metadata:
+#   name: homeassistant-music-assistant
+#   namespace: homeassistant
+#   labels:
+#     app: homeassistant-music-assistant
+# spec:
+#   replicas: 1
+#   selector:
+#     matchLabels:
+#       app: homeassistant-music-assistant
+#   template:
+#     metadata:
+#       labels:
+#         app: homeassistant-music-assistant
+#     spec:
+#       hostNetwork: true
+#       containers:
+#         - image: brainicism/bgutil-ytdlp-pot-provider:1.1.0
+#           name: bgutil-ytdlp-pot-provider
+#           env:
+#             - name: TZ
+#               value: "Europe/Madrid"
+#           securityContext:
+#             privileged: true
+#             capabilities:
+#               add:
+#                 - NET_ADMIN
+#                 - NET_RAW
+#                 - SYS_ADMIN
+#           resources:
+#             requests:
+#               cpu: "100m"
+#               memory: "256Mi"
+#             limits:
+#               memory: "256Mi"
+#           volumeMounts:
+#             - mountPath: "/data"
+#               name: home-assistant-music-assistant-pvc
+#         - image: ghcr.io/music-assistant/server:2.5.5
+#           name: music-assistant
+#           env:
+#             - name: TZ
+#               value: "Europe/Madrid"
+#           securityContext:
+#             privileged: true
+#             capabilities:
+#               add:
+#                 - NET_ADMIN
+#                 - NET_RAW
+#                 - SYS_ADMIN
+#           resources:
+#             requests:
+#               cpu: "100m"
+#               memory: "256Mi"
+#             limits:
+#               memory: "256Mi"
+#           volumeMounts:
+#             - mountPath: "/data"
+#               name: home-assistant-music-assistant-pvc
+#       nodeSelector:
+#         kubernetes.io/hostname: nuc7pjyhn-rookie
+#       volumes:
+#         - name: home-assistant-music-assistant-pvc
+#           persistentVolumeClaim:
+#             claimName: home-assistant-music-assistant-pvc
