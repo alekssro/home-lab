@@ -13,6 +13,3 @@ resources:
   - app-service.yaml
   - sidekiq-deployment.yaml
   - ingress.yaml
-  - app-entrypoint-configmap.yaml
-  - sidekiq-entrypoint-configmap.yaml
-
