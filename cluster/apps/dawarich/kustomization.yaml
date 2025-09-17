@@ -5,7 +5,7 @@ resources:
   - pvc.yaml
   - redis-deployment.yaml
   - redis-service.yaml
-  - db-deployment.yaml
+  - db-statefulset.yaml
   - db-service.yaml
   - configmap.yaml
   - secret.sops.yaml
@@ -13,3 +13,6 @@ resources:
   - app-service.yaml
   - sidekiq-deployment.yaml
   - ingress.yaml
+  - app-entrypoint-configmap.yaml
+  - sidekiq-entrypoint-configmap.yaml
+

@@ -1,11 +1,12 @@
 apiVersion: apps/v1
-kind: Deployment
+kind: StatefulSet
 metadata:
   name: dawarich-db
   namespace: dawarich
   labels:
     app: dawarich-db
 spec:
+  serviceName: "dawarich-db"
   replicas: 1
   selector:
     matchLabels:
@@ -23,6 +24,7 @@ spec:
           volumeMounts:
             - name: dawarich-db-data
               mountPath: /var/lib/postgresql/data
+              subPath: postgres
             - name: dawarich-shared
               mountPath: /var/shared
           envFrom:
@@ -30,12 +32,6 @@ spec:
                 name: dawarich-db-config
             - secretRef:
                 name: dawarich-secret
-          resources:
-            requests:
-              memory: "128Mi"
-              cpu: "50m"
-            limits:
-              memory: "128Mi"
           readinessProbe:
             exec:
               command:
