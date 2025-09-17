@@ -32,6 +32,12 @@ spec:
                 name: dawarich-db-config
             - secretRef:
                 name: dawarich-secret
+          resources:
+            requests:
+              cpu: "50m"
+              memory: "128Mi"
+            limits:
+              memory: "128Mi"
           readinessProbe:
             exec:
               command:

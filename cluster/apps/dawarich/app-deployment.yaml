@@ -29,9 +29,9 @@ spec:
           resources:
             requests:
               cpu: "100m"
-              memory: "256Mi"
+              memory: "512Mi"
             limits:
-              memory: "256Mi"
+              memory: "512Mi"
           volumeMounts:
             - name: dawarich-app-entrypoint
               mountPath: /usr/bin/entrypoint.sh
