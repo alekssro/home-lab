@@ -6,6 +6,7 @@ metadata:
 data:
   POSTGRES_USER: postgres
   POSTGRES_DB: dawarich_development
+
 ---
 apiVersion: v1
 kind: ConfigMap
@@ -27,6 +28,7 @@ data:
   PROMETHEUS_EXPORTER_PORT: "9394"
   SELF_HOSTED: "true"
   STORE_GEODATA: "true"
+
 ---
 apiVersion: v1
 kind: ConfigMap
@@ -89,3 +91,30 @@ data:
 
     # run passed commands
     bundle exec $${@}
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: dawarich-sidekiq-entrypoint
+  namespace: dawarich
+data:
+  entrypoint.sh: |
+    #!/bin/sh
+
+    unset BUNDLE_PATH
+    unset BUNDLE_BIN
+
+    set -e
+
+    echo "⚠️ Starting Sidekiq environment: $RAILS_ENV ⚠️"
+
+    # Wait for the database to become available
+    echo "⏳ Waiting for database $DATABASE_NAME to be ready..."
+    until PGPASSWORD=$DATABASE_PASSWORD psql -h "$DATABASE_HOST" -p "$DATABASE_PORT" -U "$DATABASE_USERNAME" -d "$DATABASE_NAME" -c '\q'; do
+      >&2 echo "Postgres is unavailable - retrying..."
+      sleep 2
+    done
+    echo "✅ PostgreSQL database $DATABASE_NAME is ready!"
+
+    bundle exec sidekiq

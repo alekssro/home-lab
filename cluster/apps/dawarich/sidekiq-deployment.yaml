@@ -15,30 +15,10 @@ spec:
       labels:
         app: dawarich-sidekiq
     spec:
-      initContainers:
-        - name: wait-for-db
-          image: postgres:17-alpine
-          env:
-            - name: PGPASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: dawarich-secret
-                  key: POSTGRES_PASSWORD
-          command:
-            [
-              "sh",
-              "-c",
-              "until PGPASSWORD=$PGPASSWORD psql -h $DATABASE_HOST -p $DATABASE_PORT -U $POSTGRES_USER -d $DATABASE_NAME -c '\\q' 2>/dev/null; do echo waiting for db; sleep 2; done;",
-            ]
-          envFrom:
-            - secretRef:
-                name: dawarich-secret
-            - configMapRef:
-                name: dawarich-app-config
       containers:
         - name: dawarich-sidekiq
           image: freikin/dawarich:latest
-          command: ["bundle", "exec", "sidekiq"]
+          command: ["/usr/bin/entrypoint.sh"]
           envFrom:
             - configMapRef:
                 name: dawarich-app-config
@@ -51,6 +31,9 @@ spec:
             limits:
               memory: "128Mi"
           volumeMounts:
+            - name: dawarich-sidekiq-entrypoint
+              mountPath: /usr/bin/entrypoint.sh
+              subPath: entrypoint.sh
             - name: dawarich-public
               mountPath: /var/app/public
             - name: dawarich-watched
@@ -58,6 +41,10 @@ spec:
             - name: dawarich-storage
               mountPath: /var/app/storage
       volumes:
+        - name: dawarich-sidekiq-entrypoint
+          configMap:
+            name: dawarich-sidekiq-entrypoint
+            defaultMode: 0755
         - name: dawarich-public
           persistentVolumeClaim:
             claimName: dawarich-public
