@@ -17,6 +17,7 @@ resources:
   - uptime-kuma
   - alekssro-web
   - homeassistant
+  - dawarich
   # - drive
   # - owncloud
   # - obsidian-sync
