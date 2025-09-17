@@ -17,7 +17,7 @@ spec:
     spec:
       initContainers:
         - name: wait-for-db
-          image: appropriate/curl:latest
+          image: curlimages/curl:latest
           command:
             [
               "sh",
