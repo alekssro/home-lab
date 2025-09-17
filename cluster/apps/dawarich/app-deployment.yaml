@@ -25,7 +25,7 @@ spec:
                 name: dawarich-app-config
             - secretRef:
                 name: dawarich-secret
-          entrypoint: ["/usr/bin/entrypoint.sh"]
+          command: ["/usr/bin/entrypoint.sh", "bin/rails", "server", "-p", "3000", "-b", "::"]
           resources:
             requests:
               cpu: "100m"
@@ -34,7 +34,7 @@ spec:
               memory: "256Mi"
           volumeMounts:
             - name: dawarich-entrypoint
-              mountPath: /usr/bin/entrypoint
+              mountPath: /usr/bin/entrypoint.sh
               subPath: entrypoint.sh
             - name: dawarich-public
               mountPath: /var/app/public
@@ -56,6 +56,7 @@ spec:
         - name: dawarich-entrypoint
           configMap:
             name: dawarich-app-entrypoint
+            defaultMode: 0755
         - name: dawarich-public
           persistentVolumeClaim:
             claimName: dawarich-public
