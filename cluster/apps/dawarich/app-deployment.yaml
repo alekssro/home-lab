@@ -14,6 +14,9 @@ spec:
     metadata:
       labels:
         app: dawarich-app
+      annotations:
+        configmap.reloader.stakater.com/reload: dawarich-app-entrypoint, dawarich-app-config
+        secret.reloader.stakater.com/reload: dawarich-secret
     spec:
       containers:
         - name: dawarich-app

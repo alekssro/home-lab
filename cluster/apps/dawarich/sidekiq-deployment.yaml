@@ -14,6 +14,9 @@ spec:
     metadata:
       labels:
         app: dawarich-sidekiq
+      annotations:
+        configmap.reloader.stakater.com/reload: dawarich-sidekiq-entrypoint, dawarich-app-config
+        secret.reloader.stakater.com/reload: dawarich-secret
     spec:
       containers:
         - name: dawarich-sidekiq
