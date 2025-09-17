@@ -4,6 +4,7 @@ metadata:
   name: dawarich-db-data
   namespace: dawarich
 spec:
+  storageClassName: longhorn
   accessModes:
     - ReadWriteMany
   resources:
@@ -16,6 +17,7 @@ metadata:
   name: dawarich-shared
   namespace: dawarich
 spec:
+  storageClassName: longhorn
   accessModes:
     - ReadWriteMany
   resources:
@@ -28,6 +30,7 @@ metadata:
   name: dawarich-public
   namespace: dawarich
 spec:
+  storageClassName: longhorn
   accessModes:
     - ReadWriteMany
   resources:
@@ -40,6 +43,7 @@ metadata:
   name: dawarich-watched
   namespace: dawarich
 spec:
+  storageClassName: longhorn
   accessModes:
     - ReadWriteMany
   resources:
@@ -52,6 +56,7 @@ metadata:
   name: dawarich-storage
   namespace: dawarich
 spec:
+  storageClassName: longhorn
   accessModes:
     - ReadWriteMany
   resources:
