@@ -1,0 +1,91 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: dawarich-db-config
+  namespace: dawarich
+data:
+  POSTGRES_USER: postgres
+  POSTGRES_DB: dawarich_development
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: dawarich-app-config
+  namespace: dawarich
+data:
+  RAILS_ENV: development
+  REDIS_URL: redis://dawarich-redis:6379
+  DATABASE_HOST: dawarich-db
+  DATABASE_USERNAME: postgres
+  DATABASE_NAME: dawarich_development
+  MIN_MINUTES_SPENT_IN_CITY: "60"
+  APPLICATION_HOSTS: localhost
+  TIME_ZONE: Europe/London
+  APPLICATION_PROTOCOL: http
+  PROMETHEUS_EXPORTER_ENABLED: "false"
+  PROMETHEUS_EXPORTER_HOST: 0.0.0.0
+  PROMETHEUS_EXPORTER_PORT: "9394"
+  SELF_HOSTED: "true"
+  STORE_GEODATA: "true"
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: dawarich-app-entrypoint
+  namespace: dawarich
+data:
+  entrypoint.sh: |
+    #!/bin/sh
+
+    unset BUNDLE_PATH
+    unset BUNDLE_BIN
+
+    set -e
+
+    echo "⚠️ Starting Rails environment: $RAILS_ENV ⚠️"
+
+    # Remove pre-existing puma/passenger server.pid
+    rm -f $APP_PATH/tmp/pids/server.pid
+
+    # Function to check and create a PostgreSQL database
+    create_database() {
+      local db_name=$1
+      local db_password=$2
+      local db_host=$3
+      local db_port=$4
+      local db_username=$5
+
+      echo "Attempting to create database $db_name if it doesn't exist..."
+      PGPASSWORD=$db_password createdb -h "$db_host" -p "$db_port" -U "$db_username" "$db_name" 2>/dev/null || echo "Note: Database $db_name may already exist or couldn't be created now"
+
+      # Wait for the database to become available
+      echo "⏳ Waiting for database $db_name to be ready..."
+      until PGPASSWORD=$db_password psql -h "$db_host" -p "$db_port" -U "$db_username" -d "$db_name" -c '\q' 2>/dev/null; do
+        >&2 echo "Postgres database $db_name is unavailable - retrying..."
+        sleep 2
+      done
+      echo "✅ PostgreSQL database $db_name is ready!"
+    }
+
+    # Step 1: Database Setup
+    echo "Setting up all required databases..."
+
+    # Create primary PostgreSQL database
+    create_database "$DATABASE_NAME" "$DATABASE_PASSWORD" "$DATABASE_HOST" "$DATABASE_PORT" "$DATABASE_USERNAME"
+
+    # Step 2: Run migrations for all databases
+    echo "Running migrations for all databases..."
+
+    # Run primary database migrations first (needed before other migrations)
+    echo "Running primary database migrations..."
+    bundle exec rails db:migrate
+
+    # Run data migrations
+    echo "Running DATA migrations..."
+    bundle exec rake data:migrate
+
+    echo "Running seeds..."
+    bundle exec rails db:seed
+
+    # run passed commands
+    bundle exec ${@}

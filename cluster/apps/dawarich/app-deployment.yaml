@@ -1,0 +1,70 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dawarich-app
+  namespace: dawarich
+  labels:
+    app: dawarich-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: dawarich-app
+  template:
+    metadata:
+      labels:
+        app: dawarich-app
+    spec:
+      containers:
+        - name: dawarich-app
+          image: freikin/dawarich:0.32.0
+          ports:
+            - containerPort: 3000
+          envFrom:
+            - configMapRef:
+                name: dawarich-app-config
+            - secretRef:
+                name: dawarich-secret
+          entrypoint: ["/usr/bin/entrypoint.sh"]
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "256Mi"
+            limits:
+              memory: "256Mi"
+          volumeMounts:
+            - name: dawarich-entrypoint
+              mountPath: /usr/bin/entrypoint
+              subPath: entrypoint.sh
+            - name: dawarich-public
+              mountPath: /var/app/public
+            - name: dawarich-watched
+              mountPath: /var/app/tmp/imports/watched
+            - name: dawarich-storage
+              mountPath: /var/app/storage
+            - name: dawarich-db-data
+              mountPath: /dawarich_db_data
+          readinessProbe:
+            httpGet:
+              path: /api/v1/health
+              port: 3000
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            timeoutSeconds: 10
+            failureThreshold: 30
+      volumes:
+        - name: dawarich-entrypoint
+          configMap:
+            name: dawarich-app-entrypoint
+        - name: dawarich-public
+          persistentVolumeClaim:
+            claimName: dawarich-public
+        - name: dawarich-watched
+          persistentVolumeClaim:
+            claimName: dawarich-watched
+        - name: dawarich-storage
+          persistentVolumeClaim:
+            claimName: dawarich-storage
+        - name: dawarich-db-data
+          persistentVolumeClaim:
+            claimName: dawarich-db-data

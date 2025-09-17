@@ -1,0 +1,58 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dawarich-sidekiq
+  namespace: dawarich
+  labels:
+    app: dawarich-sidekiq
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: dawarich-sidekiq
+  template:
+    metadata:
+      labels:
+        app: dawarich-sidekiq
+    spec:
+      initContainers:
+        - name: wait-for-db
+          image: appropriate/curl:latest
+          command:
+            [
+              "sh",
+              "-c",
+              "until curl -s dawarich-db:5432; do echo waiting for db; sleep 2; done;",
+            ]
+      containers:
+        - name: dawarich-sidekiq
+          image: freikin/dawarich:latest
+          command: ["bundle", "exec", "sidekiq"]
+          envFrom:
+            - configMapRef:
+                name: dawarich-app-config
+            - secretRef:
+                name: dawarich-secret
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+            limits:
+              memory: "128Mi"
+          volumeMounts:
+            - name: dawarich-public
+              mountPath: /var/app/public
+            - name: dawarich-watched
+              mountPath: /var/app/tmp/imports/watched
+            - name: dawarich-storage
+              mountPath: /var/app/storage
+      volumes:
+        - name: dawarich-public
+          persistentVolumeClaim:
+            claimName: dawarich-public
+        - name: dawarich-watched
+          persistentVolumeClaim:
+            claimName: dawarich-watched
+        - name: dawarich-storage
+          persistentVolumeClaim:
+            claimName: dawarich-storage
