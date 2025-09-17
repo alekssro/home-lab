@@ -17,13 +17,24 @@ spec:
     spec:
       initContainers:
         - name: wait-for-db
-          image: curlimages/curl:latest
+          image: postgres:17-alpine
+          env:
+            - name: PGPASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: dawarich-secret
+                  key: POSTGRES_PASSWORD
           command:
             [
               "sh",
               "-c",
-              "until curl -s dawarich-db:5432; do echo waiting for db; sleep 2; done;",
+              "until PGPASSWORD=$PGPASSWORD psql -h $DATABASE_HOST -p $DATABASE_PORT -U $POSTGRES_USER -d $DATABASE_NAME -c '\\q' 2>/dev/null; do echo waiting for db; sleep 2; done;",
             ]
+          envFrom:
+            - secretRef:
+                name: dawarich-secret
+            - configMapRef:
+                name: dawarich-app-config
       containers:
         - name: dawarich-sidekiq
           image: freikin/dawarich:latest
