@@ -88,4 +88,4 @@ data:
     bundle exec rails db:seed
 
     # run passed commands
-    bundle exec ${@}
+    bundle exec $${@}
