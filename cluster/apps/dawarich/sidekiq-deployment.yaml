@@ -30,9 +30,9 @@ spec:
           resources:
             requests:
               cpu: "100m"
-              memory: "384Mi"
+              memory: "640Mi"
             limits:
-              memory: "384Mi"
+              memory: "640Mi"
           volumeMounts:
             - name: dawarich-sidekiq-entrypoint
               mountPath: /usr/bin/entrypoint.sh
