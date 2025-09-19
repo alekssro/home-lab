@@ -20,7 +20,7 @@ spec:
     spec:
       containers:
         - name: dawarich-app
-          image: freikin/dawarich:0.32.0
+          image: freikin/dawarich:0.31.0
           ports:
             - containerPort: 3000
           envFrom:
