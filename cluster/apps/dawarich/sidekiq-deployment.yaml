@@ -29,10 +29,10 @@ spec:
                 name: dawarich-secret
           resources:
             requests:
-              cpu: "100m"
-              memory: "640Mi"
+              cpu: "150m"
+              memory: "1Gi"
             limits:
-              memory: "640Mi"
+              memory: "1Gi"
           volumeMounts:
             - name: dawarich-sidekiq-entrypoint
               mountPath: /usr/bin/entrypoint.sh
