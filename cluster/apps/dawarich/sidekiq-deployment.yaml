@@ -20,7 +20,7 @@ spec:
     spec:
       containers:
         - name: dawarich-sidekiq
-          image: freikin/dawarich:latest
+          image: freikin/dawarich:0.31.0
           command: ["/usr/bin/entrypoint.sh"]
           envFrom:
             - configMapRef:
