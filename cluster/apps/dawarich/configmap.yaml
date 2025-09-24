@@ -28,6 +28,7 @@ data:
   PROMETHEUS_EXPORTER_PORT: "9394"
   SELF_HOSTED: "true"
   STORE_GEODATA: "true"
+  PHOTON_API_HOST: "photon.komoot.io"
 
 ---
 apiVersion: v1
