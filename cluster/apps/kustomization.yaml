@@ -18,6 +18,7 @@ resources:
   - alekssro-web
   - homeassistant
   - dawarich
+  - nas
   # - drive
   # - owncloud
   # - obsidian-sync

@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: Endpoints
+metadata:
+  name: nas-ip
+  namespace: nas
+subsets:
+  - addresses:
+      # list all external ips for this service
+      - ip: 192.168.1.13
+    ports:
+      - name: nas-https
+        port: 9443
+        protocol: TCP
+        targetPort: 9443
+      - name: nas-http
+        port: 9999
+        protocol: TCP
+        targetPort: 9999
