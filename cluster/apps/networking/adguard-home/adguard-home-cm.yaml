@@ -67,9 +67,7 @@ data:
       filtering_enabled: true
       filters_update_interval: 24
       parental_enabled: false
-      rewrites:
-      - domain: nas.alekssro.com
-        answer: 192.168.1.13
+      rewrites: []
       safesearch_enabled: false
       safebrowsing_enabled: false
       safebrowsing_cache_size: 1048576
