@@ -43,7 +43,6 @@ data:
       upstream_dns:
       - https://dns10.quad9.net/dns-query
       - "[/vpn.${SECRET_DOMAIN}/]https://dns10.quad9.net/dns-query"
-      - "[/nas.${SECRET_DOMAIN}/]192.168.1.13"
       - "[/${SECRET_DOMAIN}/]192.168.1.220"
       upstream_dns_file: ""
       bootstrap_dns:
@@ -74,7 +73,6 @@ data:
       safesearch_cache_size: 1048576
       parental_cache_size: 1048576
       cache_time: 30
-      rewrites: []
       blocked_services: []
       local_domain_name: lan
       resolve_clients: true
@@ -94,6 +92,10 @@ data:
       private_key: ""
       certificate_path: ""
       private_key_path: ""
+    filtering:
+      rewrites:
+      - domain: nas.alekssro.com
+        answer: 192.168.1.13
     filters:
     - enabled: true
       url: https://adguardteam.github.io/AdGuardSDNSFilter/Filters/filter.txt
