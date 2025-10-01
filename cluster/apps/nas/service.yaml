@@ -7,7 +7,7 @@ spec:
   type: ClusterIP
   clusterIP: None
   ports:
-    - name: nas-https
+    - name: nas-web
       port: 80
       protocol: TCP
       targetPort: 9443 # https port
