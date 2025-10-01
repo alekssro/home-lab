@@ -19,7 +19,7 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: nas-web
+                name: nas-ip
                 port:
                   number: 80
   tls:
