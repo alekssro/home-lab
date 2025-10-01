@@ -4,8 +4,6 @@ metadata:
   name: nas-ip
   namespace: nas
 spec:
-  type: ClusterIP
-  clusterIP: None
   ports:
     - name: nas-ip
       port: 80
