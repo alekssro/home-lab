@@ -67,6 +67,9 @@ data:
       filtering_enabled: true
       filters_update_interval: 24
       parental_enabled: false
+      rewrites:
+      - domain: nas.alekssro.com
+        answer: 192.168.1.13
       safesearch_enabled: false
       safebrowsing_enabled: false
       safebrowsing_cache_size: 1048576
@@ -92,10 +95,6 @@ data:
       private_key: ""
       certificate_path: ""
       private_key_path: ""
-    filtering:
-      rewrites:
-      - domain: nas.alekssro.com
-        answer: 192.168.1.13
     filters:
     - enabled: true
       url: https://adguardteam.github.io/AdGuardSDNSFilter/Filters/filter.txt
