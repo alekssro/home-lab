@@ -139,7 +139,7 @@ spec:
           persistentVolumeClaim:
             claimName: qbittorrent-config-pvc
         - name: qbittorrent-conf
-          configMap:
+          secret:
             name: qbittorrent-conf
         - name: nzbget-config
           persistentVolumeClaim:
