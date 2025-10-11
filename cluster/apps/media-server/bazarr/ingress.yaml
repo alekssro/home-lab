@@ -23,4 +23,4 @@ spec:
   tls:
     - secretName: bazarr-tls
       hosts:
-        - bazarr${SECRET_DOMAIN}
+        - bazarr.${SECRET_DOMAIN}

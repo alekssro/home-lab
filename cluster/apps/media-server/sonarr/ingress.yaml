@@ -23,4 +23,4 @@ spec:
   tls:
     - secretName: sonarr-tls
       hosts:
-        - sonarr${SECRET_DOMAIN}
+        - sonarr.${SECRET_DOMAIN}

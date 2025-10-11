@@ -23,7 +23,7 @@ spec:
   tls:
     - secretName: qbittorrent-tls
       hosts:
-        - qbittorrent${SECRET_DOMAIN}
+        - qbittorrent.${SECRET_DOMAIN}
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
@@ -50,7 +50,7 @@ spec:
   tls:
     - secretName: nzbget-tls
       hosts:
-        - nzbget${SECRET_DOMAIN}
+        - nzbget.${SECRET_DOMAIN}
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
@@ -77,4 +77,4 @@ spec:
   tls:
     - secretName: prowlarr-tls
       hosts:
-        - prowlarr${SECRET_DOMAIN}
+        - prowlarr.${SECRET_DOMAIN}
