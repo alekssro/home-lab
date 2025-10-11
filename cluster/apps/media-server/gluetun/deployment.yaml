@@ -121,6 +121,7 @@ spec:
         - name: qbittorrent-conf
           configMap:
             name: qbittorrent-conf
+            defaultMode: 0755
         - name: nzbget-config
           persistentVolumeClaim:
             claimName: nzbget-config-pvc
