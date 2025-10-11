@@ -17,6 +17,22 @@ spec:
       labels:
         app: gluetun
     spec:
+      initContainers:
+        - name: volume-permission-fixes
+          image: busybox:latest
+          command: ["sh", "-c", "chown -R 1000:1000 /data /config-qbit /config-nzbget /config-prowlarr"]
+          volumeMounts:
+            - name: data
+              mountPath: /data
+            - name: qbittorrent-config
+              mountPath: /config-qbit
+            - name: qbittorrent-conf
+              mountPath: /config-qbit/qBittorrent/qBittorrent.conf
+              subPath: qBittorrent.conf
+            - name: nzbget-config
+              mountPath: /config-nzbget
+            - name: prowlarr-config
+              mountPath: /config-prowlarr
       containers:
         - name: gluetun
           image: qmcgaw/gluetun:v3.39.0
