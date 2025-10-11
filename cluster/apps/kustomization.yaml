@@ -19,7 +19,7 @@ resources:
   - homeassistant
   - dawarich
   - nas
-  - media-server
+  # - media-server
   # - drive
   # - owncloud
   # - obsidian-sync

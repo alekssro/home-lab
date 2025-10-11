@@ -17,15 +17,10 @@ spec:
       labels:
         app: radarr
     spec:
-      initContainers:
-        - name: volume-permission-fixes
-          image: busybox:latest
-          command: ["sh", "-c", "chown -R 1000:1000 /config /data"]
-          volumeMounts:
-            - name: radarr-config
-              mountPath: /config
-            - name: data
-              mountPath: /data
+      securityContext:
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
       containers:
         - name: radarr
           image: lscr.io/linuxserver/radarr:5.27.5
