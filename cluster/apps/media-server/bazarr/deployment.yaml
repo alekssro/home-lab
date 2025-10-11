@@ -17,6 +17,8 @@ spec:
       labels:
         app: bazarr
     spec:
+      securityContext:
+        fsGroup: 1000
       containers:
         - name: bazarr
           image: lscr.io/linuxserver/bazarr:1.5.3
