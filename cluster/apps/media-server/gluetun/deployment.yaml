@@ -23,6 +23,10 @@ spec:
             capabilities:
               add:
                 - NET_ADMIN
+          lifecycle:
+            postStart:
+              exec:
+                command: ["/bin/sh", "-c", "(ip rule del table 51820; ip -6 rule del table 51820) || true"]
           ports:
             - name: vpn-port
               containerPort: 8888 # Default gluetun port, can be overridden
