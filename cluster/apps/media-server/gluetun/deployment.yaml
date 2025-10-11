@@ -24,7 +24,7 @@ spec:
             [
               "sh",
               "-c",
-              "chown -R 1000:1000 /data /config-qbit /config-nzbget /config-prowlarr && mkdir -p /config-qbit/qBittorrent/ && cp /tmp/qBittorrent.conf /config-qbit/qBittorrent/qBittorrent.conf",
+              "chown -R 1000:1000 /data /config-qbit /config-nzbget /config-prowlarr",
             ]
           volumeMounts:
             - name: data
@@ -32,7 +32,7 @@ spec:
             - name: qbittorrent-config
               mountPath: /config-qbit
             - name: qbittorrent-conf
-              mountPath: /tmp/qBittorrent.conf
+              mountPath: /config-qbit/qBittorrent/qBittorrent.conf
               subPath: qBittorrent.conf
             - name: nzbget-config
               mountPath: /config-nzbget
