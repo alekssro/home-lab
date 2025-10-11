@@ -3,11 +3,7 @@ kind: Service
 metadata:
   name: qbittorrent
   namespace: media-server
-  annotations:
-    metallb.universe.tf/allow-shared-ip: gluetun
 spec:
-  type: LoadBalancer
-  loadBalancerIP: 192.168.1.222
   selector:
     app: gluetun
   ports:
@@ -20,11 +16,7 @@ kind: Service
 metadata:
   name: nzbget
   namespace: media-server
-  annotations:
-    metallb.universe.tf/allow-shared-ip: gluetun
 spec:
-  type: LoadBalancer
-  loadBalancerIP: 192.168.1.222
   selector:
     app: gluetun
   ports:
@@ -37,11 +29,7 @@ kind: Service
 metadata:
   name: prowlarr
   namespace: media-server
-  annotations:
-    metallb.universe.tf/allow-shared-ip: gluetun
 spec:
-  type: LoadBalancer
-  loadBalancerIP: 192.168.1.222
   selector:
     app: gluetun
   ports:
