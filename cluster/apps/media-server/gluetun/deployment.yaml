@@ -28,7 +28,12 @@ spec:
           lifecycle:
             postStart:
               exec:
-                command: ["/bin/sh", "-c", "(ip rule del table 51820; ip -6 rule del table 51820) || true"]
+                command:
+                  [
+                    "/bin/sh",
+                    "-c",
+                    "(ip rule del table 51820; ip -6 rule del table 51820) || true",
+                  ]
           ports:
             - name: vpn-port
               containerPort: 8888 # Default gluetun port, can be overridden
@@ -44,9 +49,9 @@ spec:
           resources:
             requests:
               cpu: "50m"
-              memory: "448Mi"
+              memory: "256Mi"
             limits:
-              memory: "448Mi"
+              memory: "256Mi"
           volumeMounts:
             - name: gluetun-config
               mountPath: /gluetun
@@ -69,6 +74,9 @@ spec:
           volumeMounts:
             - name: qbittorrent-config
               mountPath: /config
+            - name: qbittorrent-conf
+              mountPath: /config/qBittorrent/qBittorrent.conf
+              subPath: qBittorrent.conf
             - name: data
               mountPath: /data
         - name: nzbget
@@ -110,6 +118,9 @@ spec:
         - name: qbittorrent-config
           persistentVolumeClaim:
             claimName: qbittorrent-config-pvc
+        - name: qbittorrent-conf
+          configMap:
+            name: qbittorrent-conf
         - name: nzbget-config
           persistentVolumeClaim:
             claimName: nzbget-config-pvc
