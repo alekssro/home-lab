@@ -1,0 +1,119 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gluetun
+  namespace: media-server
+  labels:
+    app: gluetun
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: gluetun
+  template:
+    metadata:
+      labels:
+        app: gluetun
+    spec:
+      containers:
+        - name: gluetun
+          image: qmcgaw/gluetun:v3.39.0
+          imagePullPolicy: IfNotPresent
+          securityContext:
+            capabilities:
+              add:
+                - NET_ADMIN
+          ports:
+            - name: vpn-port
+              containerPort: 8888 # Default gluetun port, can be overridden
+            - name: qbittorrent
+              containerPort: 8080
+            - name: nzbget
+              containerPort: 6789
+            - name: prowlarr
+              containerPort: 9696
+          envFrom:
+            - secretRef:
+                name: media-secret
+          resources:
+            requests:
+              cpu: "50m"
+              memory: "128Mi"
+            limits:
+              memory: "128Mi"
+          volumeMounts:
+            - name: gluetun-config
+              mountPath: /gluetun
+            - name: dev-net-tun
+              mountPath: /dev/net/tun
+        - name: qbittorrent
+          image: lscr.io/linuxserver/qbittorrent:5.1.2
+          imagePullPolicy: IfNotPresent
+          envFrom:
+            - configMapRef:
+                name: media-config
+            - secretRef:
+                name: media-secret
+          resources:
+            requests:
+              cpu: "50m"
+              memory: "128Mi"
+            limits:
+              memory: "128Mi"
+          volumeMounts:
+            - name: qbittorrent-config
+              mountPath: /config
+            - name: data
+              mountPath: /data
+        - name: nzbget
+          image: lscr.io/linuxserver/nzbget:25.4.20251009
+          imagePullPolicy: IfNotPresent
+          envFrom:
+            - configMapRef:
+                name: media-config
+          resources:
+            requests:
+              cpu: "50m"
+              memory: "128Mi"
+            limits:
+              memory: "128Mi"
+          volumeMounts:
+            - name: nzbget-config
+              mountPath: /config
+            - name: data
+              mountPath: /data
+        - name: prowlarr
+          image: lscr.io/linuxserver/prowlarr:2.0.5
+          imagePullPolicy: IfNotPresent
+          resources:
+            requests:
+              cpu: "50m"
+              memory: "128Mi"
+            limits:
+              memory: "128Mi"
+          envFrom:
+            - configMapRef:
+                name: media-config
+          volumeMounts:
+            - name: prowlarr-config
+              mountPath: /config
+      volumes:
+        - name: gluetun-config
+          persistentVolumeClaim:
+            claimName: gluetun-config-pvc
+        - name: qbittorrent-config
+          persistentVolumeClaim:
+            claimName: qbittorrent-config-pvc
+        - name: nzbget-config
+          persistentVolumeClaim:
+            claimName: nzbget-config-pvc
+        - name: prowlarr-config
+          persistentVolumeClaim:
+            claimName: prowlarr-config-pvc
+        - name: data
+          persistentVolumeClaim:
+            claimName: media-data-pvc
+        - name: dev-net-tun
+          hostPath:
+            path: /dev/net/tun
+            type: CharDevice

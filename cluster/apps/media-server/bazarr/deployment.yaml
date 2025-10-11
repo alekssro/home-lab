@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bazarr
+  namespace: media-server
+  labels:
+    app: bazarr
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: bazarr
+  template:
+    metadata:
+      labels:
+        app: bazarr
+    spec:
+      containers:
+        - name: bazarr
+          image: lscr.io/linuxserver/bazarr:1.5.3
+          imagePullPolicy: IfNotPresent
+          envFrom:
+            - configMapRef:
+                name: media-config
+          ports:
+            - name: http
+              containerPort: 6767
+          resources:
+            requests:
+              cpu: "50m"
+              memory: "128Mi"
+            limits:
+              memory: "128Mi"
+          volumeMounts:
+            - name: bazarr-config
+              mountPath: /config
+            - name: data
+              mountPath: /data
+      volumes:
+        - name: bazarr-config
+          persistentVolumeClaim:
+            claimName: bazarr-config-pvc
+        - name: data
+          persistentVolumeClaim:
+            claimName: media-data-pvc

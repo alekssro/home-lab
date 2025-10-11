@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: lidarr
+  namespace: media-server
+  labels:
+    app: lidarr
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: lidarr
+  template:
+    metadata:
+      labels:
+        app: lidarr
+    spec:
+      containers:
+        - name: lidarr
+          image: lscr.io/linuxserver/lidarr:2.14.5
+          imagePullPolicy: IfNotPresent
+          envFrom:
+            - configMapRef:
+                name: media-config
+          ports:
+            - name: http
+              containerPort: 8686
+          resources:
+            requests:
+              cpu: "50m"
+              memory: "128Mi"
+            limits:
+              memory: "128Mi"
+          volumeMounts:
+            - name: lidarr-config
+              mountPath: /config
+            - name: data
+              mountPath: /data
+      volumes:
+        - name: lidarr-config
+          persistentVolumeClaim:
+            claimName: lidarr-config-pvc
+        - name: data
+          persistentVolumeClaim:
+            claimName: media-data-pvc

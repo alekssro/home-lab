@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: media-config
+  namespace: media-server
+data:
+  # General UID/GIU and Timezone
+  TZ: Europe/Madrid
+  PUID: "1000"
+  PGID: "1000"
+
+  # Heath check duration
+  HEALTH_VPN_DURATION_INITIAL: 120s
