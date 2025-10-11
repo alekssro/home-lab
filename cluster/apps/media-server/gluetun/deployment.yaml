@@ -140,7 +140,7 @@ spec:
             claimName: qbittorrent-config-pvc
         - name: qbittorrent-conf
           secret:
-            name: qbittorrent-conf
+            secretName: qbittorrent-conf
         - name: nzbget-config
           persistentVolumeClaim:
             claimName: nzbget-config-pvc
