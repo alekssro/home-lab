@@ -34,6 +34,7 @@ spec:
             - name: qbittorrent-conf
               mountPath: /config-qbit/qBittorrent/qBittorrent.conf
               subPath: qBittorrent.conf
+              readOnly: false
             - name: nzbget-config
               mountPath: /config-nzbget
             - name: prowlarr-config
@@ -98,6 +99,7 @@ spec:
             - name: qbittorrent-conf
               mountPath: /config/qBittorrent/qBittorrent.conf
               subPath: qBittorrent.conf
+              readOnly: false
             - name: data
               mountPath: /data
         - name: nzbget
