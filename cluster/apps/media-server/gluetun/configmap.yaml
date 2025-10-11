@@ -24,7 +24,7 @@ data:
     Session\ExcludedFileNames=
     Session\Interface=tun0
     Session\InterfaceName=tun0
-    Session\Port=$TORRENTING_PORT
+    Session\Port=${TORRENTING_PORT}
     Session\QueueingSystemEnabled=true
     Session\SSL\Port=11384
     Session\ShareLimitAction=Stop
@@ -56,8 +56,8 @@ data:
     MailNotification\req_auth=true
     WebUI\Address=*
     WebUI\AuthSubnetWhitelist=@Invalid()
-    WebUI\Username=$QBITTORRENT_USER
-    WebUI\Password_PBKDF2=$QBITTORRENT_PASSWORD
+    WebUI\Username=${QBITTORRENT_USER}
+    WebUI\Password_PBKDF2=${QBITTORRENT_PASSWORD}
     WebUI\ServerDomains=*
 
     [RSS]
