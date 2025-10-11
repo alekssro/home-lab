@@ -4,6 +4,7 @@ metadata:
   name: radarr-config-pvc
   namespace: media-server
 spec:
+  storageClassName: longhorn
   accessModes:
     - ReadWriteOnce
   resources:

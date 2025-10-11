@@ -4,6 +4,7 @@ metadata:
   name: gluetun-config-pvc
   namespace: media-server
 spec:
+  storageClassName: longhorn
   accessModes:
     - ReadWriteOnce
   resources:
@@ -16,6 +17,7 @@ metadata:
   name: qbittorrent-config-pvc
   namespace: media-server
 spec:
+  storageClassName: longhorn
   accessModes:
     - ReadWriteOnce
   resources:
@@ -28,6 +30,7 @@ metadata:
   name: nzbget-config-pvc
   namespace: media-server
 spec:
+  storageClassName: longhorn
   accessModes:
     - ReadWriteOnce
   resources:
@@ -40,6 +43,7 @@ metadata:
   name: prowlarr-config-pvc
   namespace: media-server
 spec:
+  storageClassName: longhorn
   accessModes:
     - ReadWriteOnce
   resources:

@@ -6,6 +6,7 @@ metadata:
 spec:
   # Shared PVC for all services
   # TODO: Change to NFS PVC
+  storageClassName: longhorn
   accessModes:
     - ReadWriteMany
   resources:
