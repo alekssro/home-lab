@@ -17,6 +17,8 @@ spec:
       labels:
         app: gluetun
     spec:
+      securityContext:
+        fsGroup: 1000
       containers:
         - name: gluetun
           image: qmcgaw/gluetun:v3.39.0
