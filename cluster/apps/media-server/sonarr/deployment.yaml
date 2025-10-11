@@ -3,6 +3,8 @@ kind: Deployment
 metadata:
   name: sonarr
   namespace: media-server
+  annotations:
+    reloader.stakater.com/auto: "true"
   labels:
     app: sonarr
 spec:

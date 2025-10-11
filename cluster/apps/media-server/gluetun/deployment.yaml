@@ -3,6 +3,8 @@ kind: Deployment
 metadata:
   name: gluetun
   namespace: media-server
+  annotations:
+    reloader.stakater.com/auto: "true"
   labels:
     app: gluetun
 spec:

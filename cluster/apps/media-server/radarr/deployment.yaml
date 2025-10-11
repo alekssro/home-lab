@@ -3,6 +3,8 @@ kind: Deployment
 metadata:
   name: radarr
   namespace: media-server
+  annotations:
+    reloader.stakater.com/auto: "true"
   labels:
     app: radarr
 spec:
