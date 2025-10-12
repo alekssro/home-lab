@@ -127,7 +127,6 @@ spec:
                     sed -i 's#^MainDir=.*#MainDir=/data/downloads/nzbget#' /config/nzbget.conf
                     sed -i 's#^DestDir=.*#DestDir=${MainDir}/completed#' /config/nzbget.conf
                     sed -i 's#^InterDir=.*#InterDir=${MainDir}/intermediate#' /config/nzbget.conf
-                    /app/nzbget/nzbget --reload --configfile /config/nzbget.conf
           resources:
             requests:
               cpu: "50m"
