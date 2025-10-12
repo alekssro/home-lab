@@ -123,6 +123,7 @@ spec:
                   - "/bin/sh"
                   - "-c"
                   - |
+                    sleep 60  # Wait for app to start before making changes
                     sed -i 's#^MainDir=.*#MainDir=/data/downloads/nzbget#' /config/nzbget.conf
                     sed -i 's#^DestDir=.*#DestDir=${MainDir}/completed#' /config/nzbget.conf
                     sed -i 's#^InterDir=.*#InterDir=${MainDir}/intermediate#' /config/nzbget.conf
