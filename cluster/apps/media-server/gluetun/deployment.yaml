@@ -102,6 +102,19 @@ spec:
         - name: nzbget
           image: lscr.io/linuxserver/nzbget:25.4.20251009
           imagePullPolicy: IfNotPresent
+          command:
+            - "/bin/sh"
+            - "-c"
+            - |
+              # First, ensure the MainDir path is correct
+              sed -i 's#^MainDir=.*#MainDir=/data/downloads/nzbget#' /config/nzbget.conf
+
+              # Next, add DestDir and InterDir if they don't already exist
+              if ! grep -q '^DestDir=' /config/nzbget.conf; then sed -i '/^MainDir=.*/a DestDir=${MainDir}/completed' /config/nzbget.conf; fi
+              if ! grep -q '^InterDir=' /config/nzbget.conf; then sed -i '/^MainDir=.*/a InterDir=${MainDir}/intermediate' /config/nzbget.conf; fi
+
+              # Finally start the app
+              /init
           env:
             - name: NZBGET_USER
               valueFrom:
@@ -116,17 +129,6 @@ spec:
           envFrom:
             - configMapRef:
                 name: media-config
-          lifecycle:
-            postStart:
-              exec:
-                command:
-                  - "/bin/sh"
-                  - "-c"
-                  - |
-                    sleep 60  # Wait for app to start before making changes
-                    sed -i 's#^MainDir=.*#MainDir=/data/downloads/nzbget#' /config/nzbget.conf
-                    sed -i 's#^DestDir=.*#DestDir=${MainDir}/completed#' /config/nzbget.conf
-                    sed -i 's#^InterDir=.*#InterDir=${MainDir}/intermediate#' /config/nzbget.conf
           resources:
             requests:
               cpu: "50m"
