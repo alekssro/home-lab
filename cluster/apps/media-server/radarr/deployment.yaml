@@ -26,6 +26,8 @@ spec:
           image: lscr.io/linuxserver/radarr:5.27.5
           imagePullPolicy: IfNotPresent
           envFrom:
+            - secretRef:
+                name: radarr-conf
             - configMapRef:
                 name: media-config
           ports:

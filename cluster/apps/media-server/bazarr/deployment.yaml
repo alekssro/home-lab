@@ -28,6 +28,8 @@ spec:
           envFrom:
             - configMapRef:
                 name: media-config
+            - secretRef:
+                name: bazarr-conf
           ports:
             - name: http
               containerPort: 6767
