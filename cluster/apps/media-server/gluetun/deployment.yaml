@@ -145,15 +145,28 @@ spec:
         - name: prowlarr
           image: lscr.io/linuxserver/prowlarr:2.0.5
           imagePullPolicy: IfNotPresent
+          env:
+            - name: PROWLARR__AUTH__METHOD
+              value: "Forms"
+            - name: PROWLARR__AUTH__REQUIRED
+              valueFrom:
+                secretKeyRef:
+                  name: gluetun-conf
+                  key: PROWLARR__AUTH__REQUIRED
+            - name: PROWLARR__AUTH__APIKEY
+              valueFrom:
+                secretKeyRef:
+                  name: gluetun-conf
+                  key: PROWLARR__AUTH__APIKEY
+          envFrom:
+            - configMapRef:
+                name: media-config
           resources:
             requests:
               cpu: "50m"
               memory: "256Mi"
             limits:
               memory: "256Mi"
-          envFrom:
-            - configMapRef:
-                name: media-config
           volumeMounts:
             - name: prowlarr-config
               mountPath: /config
