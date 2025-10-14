@@ -129,8 +129,8 @@ spec:
 
                     # Change config values
                     sed -i 's#^MainDir=.*#MainDir=/data/downloads/nzbget#' /config/nzbget.conf
-                    sed -i 's#^DestDir=.*#DestDir=/data/downloads/completed#' /config/nzbget.conf
-                    sed -i 's#^InterDir=.*#InterDir=/data/downloads/intermediate#' /config/nzbget.conf
+                    sed -i 's#^DestDir=.*#DestDir=/data/downloads/nzbget/completed#' /config/nzbget.conf
+                    sed -i 's#^InterDir=.*#InterDir=/data/downloads/nzbget/intermediate#' /config/nzbget.conf
                     sed -i 's#^AppendCategoryDir=.*#AppendCategoryDir=no#' /config/nzbget.conf
           resources:
             requests:
