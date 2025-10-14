@@ -127,10 +127,11 @@ spec:
                     if ! grep -q '^DestDir=' /config/nzbget.conf; then sed -i '/^MainDir=.*/a DestDir=${MainDir}/completed' /config/nzbget.conf; fi
                     if ! grep -q '^InterDir=' /config/nzbget.conf; then sed -i '/^MainDir=.*/a InterDir=${MainDir}/intermediate' /config/nzbget.conf; fi
 
-                    # Ensure the paths are correct
+                    # Change config values
                     sed -i 's#^MainDir=.*#MainDir=/data/downloads/nzbget#' /config/nzbget.conf
-                    sed -i 's#^DestDir=.*#DestDir=${MainDir}/completed#' /config/nzbget.conf
-                    sed -i 's#^InterDir=.*#InterDir=${MainDir}/intermediate#' /config/nzbget.conf
+                    sed -i 's#^DestDir=.*#DestDir=/data/downloads/completed#' /config/nzbget.conf
+                    sed -i 's#^InterDir=.*#InterDir=/data/downloads/intermediate#' /config/nzbget.conf
+                    sed -i 's#^AppendCategoryDir=.*#AppendCategoryDir=no#' /config/nzbget.conf
           resources:
             requests:
               cpu: "50m"
