@@ -14,4 +14,6 @@ spec:
         name: csi-driver-nfs
         namespace: flux-system
   values:
-    kubeletDir: /var/lib/kubelet
+    controller:
+      replicaCount: 2
+      enableSnapshotter: false
