@@ -32,9 +32,9 @@ spec:
           resources:
             requests:
               cpu: "50m"
-              memory: "256Mi"
+              memory: "448Mi"
             limits:
-              memory: "256Mi"
+              memory: "448Mi"
           volumeMounts:
             - name: bazarr-config
               mountPath: /config
