@@ -26,7 +26,7 @@ spec:
             - |
               mkdir -p /config-qbit/qBittorrent
               [ ! -f /config-qbit/qBittorrent/qBittorrent.conf ] && cp /tmp/qBittorrent/qBittorrent.conf /config-qbit/qBittorrent/qBittorrent.conf
-              chown -R 1000:1000 /data /config-qbit /config-nzbget /config-prowlarr
+              chown -R 1000:1000 /config-qbit /config-nzbget /config-prowlarr
           volumeMounts:
             - name: data
               mountPath: /data
