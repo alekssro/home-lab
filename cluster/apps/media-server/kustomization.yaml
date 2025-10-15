@@ -11,3 +11,4 @@ resources:
   - lidarr
   - bazarr
   - jellyfin
+  - jellyseerr
