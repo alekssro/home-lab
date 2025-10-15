@@ -46,6 +46,10 @@ spec:
               mountPath: /config
             - name: data
               mountPath: /data
+            - name: dri
+              mountPath: /dev/dri
+          securityContext:
+            privileged: true
       volumes:
         - name: jellyfin-config
           persistentVolumeClaim:
@@ -53,3 +57,6 @@ spec:
         - name: data
           persistentVolumeClaim:
             claimName: media-data-pvc
+        - name: dri
+          hostPath:
+            path: /dev/dri
