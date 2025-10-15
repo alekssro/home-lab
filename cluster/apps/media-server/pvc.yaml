@@ -4,11 +4,9 @@ metadata:
   name: media-data-pvc
   namespace: media-server
 spec:
-  # Shared PVC for all services
-  # TODO: Change to NFS PVC
-  storageClassName: longhorn
+  storageClassName: nfs-csi
   accessModes:
     - ReadWriteMany
   resources:
     requests:
-      storage: 20Gi # Adjust size as needed
+      storage: 1Ti # Adjust size as needed
