@@ -4,7 +4,7 @@ metadata:
   name: nfs-csi
 provisioner: nfs.csi.k8s.io
 parameters:
-  server: nas.alekssro.com
+  server: 192.168.1.13
   share: /volume1/K8s-homelab
 reclaimPolicy: Retain
 volumeBindingMode: Immediate
