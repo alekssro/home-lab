@@ -29,10 +29,10 @@ spec:
           ports:
             - name: http
               containerPort: 8096
-            - name: service-discovery
+            - name: svc-discovery
               containerPort: 7359
               protocol: UDP
-            - name: client-discovery
+            - name: cli-discover
               containerPort: 1900
               protocol: UDP
           resources:
