@@ -10,4 +10,4 @@ reclaimPolicy: Retain
 volumeBindingMode: Immediate
 mountOptions:
   - uid=1000
-  - gid=1000
+  - gid=10
