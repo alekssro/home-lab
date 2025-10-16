@@ -66,6 +66,8 @@ spec:
               containerPort: 6789
             - name: prowlarr
               containerPort: 9696
+            - name: flaresolverr
+              containerPort: 8191
           envFrom:
             - secretRef:
                 name: media-secret
@@ -91,9 +93,9 @@ spec:
           resources:
             requests:
               cpu: "50m"
-              memory: "128Mi"
+              memory: "256Mi"
             limits:
-              memory: "128Mi"
+              memory: "256Mi"
           volumeMounts:
             - name: qbittorrent-config
               mountPath: /config
@@ -171,6 +173,18 @@ spec:
           volumeMounts:
             - name: prowlarr-config
               mountPath: /config
+        - name: flaresolverr
+          image: flaresolverr/flaresolverr:v3.4.2
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: http
+              containerPort: 8191
+          resources:
+            requests:
+              cpu: "50m"
+              memory: "256Mi"
+            limits:
+              memory: "256Mi"
       volumes:
         - name: gluetun-config
           persistentVolumeClaim:
