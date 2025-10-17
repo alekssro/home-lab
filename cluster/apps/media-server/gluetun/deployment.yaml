@@ -86,6 +86,8 @@ spec:
               mountPath: /gluetun
             - name: dev-net-tun
               mountPath: /dev/net/tun
+            - name: gluetun-tmp
+              mountPath: /tmp/gluetun
         - name: qbittorrent
           image: lscr.io/linuxserver/qbittorrent:5.1.2
           imagePullPolicy: IfNotPresent
@@ -286,3 +288,6 @@ spec:
         - name: lidarr-config
           persistentVolumeClaim:
             claimName: lidarr-config-pvc
+        - name: gluetun-tmp
+          persistentVolumeClaim:
+            claimName: gluetun-tmp-pvc

@@ -10,3 +10,16 @@ spec:
   resources:
     requests:
       storage: 1Ti # Adjust size as needed
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: gluetun-tmp-pvc
+  namespace: media-server
+spec:
+  storageClassName: longhorn
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 1Gi
