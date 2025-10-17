@@ -13,17 +13,6 @@ spec:
           containers:
             - name: port-updater
               image: alpine
-              env:
-                - name: QBITTORRENT_USER
-                  valueFrom:
-                    secretKeyRef:
-                      name: gluetun-conf
-                      key: QBITTORRENT_USER
-                - name: QBITTORRENT_PASS
-                  valueFrom:
-                    secretKeyRef:
-                      name: gluetun-conf
-                      key: QBITTORRENT_PASS
               command:
                 - "/bin/sh"
                 - "-c"
@@ -38,8 +27,7 @@ spec:
                     exit 0
                   fi
                   apk add --no-cache wget
-                  wget -O- --retry-connrefused -t 3 --save-cookies=cookies.txt --header 'Referer: http://qbittorrent:8080' --post-data "username=$QBITTORRENT_USER&password=$QBITTORRENT_PASS" http://qbittorrent:8080/api/v2/auth/login
-                  wget -O- --retry-connrefused -t 3 --load-cookies=cookies.txt --header 'Referer: http://qbittorrent:8080' --post-data "json={\"listen_port\":$PORT}" http://qbittorrent:8080/api/v2/app/setPreferences
+                  wget -O- --retry-connrefused -t 3 --post-data "json={\"listen_port\":$PORT}" http://qbittorrent:8080/api/v2/app/setPreferences
               volumeMounts:
                 - name: gluetun-tmp
                   mountPath: /tmp/gluetun
