@@ -254,8 +254,6 @@ spec:
               mountPath: /config
             - name: data
               mountPath: /data
-      nodeSelector:
-        kubernetes.io/hostname: nuc7pjyhn
       volumes:
         - name: gluetun-config
           persistentVolumeClaim:
