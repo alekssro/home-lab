@@ -3,10 +3,8 @@ kind: CronJob
 metadata:
   name: qbittorrent-port-updater
   namespace: media-server
-  annotations:
-    # This cronjob updates the qbittorrent listen port from the Port Forwarded value provided by gluetun.
-    reloader.stakater.com/auto: "true"
 spec:
+  # This cronjob updates the qbittorrent listen port from the Port Forwarded value provided by gluetun.
   schedule: "*/5 * * * *" # Every 5 minutes
   jobTemplate:
     spec:
