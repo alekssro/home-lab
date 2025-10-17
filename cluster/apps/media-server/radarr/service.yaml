@@ -5,7 +5,7 @@ metadata:
   namespace: media-server
 spec:
   selector:
-    app: radarr
+    app: gluetun
   ports:
     - name: http
       port: 7878

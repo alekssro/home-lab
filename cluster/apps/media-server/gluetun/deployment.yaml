@@ -52,14 +52,12 @@ spec:
             postStart:
               exec:
                 command:
-                  [
-                    "/bin/sh",
-                    "-c",
-                    "(ip rule del table 51820; ip -6 rule del table 51820) || true",
-                  ]
+                  - "/bin/sh"
+                  - "-c"
+                  - "(ip rule del table 51820; ip -6 rule del table 51820) || true"
           ports:
             - name: vpn-port
-              containerPort: 8888 # Default gluetun port, can be overridden
+              containerPort: 8888
             - name: qbittorrent
               containerPort: 8080
             - name: nzbget
@@ -68,6 +66,12 @@ spec:
               containerPort: 9696
             - name: flaresolverr
               containerPort: 8191
+            - name: sonarr
+              containerPort: 8989
+            - name: radarr
+              containerPort: 7878
+            - name: lidarr
+              containerPort: 8686
           envFrom:
             - secretRef:
                 name: media-secret
@@ -128,7 +132,6 @@ spec:
                     # Add DestDir and InterDir if they don't already exist
                     if ! grep -q '^DestDir=' /config/nzbget.conf; then sed -i '/^MainDir=.*/a DestDir=${MainDir}/completed' /config/nzbget.conf; fi
                     if ! grep -q '^InterDir=' /config/nzbget.conf; then sed -i '/^MainDir=.*/a InterDir=${MainDir}/intermediate' /config/nzbget.conf; fi
-
                     # Change config values
                     sed -i 's#^MainDir=.*#MainDir=/data/downloads/nzbget#' /config/nzbget.conf
                     sed -i 's#^DestDir=.*#DestDir=/data/downloads/nzbget/completed#' /config/nzbget.conf
@@ -185,6 +188,72 @@ spec:
               memory: "512Mi"
             limits:
               memory: "512Mi"
+        - name: sonarr
+          image: lscr.io/linuxserver/sonarr:4.0.15
+          imagePullPolicy: IfNotPresent
+          envFrom:
+            - secretRef:
+                name: sonarr-conf
+            - configMapRef:
+                name: media-config
+          ports:
+            - name: http
+              containerPort: 8989
+          resources:
+            requests:
+              cpu: "50m"
+              memory: "256Mi"
+            limits:
+              memory: "256Mi"
+          volumeMounts:
+            - name: sonarr-config
+              mountPath: /config
+            - name: data
+              mountPath: /data
+        - name: radarr
+          image: lscr.io/linuxserver/radarr:5.27.5
+          imagePullPolicy: IfNotPresent
+          envFrom:
+            - secretRef:
+                name: radarr-conf
+            - configMapRef:
+                name: media-config
+          ports:
+            - name: http
+              containerPort: 7878
+          resources:
+            requests:
+              cpu: "50m"
+              memory: "256Mi"
+            limits:
+              memory: "256Mi"
+          volumeMounts:
+            - name: radarr-config
+              mountPath: /config
+            - name: data
+              mountPath: /data
+        - name: lidarr
+          image: lscr.io/linuxserver/lidarr:2.14.5
+          imagePullPolicy: IfNotPresent
+          envFrom:
+            - configMapRef:
+                name: media-config
+            - secretRef:
+                name: lidarr-conf
+          ports:
+            - name: http
+              containerPort: 8686
+          resources:
+            requests:
+              cpu: "50m"
+              memory: "128Mi"
+            limits:
+              memory: "128Mi"
+          volumeMounts:
+            - name: lidarr-config
+              mountPath: /config
+            - name: data
+              mountPath: /data
       nodeSelector:
         kubernetes.io/hostname: nuc7pjyhn
       volumes:
@@ -210,3 +279,12 @@ spec:
           hostPath:
             path: /dev/net/tun
             type: CharDevice
+        - name: sonarr-config
+          persistentVolumeClaim:
+            claimName: sonarr-config-pvc
+        - name: radarr-config
+          persistentVolumeClaim:
+            claimName: radarr-config-pvc
+        - name: lidarr-config
+          persistentVolumeClaim:
+            claimName: lidarr-config-pvc
