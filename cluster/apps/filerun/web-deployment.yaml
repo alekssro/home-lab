@@ -7,6 +7,7 @@ metadata:
   labels:
     service: filerun-web
 spec:
+  replicas: 0
   selector:
     matchLabels:
       service: filerun-web
