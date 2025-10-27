@@ -17,6 +17,7 @@ resources:
   - uptime-kuma
   - alekssro-web
   - homeassistant
+  - homarr
   - dawarich
   - nas
   - media-server
