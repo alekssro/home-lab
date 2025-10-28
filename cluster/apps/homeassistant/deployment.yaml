@@ -35,7 +35,7 @@ spec:
                 - SYS_ADMIN
           resources:
             requests:
-              cpu: "200m"
+              cpu: "500m"
               memory: "2.5Gi"
             limits:
               memory: "2.5Gi"
