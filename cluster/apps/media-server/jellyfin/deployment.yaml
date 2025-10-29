@@ -38,9 +38,9 @@ spec:
           resources:
             requests:
               cpu: "1500m"
-              memory: "2Gi"
+              memory: "1.5Gi"
             limits:
-              memory: "2Gi"
+              memory: "1.5Gi"
           volumeMounts:
             - name: jellyfin-config
               mountPath: /config
