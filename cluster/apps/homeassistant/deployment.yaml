@@ -100,6 +100,23 @@ spec:
         app: homeassistant-matter
     spec:
       hostNetwork: true
+      initContainers:
+        - name: wait-for-homeassistant
+          image: busybox:1.36
+          command: ["/bin/sh", "-c"]
+          args:
+            - |
+              echo "Waiting for Home Assistant to be ready at localhost:8123..."
+              # This works because both pods use hostNetwork: true on the same node
+              while ! wget -q --spider http://localhost:8123; do
+                echo "Home Assistant not up yet, retrying in 5s..."
+                sleep 5
+              done
+              
+              echo "Home Assistant is READY."
+              echo "Waiting an additional 30 seconds before starting Matter server..."
+              sleep 30
+              echo "Init container finished."
       containers:
         - image: ghcr.io/home-assistant-libs/python-matter-server:stable
           name: home-assistant-matter
