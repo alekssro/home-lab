@@ -93,44 +93,44 @@ data:
           friendly_name: "Luz Ventilador Habitación"
           unique_id: "luz_ventilador_habitacion"
           turn_on:
-            - service: button.press
+            - service: switch.toggle
               target:
                 entity_id: button.light_on_off_ventilador_habitacion
           turn_off:
-            - service: button.press
+            - service: switch.toggle
               target:
                 entity_id: button.light_on_off_ventilador_habitacion
         luz_ventilador_porche_lado_cocina:
           friendly_name: "Luz Ventilador Porche Lado Cocina"
           unique_id: "luz_ventilador_porche_lado_cocina"
           turn_on:
-            - service: button.press
+            - service: switch.toggle
               target:
                 entity_id: button.light_onoff_ventilador_lado_cocina
           turn_off:
-            - service: button.press
+            - service: switch.toggle
               target:
                 entity_id: button.light_onoff_ventilador_lado_cocina
         luz_ventilador_porche_lado_salon:
           friendly_name: "Luz Ventilador Porche Lado Salón"
           unique_id: "luz_ventilador_porche_lado_salon"
           turn_on:
-            - service: button.press
+            - service: switch.toggle
               target:
                 entity_id: button.light_onoff_ventilador_lado_salon
           turn_off:
-            - service: button.press
+            - service: switch.toggle
               target:
                 entity_id: button.light_onoff_ventilador_lado_salon
         luz_ventilador_salon:
           friendly_name: "Luz Ventilador Salón"
           unique_id: "luz_ventilador_salon"
           turn_on:
-            - service: button.press
+            - service: switch.toggle
               target:
                 entity_id: button.light_on_off_ventilador_salon
           turn_off:
-            - service: button.press
+            - service: switch.toggle
               target:
                 entity_id: button.light_on_off_ventilador_salon
   fans.yaml: |
@@ -387,37 +387,37 @@ data:
           friendly_name: "Puerta Garaje"
           unique_id: puerta_corredera_garaje
           value_template: >
-            {% if is_state('binary_sensor.puerta_corredera_garaje_2', 'on') %}
+            {% if is_state('binary_sensor.sensor_puerta_corredera_garaje', 'on') %}
               open
-            {% elif is_state('binary_sensor.puerta_corredera_garaje_2', 'off') %}
+            {% elif is_state('binary_sensor.sensor_puerta_corredera_garaje', 'off') %}
               closed
             {% else %}
               closed {# Default to 'closed' if the sensor state is unknown or unavailable #}
             {% endif %}
           open_cover:
-            service: button.press
+            service: switch.toggle
             target:
-              entity_id: button.puerta_garaje
+              entity_id: switch.puerta_garaje
           close_cover:
-            service: button.press
+            service: switch.toggle
             target:
-              entity_id: button.puerta_garaje
+              entity_id: switch.puerta_garaje
           stop_cover:
-            service: button.press
+            service: switch.toggle
             target:
-              entity_id: button.puerta_garaje
+              entity_id: switch.puerta_garaje
           position_template: >
-            {% if is_state('binary_sensor.puerta_corredera_garaje_2', 'on') %}
+            {% if is_state('binary_sensor.sensor_puerta_corredera_garaje', 'on') %}
               100
-            {% elif is_state('binary_sensor.puerta_corredera_garaje_2', 'off') %}
+            {% elif is_state('binary_sensor.sensor_puerta_corredera_garaje', 'off') %}
               0
             {% else %}
               {{ state_attr(this.entity_id, 'current_position') | default(0) }}
             {% endif %}
           icon_template: >
-            {% if is_state('binary_sensor.puerta_corredera_garaje_2', 'on') %}
+            {% if is_state('binary_sensor.sensor_puerta_corredera_garaje', 'on') %}
               mdi:garage-open-variant
-            {% elif is_state_attr(this.entity_id, 'current_position', 0) or is_state('binary_sensor.puerta_corredera_garaje_2', 'off') %}
+            {% elif is_state_attr(this.entity_id, 'current_position', 0) or is_state('binary_sensor.sensor_puerta_corredera_garaje', 'off') %}
               mdi:garage-variant
             {% else %}
               mdi:garage-alert-variant
