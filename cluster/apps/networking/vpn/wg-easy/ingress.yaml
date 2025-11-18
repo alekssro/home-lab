@@ -12,10 +12,10 @@ spec:
   ingressClassName: traefik
   tls:
     - hosts:
-        - "vpn-ui.${SECRET_DOMAIN}"
+        - "vpn.${SECRET_DOMAIN}"
       secretName: vpn-tls
   rules:
-    - host: "vpn-ui.${SECRET_DOMAIN}"
+    - host: "vpn.${SECRET_DOMAIN}"
       http:
         paths:
           - path: /
