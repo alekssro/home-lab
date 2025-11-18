@@ -6,6 +6,8 @@ metadata:
   annotations:
     reloader.stakater.com/auto: "true"
 spec:
+  strategy:
+    type: Recreate
   selector:
     matchLabels:
       service: wireguard
@@ -18,28 +20,28 @@ spec:
         - name: wireguard
           image: linuxserver/wireguard:1.0.20250521
           imagePullPolicy: IfNotPresent
-          command: ["/bin/bash"]
-          args: ["/wg-config/startup.sh"]
-          envFrom:
-            - configMapRef:
-                name: wireguard
-          resources:
-            requests:
-              cpu: 50m
-              memory: 128Mi
-            limits:
-              memory: 128Mi
           securityContext:
             privileged: true
             capabilities:
               add:
                 - NET_ADMIN
                 - SYS_MODULE
+          envFrom:
+            - configMapRef:
+                name: wireguard-config
+            - secretRef:
+                name: wireguard-secret
+          resources:
+            requests:
+              cpu: 50m
+              memory: 128Mi
+            limits:
+              memory: 128Mi
           volumeMounts:
-            - name: wireguard-secret
-              mountPath: /wg-config
-              readOnly: true
+            - name: config
+              mountPath: /config
+              readOnly: false
       volumes:
-        - name: wireguard-secret
-          secret:
-            secretName: wireguard-secret
+        - name: config
+          persistentVolumeClaim:
+            claimName: wireguard-config

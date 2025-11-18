@@ -5,8 +5,8 @@ metadata:
   namespace: vpn
 spec:
   accessModes:
-    - ReadWriteMany
+    - ReadWriteOnce
   storageClassName: longhorn
   resources:
     requests:
-      storage: 128Mi
+      storage: 256Mi
