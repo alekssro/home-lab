@@ -7,4 +7,3 @@ resources:
   # - ingress.yaml
   - secret.sops.yaml
   - service.yaml
-  - wireguard-cm.yaml
