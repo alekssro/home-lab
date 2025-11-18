@@ -26,9 +26,16 @@ spec:
               add:
                 - NET_ADMIN
                 - SYS_MODULE
+          env:
+            - name: PUID
+              value: "1000"
+            - name: PGID
+              value: "1000"
+            - name: TZ
+              value: Europe/Madrid
+            - name: PERSISTENTKEEPALIVE_PEERS
+              value: "all"
           envFrom:
-            - configMapRef:
-                name: wireguard-config
             - secretRef:
                 name: wireguard-secret
           resources:
