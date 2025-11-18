@@ -8,6 +8,7 @@ metadata:
     service: wg-easy
 spec:
   type: LoadBalancer
+  externalTrafficPolicy: Local
   selector:
     service: wg-easy
   ports:
