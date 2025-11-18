@@ -7,11 +7,11 @@ metadata:
   labels:
     service: wireguard
 spec:
-  type: NodePort
+  type: LoadBalancer
   selector:
     service: wireguard
   ports:
-    - port: 51820
-      nodePort: 31820
+    - name: wireguard
+      port: 51820
       targetPort: 51820
       protocol: UDP
