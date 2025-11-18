@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: wg-easy
+  namespace: vpn
+  annotations:
+    reloader.stakater.com/auto: "true"
+spec:
+  selector:
+    matchLabels:
+      service: wg-easy
+  template:
+    metadata:
+      labels:
+        service: wg-easy
+    spec:
+      containers:
+        - name: wg-easy
+          image: ghcr.io/wg-easy/wg-easy:latest
+          imagePullPolicy: IfNotPresent
+          envFrom:
+            - secretRef:
+                name: wg-easy-secret
+          ports:
+            - name: web
+              containerPort: 51821
+              protocol: TCP
+            - name: wireguard
+              containerPort: 51820
+              protocol: UDP
+          resources:
+            requests:
+              cpu: 50m
+              memory: 128Mi
+            limits:
+              memory: 128Mi
+          securityContext:
+            privileged: true
+            capabilities:
+              add:
+                - NET_ADMIN
+                - SYS_MODULE

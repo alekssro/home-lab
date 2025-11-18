@@ -4,3 +4,4 @@ kind: Kustomization
 resources:
   - vpn-ns.yaml
   - wireguard
+  - wg-easy

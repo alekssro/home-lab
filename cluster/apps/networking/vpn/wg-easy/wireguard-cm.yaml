@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: wireguard
+  namespace: vpn
+data:
+  PUID: "1000"
+  PGID: "1000"
+  TZ: Europe/Madrid
+  PEERS: "alekss,dani,guest"
+  SERVERURL: vpn.${SECRET_DOMAIN}
+  SERVERPORT: "51820"
+  PEERDNS: "1.1.1.1"
+  PERSISTENTKEEPALIVE_PEERS: "all"
+  # ALLOWEDIPS: "0.0.0.0/0, ::/0"
+  # INTERNAL_SUBNET: "10.13.13.0"
