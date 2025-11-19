@@ -4,3 +4,4 @@ resources:
   - endpoint.yaml
   - service.yaml
   - ingress.yaml
+  - ingress-web.yaml
