@@ -8,6 +8,8 @@ metadata:
     app: homeassistant
 spec:
   replicas: 1
+  strategy:
+    type: Recreate
   selector:
     matchLabels:
       app: homeassistant
@@ -112,7 +114,7 @@ spec:
                 echo "Home Assistant not up yet, retrying in 5s..."
                 sleep 5
               done
-              
+
               echo "Home Assistant is READY."
               echo "Waiting an additional 30 seconds before starting Matter server..."
               sleep 30
