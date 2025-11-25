@@ -23,7 +23,7 @@ spec:
     spec:
       hostNetwork: true
       containers:
-        - image: ghcr.io/home-assistant/home-assistant:2025.11
+        - image: ghcr.io/home-assistant/home-assistant:2025.11.3
           name: home-assistant
           env:
             - name: TZ
@@ -120,7 +120,7 @@ spec:
               sleep 30
               echo "Init container finished."
       containers:
-        - image: ghcr.io/home-assistant-libs/python-matter-server:stable
+        - image: ghcr.io/home-assistant-libs/python-matter-server:8.1
           name: home-assistant-matter
           env:
             - name: TZ
@@ -179,7 +179,7 @@ spec:
         runAsUser: 1883
         runAsGroup: 1883
       containers:
-        - image: eclipse-mosquitto:latest
+        - image: eclipse-mosquitto:2.0.22
           name: mosquitto
           env:
             - name: TZ
