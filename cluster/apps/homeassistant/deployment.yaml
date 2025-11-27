@@ -116,7 +116,7 @@ spec:
             - name: DESCRIPTION
               value: "Server - Salicru SPS 1500 ONE V2"
             - name: DRIVER
-              value: "blazer_usb" # "nutdrv_qx"
+              value: "nutdrv_qx"
             - name: API_USER
               valueFrom:
                 secretKeyRef:
