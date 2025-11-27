@@ -67,6 +67,8 @@ spec:
               subPath: SERVICE_ACCOUNT.JSON
             - mountPath: "/var/run/dbus"
               name: dbus
+            - mountPath: "/dev/bus/usb/001/003"
+              name: usb-device  # SAI
       nodeSelector:
         kubernetes.io/hostname: nuc7pjyhn-rookie
       volumes:
@@ -82,6 +84,9 @@ spec:
         - name: dbus
           hostPath:
             path: "/var/run/dbus"
+        - name: usb-device  # SAI
+          hostPath:
+            path: /dev/bus/usb/001/003
 
 ---
 apiVersion: apps/v1
