@@ -67,8 +67,6 @@ spec:
               subPath: SERVICE_ACCOUNT.JSON
             - mountPath: "/var/run/dbus"
               name: dbus
-            - mountPath: "/dev/bus/usb/001/003"
-              name: usb-device  # SAI
       nodeSelector:
         kubernetes.io/hostname: nuc7pjyhn-rookie
       volumes:
@@ -84,9 +82,69 @@ spec:
         - name: dbus
           hostPath:
             path: "/var/run/dbus"
-        - name: usb-device  # SAI
+
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nut-upsd
+  namespace: homeassistant
+  labels:
+    app: nut-upsd
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nut-upsd
+  template:
+    metadata:
+      annotations:
+        reload.stakater.com/auto: "true"
+      labels:
+        app: nut-upsd
+    spec:
+      hostNetwork: true
+      containers:
+        - name: nut-upsd
+          image: instantlinux/nut-upsd:2.8.3-r2
+          env:
+            - name: NAME
+              value: "server_ups"
+            - name: DESCRIPTION
+              value: "Server - Salicru SPS 1500 ONE V2"
+            - name: DRIVER
+              value: "nutdrv_qx"
+            - name: API_USER
+              valueFrom:
+                secretKeyRef:
+                  name: home-assistant-secret
+                  key: NUT_UPS_API_USER
+            - name: API_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: home-assistant-secret
+                  key: NUT_UPS_API_PASSWORD
+            - name: ADMIN_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: home-assistant-secret
+                  key: NUT_UPS_ADMIN_PASSWORD
+          securityContext:
+            privileged: true
+          ports:
+            - containerPort: 3493
+              name: nut
+              protocol: TCP
+          volumeMounts:
+            - name: sai-usb-device
+              mountPath: /dev/bus/usb/001/003 # SAI
+      nodeSelector:
+        kubernetes.io/hostname: nuc7pjyhn-rookie
+      volumes:
+        - name: sai-usb-device
           hostPath:
-            path: /dev/bus/usb/001/003
+            path: /dev/bus/usb/001/003  # SAI
 
 ---
 apiVersion: apps/v1
