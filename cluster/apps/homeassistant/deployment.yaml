@@ -94,6 +94,8 @@ metadata:
     app: nut-upsd
 spec:
   replicas: 1
+  strategy:
+    type: Recreate
   selector:
     matchLabels:
       app: nut-upsd
@@ -156,6 +158,8 @@ metadata:
     app: homeassistant-matter
 spec:
   replicas: 1
+  strategy:
+    type: Recreate
   selector:
     matchLabels:
       app: homeassistant-matter
@@ -226,6 +230,8 @@ metadata:
     app: mosquitto
 spec:
   replicas: 1
+  strategy:
+    type: Recreate
   selector:
     matchLabels:
       app: mosquitto
