@@ -43,7 +43,7 @@ data:
       upstream_dns:
       - https://dns10.quad9.net/dns-query
       - "[/vpn.${SECRET_DOMAIN}/]https://dns10.quad9.net/dns-query"
-      - "[/${SECRET_DOMAIN}/]192.168.1.220"
+      - "[/${SECRET_DOMAIN}/]192.168.68.20"
       upstream_dns_file: ""
       bootstrap_dns:
       - 9.9.9.10
@@ -128,10 +128,10 @@ data:
       enabled: true
       interface_name: "eth0"
       dhcpv4:
-        gateway_ip: "192.168.1.1"
+        gateway_ip: "192.168.68.1"
         subnet_mask: "255.255.255.0"
-        range_start: "192.168.1.10"
-        range_end: "192.168.1.150"
+        range_start: "192.168.68.50"
+        range_end: "192.168.68.250"
         lease_duration: 86400
         icmp_timeout_msec: 1000
         options: []
