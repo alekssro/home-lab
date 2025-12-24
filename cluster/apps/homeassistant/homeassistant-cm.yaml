@@ -5,7 +5,7 @@ metadata:
   namespace: homeassistant
 data:
   resolv.conf: |
-    nameserver 192.168.1.121
+    nameserver 192.168.68.98
     nameserver 8.8.8.8
   configuration.yaml: |
     default_config:
@@ -39,7 +39,8 @@ data:
       use_x_forwarded_for: true
       trusted_proxies:
         - 10.42.0.0/16 # cluster cidr
-        - 192.168.1.0/24 # home assistant
+        - 192.168.1.0/24 # main home network
+        - 192.168.68.0/24 # deco mesh
         - 192.168.86.0/24 # google wifi
         #cloudflare ipv4
         - 103.21.244.0/22
