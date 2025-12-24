@@ -38,19 +38,11 @@
       net.ipv4.conf.default.rp_filter: 0
       net.ipv4.conf.all.rp_filter: 0
 
-- name: Configure Bluetooth
-  tasks:
-    - name: Update APT package cache
-      ansible.builtin.apt:
-        update_cache: true
-      changed_when: false # Don't report change for cache update alone
-
-    - name: Install Bluetooth required packages
-      ansible.builtin.apt:
-        name:
-          - dbus-broker
-          - bluez
-        state: present
+- name: Install Bluetooth required packages
+  ansible.builtin.apt:
+    name:
+      - dbus-broker
+      - bluez
 
 # - name: Configure WiFi
 #   vars:
