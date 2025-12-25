@@ -15,8 +15,8 @@ data:
     automation: !include automations.yaml
     script: !include scripts.yaml
     scene: !include scenes.yaml
+    template: !include templates.yaml
     binary_sensor: !include binary_sensors.yaml
-    sensor: !include sensors.yaml
     light: !include lights.yaml
     fan: !include fans.yaml
     cover: !include covers.yaml
@@ -71,6 +71,28 @@ data:
       project_id: homeassistant-88a71
       service_account: !include SERVICE_ACCOUNT.JSON
       report_state: true
+  templates.yaml: |
+    - sensor:
+      - name: Grid Importacion
+        unit_of_measurement: 'W'
+        state_class: measurement
+        device_class: power
+        state: >
+          {% if states('sensor.medidor_grid_power') | float >= 0 %}
+            {{ states('sensor.medidor_grid_power') }}
+          {% else %}
+            0
+          {% endif %}
+      - name: Grid Exportacion
+        unit_of_measurement: 'W'
+        state_class: measurement
+        device_class: power
+        state: >
+          {% if states('sensor.medidor_grid_power') | float < 0 %}
+            {{ states('sensor.medidor_grid_power') | float * -1 }}
+          {% else %}
+            0
+          {% endif %}
   binary_sensors.yaml: |
     - platform: template
       sensors:
@@ -87,29 +109,6 @@ data:
               on
             {% else %}
               off
-            {% endif %}
-  sensors.yaml: |
-    template:
-      - sensor:
-        - name: Grid Importacion
-          unit_of_measurement: 'W'
-          state_class: measurement
-          device_class: power
-          state: >
-            {% if states('sensor.medidor_grid_power') | float >= 0 %}
-              {{ states('sensor.medidor_grid_power') }}
-            {% else %}
-              0
-            {% endif %}
-        - name: Grid Exportacion
-          unit_of_measurement: 'W'
-          state_class: measurement
-          device_class: power
-          state: >
-            {% if states('sensor.medidor_grid_power') | float < 0 %}
-              {{ states('sensor.medidor_grid_power') | float * -1 }}
-            {% else %}
-              0
             {% endif %}
   lights.yaml: |
     - platform: template
