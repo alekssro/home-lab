@@ -89,8 +89,8 @@ data:
               off
             {% endif %}
   sensors.yaml: |
-    - platform: template
-      sensors:
+    template:
+      - sensor:
         - name: Grid Importacion
           unit_of_measurement: 'W'
           state_class: measurement
