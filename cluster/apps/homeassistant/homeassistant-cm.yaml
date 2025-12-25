@@ -16,6 +16,7 @@ data:
     script: !include scripts.yaml
     scene: !include scenes.yaml
     binary_sensor: !include binary_sensors.yaml
+    sensor: !include sensors.yaml
     light: !include lights.yaml
     fan: !include fans.yaml
     cover: !include covers.yaml
@@ -86,6 +87,29 @@ data:
               on
             {% else %}
               off
+            {% endif %}
+  sensors.yaml: |
+    - platform: template
+      sensors:
+        - name: Grid Importacion
+          unit_of_measurement: 'W'
+          state_class: measurement
+          device_class: power
+          state: >
+            {% if states('sensor.medidor_grid_power') | float >= 0 %}
+              {{ states('sensor.medidor_grid_power') }}
+            {% else %}
+              0
+            {% endif %}
+        - name: Grid Exportacion
+          unit_of_measurement: 'W'
+          state_class: measurement
+          device_class: power
+          state: >
+            {% if states('sensor.medidor_grid_power') | float < 0 %}
+              {{ states('sensor.medidor_grid_power') | float * -1 }}
+            {% else %}
+              0
             {% endif %}
   lights.yaml: |
     - platform: template
