@@ -42,7 +42,7 @@ spec:
               mountPath: /config-prowlarr
       containers:
         - name: gluetun
-          image: qmcgaw/gluetun:v3.39.0
+          image: qmcgaw/gluetun:v3.41.0
           imagePullPolicy: IfNotPresent
           securityContext:
             capabilities:
