@@ -8,6 +8,3 @@ parameters:
   share: /volume1/K8s-homelab
 reclaimPolicy: Retain
 volumeBindingMode: Immediate
-mountOptions:
-  - uid=1000
-  - gid=10
