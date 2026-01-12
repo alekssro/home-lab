@@ -148,14 +148,14 @@ data:
     - fan:
       - name: "Ventilador Habitación"
         unique_id: "ventilador_habitacion"
-        value_template: "{{ not is_state('input_select.fan_speed_ventilador_habitacion', 'Off') }}"
-        preset_mode_template: >
+        state: "{{ not is_state('input_select.fan_speed_ventilador_habitacion', 'Off') }}"
+        preset_mode: >
           {% if is_state('input_select.fan_speed_ventilador_habitacion', 'Off') %}
             null
           {% else %}
             {{ states('input_select.fan_speed_ventilador_habitacion') }}
           {% endif %}
-        percentage_template: >
+        percentage: >
           {% set speed = states('input_select.fan_speed_ventilador_habitacion') %}
           {% if speed == 'Low' %}
             33
@@ -202,14 +202,14 @@ data:
         speed_count: 3
       - name: "Ventilador Porche Lado Cocina"
         unique_id: "ventilador_porche_lado_cocina"
-        value_template: "{{ not is_state('input_select.fan_speed_ventilador_porche_lado_cocina', 'Off') }}"
-        preset_mode_template: >
+        state: "{{ not is_state('input_select.fan_speed_ventilador_porche_lado_cocina', 'Off') }}"
+        preset_mode: >
           {% if is_state('input_select.fan_speed_ventilador_porche_lado_cocina', 'Off') %}
             null
           {% else %}
             {{ states('input_select.fan_speed_ventilador_porche_lado_cocina') }}
           {% endif %}
-        percentage_template: >
+        percentage: >
           {% set speed = states('input_select.fan_speed_ventilador_porche_lado_cocina') %}
           {% if speed == 'Low' %}
             33
@@ -256,14 +256,14 @@ data:
         speed_count: 3
       - name: "Ventilador Porche Lado Salón"
         unique_id: "ventilador_porche_lado_salon"
-        value_template: "{{ not is_state('input_select.fan_speed_ventilador_porche_lado_salon', 'Off') }}"
-        preset_mode_template: >
+        state: "{{ not is_state('input_select.fan_speed_ventilador_porche_lado_salon', 'Off') }}"
+        preset_mode: >
           {% if is_state('input_select.fan_speed_ventilador_porche_lado_salon', 'Off') %}
             null
           {% else %}
             {{ states('input_select.fan_speed_ventilador_porche_lado_salon') }}
           {% endif %}
-        percentage_template: >
+        percentage: >
           {% set speed = states('input_select.fan_speed_ventilador_porche_lado_salon') %}
           {% if speed == 'Low' %}
             33
@@ -310,8 +310,8 @@ data:
         speed_count: 3
       - name: "Ventilador Salón"
         unique_id: "ventilador_salon"
-        value_template: "{{ not is_state('input_select.fan_speed_ventilador_salon', 'Off') }}"
-        percentage_template: >
+        state: "{{ not is_state('input_select.fan_speed_ventilador_salon', 'Off') }}"
+        percentage: >
           {% set speed = states('input_select.fan_speed_ventilador_salon') %}
           {% if speed == '1' %}
             20
@@ -326,13 +326,13 @@ data:
           {% else %}
             0
           {% endif %}
-        preset_mode_template: >
+        preset_mode: >
           {% if is_state('input_select.fan_speed_ventilador_salon', 'Off') %}
             null
           {% else %}
             {{ states('input_select.fan_speed_ventilador_salon') }}
           {% endif %}
-        direction_template: "{{ states('input_select.fan_direction_ventilador_salon') }}"
+        direction: "{{ states('input_select.fan_direction_ventilador_salon') }}"
         turn_on:
           service: input_select.select_option
           target:
@@ -382,7 +382,7 @@ data:
       - name: "Puerta Garaje"
         device_class: garage
         unique_id: puerta_corredera_garaje
-        value_template: >
+        state: >
           {% if is_state('binary_sensor.sensor_puerta_corredera_garaje', 'on') %}
             open
           {% elif is_state('binary_sensor.sensor_puerta_corredera_garaje', 'off') %}
@@ -402,7 +402,7 @@ data:
           service: switch.toggle
           target:
             entity_id: switch.puerta_garaje
-        position_template: >
+        position: >
           {% if is_state('binary_sensor.sensor_puerta_corredera_garaje', 'on') %}
             100
           {% elif is_state('binary_sensor.sensor_puerta_corredera_garaje', 'off') %}
@@ -410,7 +410,7 @@ data:
           {% else %}
             {{ state_attr(this.entity_id, 'current_position') | default(0) }}
           {% endif %}
-        icon_template: >
+        icon: >
           {% if is_state('binary_sensor.sensor_puerta_corredera_garaje', 'on') %}
             mdi:garage-open-variant
           {% elif is_state_attr(this.entity_id, 'current_position', 0) or is_state('binary_sensor.sensor_puerta_corredera_garaje', 'off') %}
