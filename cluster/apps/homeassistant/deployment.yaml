@@ -50,18 +50,6 @@ spec:
             - mountPath: "/config/templates.yaml"
               name: home-assistant-config
               subPath: templates.yaml
-            - mountPath: "/config/binary_sensors.yaml"
-              name: home-assistant-config
-              subPath: binary_sensors.yaml
-            - mountPath: "/config/lights.yaml"
-              name: home-assistant-config
-              subPath: lights.yaml
-            - mountPath: "/config/fans.yaml"
-              name: home-assistant-config
-              subPath: fans.yaml
-            - mountPath: "/config/covers.yaml"
-              name: home-assistant-config
-              subPath: covers.yaml
             - mountPath: "/etc/resolv.conf"
               name: home-assistant-config
               subPath: resolv.conf

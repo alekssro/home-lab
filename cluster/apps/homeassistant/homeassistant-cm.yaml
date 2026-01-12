@@ -93,356 +93,332 @@ data:
           {% else %}
             0
           {% endif %}
-  binary_sensors.yaml: |
-    - platform: template
-      sensors:
-        alekssro_home_wifi:
-          value_template: >-
-            {% if states('sensor.pixel_9_pro_wi_fi_connection') == "R&A Home" %}
-              on
-            {% else %}
-              off
-            {% endif %}
-        raquel_home_wifi:
-          value_template: >-
-            {% if states('sensor.pixel_7_wi_fi_connection') == "R&A Home" %}
-              on
-            {% else %}
-              off
-            {% endif %}
-  lights.yaml: |
-    - platform: template
-      lights:
-        luz_ventilador_habitacion:
-          friendly_name: "Luz Ventilador Habitación"
-          unique_id: "luz_ventilador_habitacion"
-          turn_on:
-            - service: button.press
-              target:
-                entity_id: button.light_on_off_ventilador_habitacion
-          turn_off:
-            - service: button.press
-              target:
-                entity_id: button.light_on_off_ventilador_habitacion
-        luz_ventilador_porche_lado_cocina:
-          friendly_name: "Luz Ventilador Porche Lado Cocina"
-          unique_id: "luz_ventilador_porche_lado_cocina"
-          turn_on:
-            - service: button.press
-              target:
-                entity_id: button.light_onoff_ventilador_lado_cocina
-          turn_off:
-            - service: button.press
-              target:
-                entity_id: button.light_onoff_ventilador_lado_cocina
-        luz_ventilador_porche_lado_salon:
-          friendly_name: "Luz Ventilador Porche Lado Salón"
-          unique_id: "luz_ventilador_porche_lado_salon"
-          turn_on:
-            - service: button.press
-              target:
-                entity_id: button.light_onoff_ventilador_lado_salon
-          turn_off:
-            - service: button.press
-              target:
-                entity_id: button.light_onoff_ventilador_lado_salon
-        luz_ventilador_salon:
-          friendly_name: "Luz Ventilador Salón"
-          unique_id: "luz_ventilador_salon"
-          turn_on:
-            - service: button.press
-              target:
-                entity_id: button.light_on_off_ventilador_salon
-          turn_off:
-            - service: button.press
-              target:
-                entity_id: button.light_on_off_ventilador_salon
-  fans.yaml: |
-    - platform: template
-      fans:
-        # Fan 1: Bedroom Fan
-        ventilador_habitacion:
-          friendly_name: "Ventilador Habitación"
-          unique_id: "ventilador_habitacion"
-          value_template: "{{ not is_state('input_select.fan_speed_ventilador_habitacion', 'Off') }}"
-          preset_mode_template: >
-            {% if is_state('input_select.fan_speed_ventilador_habitacion', 'Off') %}
-              null
-            {% else %}
-              {{ states('input_select.fan_speed_ventilador_habitacion') }}
-            {% endif %}
-          percentage_template: >
-            {% set speed = states('input_select.fan_speed_ventilador_habitacion') %}
-            {% if speed == 'Low' %}
-              33
-            {% elif speed == 'Medium' %}
-              66
-            {% elif speed == 'High' %}
-              100
-            {% else %}
-              0
-            {% endif %}
-          turn_on:
-            service: input_select.select_option
+    - binary_sensor:
+      - name: alekssro_home_wifi
+        state: >-
+          {% if states('sensor.pixel_9_pro_wi_fi_connection') == "R&A Home" %}
+            on
+          {% else %}
+            off
+          {% endif %}
+      - name: raquel_home_wifi
+        state: >-
+          {% if states('sensor.pixel_7_wi_fi_connection') == "R&A Home" %}
+            on
+          {% else %}
+            off
+          {% endif %}
+    - light:
+      - name: "Luz Ventilador Habitación"
+        unique_id: "luz_ventilador_habitacion"
+        turn_on:
+          - service: button.press
             target:
-              entity_id: input_select.fan_speed_ventilador_habitacion
-            data:
-              option: "Low" # Default speed when turned on
-          turn_off:
-            service: input_select.select_option
+              entity_id: button.light_on_off_ventilador_habitacion
+        turn_off:
+          - service: button.press
             target:
-              entity_id: input_select.fan_speed_ventilador_habitacion
-            data:
-              option: "Off"
-          set_preset_mode:
-            service: input_select.select_option
+              entity_id: button.light_on_off_ventilador_habitacion
+      - name: "Luz Ventilador Porche Lado Cocina"
+        unique_id: "luz_ventilador_porche_lado_cocina"
+        turn_on:
+          - service: button.press
             target:
-              entity_id: input_select.fan_speed_ventilador_habitacion
-            data:
-              option: "{{ preset_mode }}"
-          set_percentage:
-            service: input_select.select_option
+              entity_id: button.light_onoff_ventilador_lado_cocina
+        turn_off:
+          - service: button.press
             target:
-              entity_id: input_select.fan_speed_ventilador_habitacion
-            data:
-              option: >
-                {% if percentage == 0 %}
-                  Off
-                {% elif percentage <= 33 %}
-                  Low
-                {% elif percentage <= 66 %}
-                  Medium
-                {% else %}
-                  High
-                {% endif %}
-          speed_count: 3
-
-        # Fan 2: Kitchen Side Fan
-        ventilador_porche_lado_cocina:
-          friendly_name: "Ventilador Porche Lado Cocina"
-          unique_id: "ventilador_porche_lado_cocina" # Ensure unique_id
-          value_template: "{{ not is_state('input_select.fan_speed_ventilador_porche_lado_cocina', 'Off') }}"
-          preset_mode_template: >
-            {% if is_state('input_select.fan_speed_ventilador_porche_lado_cocina', 'Off') %}
-              null
-            {% else %}
-              {{ states('input_select.fan_speed_ventilador_porche_lado_cocina') }}
-            {% endif %}
-          percentage_template: >
-            {% set speed = states('input_select.fan_speed_ventilador_porche_lado_cocina') %}
-            {% if speed == 'Low' %}
-              33
-            {% elif speed == 'Medium' %}
-              66
-            {% elif speed == 'High' %}
-              100
-            {% else %}
-              0
-            {% endif %}
-          turn_on:
-            service: input_select.select_option
+              entity_id: button.light_onoff_ventilador_lado_cocina
+      - name: "Luz Ventilador Porche Lado Salón"
+        unique_id: "luz_ventilador_porche_lado_salon"
+        turn_on:
+          - service: button.press
             target:
-              entity_id: input_select.fan_speed_ventilador_porche_lado_cocina
-            data:
-              option: "Low"
-          turn_off:
-            service: input_select.select_option
+              entity_id: button.light_onoff_ventilador_lado_salon
+        turn_off:
+          - service: button.press
             target:
-              entity_id: input_select.fan_speed_ventilador_porche_lado_cocina
-            data:
-              option: "Off"
-          set_preset_mode:
-            service: input_select.select_option
+              entity_id: button.light_onoff_ventilador_lado_salon
+      - name: "Luz Ventilador Salón"
+        unique_id: "luz_ventilador_salon"
+        turn_on:
+          - service: button.press
             target:
-              entity_id: input_select.fan_speed_ventilador_porche_lado_cocina
-            data:
-              option: "{{ preset_mode }}"
-          set_percentage:
-            service: input_select.select_option
+              entity_id: button.light_on_off_ventilador_salon
+        turn_off:
+          - service: button.press
             target:
-              entity_id: input_select.fan_speed_ventilador_porche_lado_cocina
-            data:
-              option: >
-                {% if percentage == 0 %}
-                  Off
-                {% elif percentage <= 33 %}
-                  Low
-                {% elif percentage <= 66 %}
-                  Medium
-                {% else %}
-                  High
-                {% endif %}
-          speed_count: 3
-
-        # Fan 3: Living Room Side Fan
-        ventilador_porche_lado_salon:
-          friendly_name: "Ventilador Porche Lado Salón"
-          unique_id: "ventilador_porche_lado_salon" # Ensure unique_id
-          value_template: "{{ not is_state('input_select.fan_speed_ventilador_porche_lado_salon', 'Off') }}"
-          preset_mode_template: >
-            {% if is_state('input_select.fan_speed_ventilador_porche_lado_salon', 'Off') %}
-              null
-            {% else %}
-              {{ states('input_select.fan_speed_ventilador_porche_lado_salon') }}
-            {% endif %}
-          percentage_template: >
-            {% set speed = states('input_select.fan_speed_ventilador_porche_lado_salon') %}
-            {% if speed == 'Low' %}
-              33
-            {% elif speed == 'Medium' %}
-              66
-            {% elif speed == 'High' %}
-              100
-            {% else %}
-              0
-            {% endif %}
-          turn_on:
-            service: input_select.select_option
-            target:
-              entity_id: input_select.fan_speed_ventilador_porche_lado_salon
-            data:
-              option: "Low"
-          turn_off:
-            service: input_select.select_option
-            target:
-              entity_id: input_select.fan_speed_ventilador_porche_lado_salon
-            data:
-              option: "Off"
-          set_preset_mode:
-            service: input_select.select_option
-            target:
-              entity_id: input_select.fan_speed_ventilador_porche_lado_salon
-            data:
-              option: "{{ preset_mode }}"
-          set_percentage:
-            service: input_select.select_option
-            target:
-              entity_id: input_select.fan_speed_ventilador_porche_lado_salon
-            data:
-              option: >
-                {% if percentage == 0 %}
-                  Off
-                {% elif percentage <= 33 %}
-                  Low
-                {% elif percentage <= 66 %}
-                  Medium
-                {% else %}
-                  High
-                {% endif %}
-          speed_count: 3
-
-        # Fan 4: Living Room Fan (Updated for 5 speeds and direction)
-        ventilador_salon:
-          friendly_name: "Ventilador Salón"
-          unique_id: "ventilador_salon" # Ensure unique_id
-          value_template: "{{ not is_state('input_select.fan_speed_ventilador_salon', 'Off') }}"
-          percentage_template: >
-            {% set speed = states('input_select.fan_speed_ventilador_salon') %}
-            {% if speed == '1' %}
-              20
-            {% elif speed == '2' %}
-              40
-            {% elif speed == '3' %}
-              60
-            {% elif speed == '4' %}
-              80
-            {% elif speed == '5' %}
-              100
-            {% else %}
-              0
-            {% endif %}
-          preset_mode_template: >
-            {% if is_state('input_select.fan_speed_ventilador_salon', 'Off') %}
-              null
-            {% else %}
-              {{ states('input_select.fan_speed_ventilador_salon') }}
-            {% endif %}
-          direction_template: "{{ states('input_select.fan_direction_ventilador_salon') }}"
-          turn_on:
-            service: input_select.select_option
-            target:
-              entity_id: input_select.fan_speed_ventilador_salon
-            data:
-              option: "2" # Default speed when turned on
-          turn_off:
-            service: input_select.select_option
-            target:
-              entity_id: input_select.fan_speed_ventilador_salon
-            data:
-              option: "Off"
-          set_percentage:
-            service: input_select.select_option
-            target:
-              entity_id: input_select.fan_speed_ventilador_salon
-            data:
-              option: >
-                {% set p = percentage | int %}
-                {% if p == 0 %}
-                  Off
-                {% elif p <= 20 %}
-                  1
-                {% elif p <= 40 %}
-                  2
-                {% elif p <= 60 %}
-                  3
-                {% elif p <= 80 %}
-                  4
-                {% else %}
-                  5
-                {% endif %}
-          set_preset_mode:
-            service: input_select.select_option
-            target:
-              entity_id: input_select.fan_speed_ventilador_salon
-            data:
-              option: "{{ preset_mode }}" # preset_mode will be "1", "2", "3", "4", or "5"
-          set_direction:
-            service: input_select.select_option
-            target:
-              entity_id: input_select.fan_direction_ventilador_salon
-            data:
-              option: "{{ direction }}" # direction will be "forward" or "reverse"
-          speed_count: 5
-  covers.yaml: |
-    - platform: template
-      covers:
-        puerta_corredera_garaje:
-          device_class: garage
-          friendly_name: "Puerta Garaje"
-          unique_id: puerta_corredera_garaje
-          value_template: >
-            {% if is_state('binary_sensor.sensor_puerta_corredera_garaje', 'on') %}
-              open
-            {% elif is_state('binary_sensor.sensor_puerta_corredera_garaje', 'off') %}
-              closed
-            {% else %}
-              closed {# Default to 'closed' if the sensor state is unknown or unavailable #}
-            {% endif %}
-          open_cover:
-            service: switch.toggle
-            target:
-              entity_id: switch.puerta_garaje
-          close_cover:
-            service: switch.toggle
-            target:
-              entity_id: switch.puerta_garaje
-          stop_cover:
-            service: switch.toggle
-            target:
-              entity_id: switch.puerta_garaje
-          position_template: >
-            {% if is_state('binary_sensor.sensor_puerta_corredera_garaje', 'on') %}
-              100
-            {% elif is_state('binary_sensor.sensor_puerta_corredera_garaje', 'off') %}
-              0
-            {% else %}
-              {{ state_attr(this.entity_id, 'current_position') | default(0) }}
-            {% endif %}
-          icon_template: >
-            {% if is_state('binary_sensor.sensor_puerta_corredera_garaje', 'on') %}
-              mdi:garage-open-variant
-            {% elif is_state_attr(this.entity_id, 'current_position', 0) or is_state('binary_sensor.sensor_puerta_corredera_garaje', 'off') %}
-              mdi:garage-variant
-            {% else %}
-              mdi:garage-alert-variant
-            {% endif %}
+              entity_id: button.light_on_off_ventilador_salon
+    - fan:
+      - name: "Ventilador Habitación"
+        unique_id: "ventilador_habitacion"
+        value_template: "{{ not is_state('input_select.fan_speed_ventilador_habitacion', 'Off') }}"
+        preset_mode_template: >
+          {% if is_state('input_select.fan_speed_ventilador_habitacion', 'Off') %}
+            null
+          {% else %}
+            {{ states('input_select.fan_speed_ventilador_habitacion') }}
+          {% endif %}
+        percentage_template: >
+          {% set speed = states('input_select.fan_speed_ventilador_habitacion') %}
+          {% if speed == 'Low' %}
+            33
+          {% elif speed == 'Medium' %}
+            66
+          {% elif speed == 'High' %}
+            100
+          {% else %}
+            0
+          {% endif %}
+        turn_on:
+          service: input_select.select_option
+          target:
+            entity_id: input_select.fan_speed_ventilador_habitacion
+          data:
+            option: "Low" # Default speed when turned on
+        turn_off:
+          service: input_select.select_option
+          target:
+            entity_id: input_select.fan_speed_ventilador_habitacion
+          data:
+            option: "Off"
+        set_preset_mode:
+          service: input_select.select_option
+          target:
+            entity_id: input_select.fan_speed_ventilador_habitacion
+          data:
+            option: "{{ preset_mode }}"
+        set_percentage:
+          service: input_select.select_option
+          target:
+            entity_id: input_select.fan_speed_ventilador_habitacion
+          data:
+            option: >
+              {% if percentage == 0 %}
+                Off
+              {% elif percentage <= 33 %}
+                Low
+              {% elif percentage <= 66 %}
+                Medium
+              {% else %}
+                High
+              {% endif %}
+        speed_count: 3
+      - name: "Ventilador Porche Lado Cocina"
+        unique_id: "ventilador_porche_lado_cocina"
+        value_template: "{{ not is_state('input_select.fan_speed_ventilador_porche_lado_cocina', 'Off') }}"
+        preset_mode_template: >
+          {% if is_state('input_select.fan_speed_ventilador_porche_lado_cocina', 'Off') %}
+            null
+          {% else %}
+            {{ states('input_select.fan_speed_ventilador_porche_lado_cocina') }}
+          {% endif %}
+        percentage_template: >
+          {% set speed = states('input_select.fan_speed_ventilador_porche_lado_cocina') %}
+          {% if speed == 'Low' %}
+            33
+          {% elif speed == 'Medium' %}
+            66
+          {% elif speed == 'High' %}
+            100
+          {% else %}
+            0
+          {% endif %}
+        turn_on:
+          service: input_select.select_option
+          target:
+            entity_id: input_select.fan_speed_ventilador_porche_lado_cocina
+          data:
+            option: "Low"
+        turn_off:
+          service: input_select.select_option
+          target:
+            entity_id: input_select.fan_speed_ventilador_porche_lado_cocina
+          data:
+            option: "Off"
+        set_preset_mode:
+          service: input_select.select_option
+          target:
+            entity_id: input_select.fan_speed_ventilador_porche_lado_cocina
+          data:
+            option: "{{ preset_mode }}"
+        set_percentage:
+          service: input_select.select_option
+          target:
+            entity_id: input_select.fan_speed_ventilador_porche_lado_cocina
+          data:
+            option: >
+              {% if percentage == 0 %}
+                Off
+              {% elif percentage <= 33 %}
+                Low
+              {% elif percentage <= 66 %}
+                Medium
+              {% else %}
+                High
+              {% endif %}
+        speed_count: 3
+      - name: "Ventilador Porche Lado Salón"
+        unique_id: "ventilador_porche_lado_salon"
+        value_template: "{{ not is_state('input_select.fan_speed_ventilador_porche_lado_salon', 'Off') }}"
+        preset_mode_template: >
+          {% if is_state('input_select.fan_speed_ventilador_porche_lado_salon', 'Off') %}
+            null
+          {% else %}
+            {{ states('input_select.fan_speed_ventilador_porche_lado_salon') }}
+          {% endif %}
+        percentage_template: >
+          {% set speed = states('input_select.fan_speed_ventilador_porche_lado_salon') %}
+          {% if speed == 'Low' %}
+            33
+          {% elif speed == 'Medium' %}
+            66
+          {% elif speed == 'High' %}
+            100
+          {% else %}
+            0
+          {% endif %}
+        turn_on:
+          service: input_select.select_option
+          target:
+            entity_id: input_select.fan_speed_ventilador_porche_lado_salon
+          data:
+            option: "Low"
+        turn_off:
+          service: input_select.select_option
+          target:
+            entity_id: input_select.fan_speed_ventilador_porche_lado_salon
+          data:
+            option: "Off"
+        set_preset_mode:
+          service: input_select.select_option
+          target:
+            entity_id: input_select.fan_speed_ventilador_porche_lado_salon
+          data:
+            option: "{{ preset_mode }}"
+        set_percentage:
+          service: input_select.select_option
+          target:
+            entity_id: input_select.fan_speed_ventilador_porche_lado_salon
+          data:
+            option: >
+              {% if percentage == 0 %}
+                Off
+              {% elif percentage <= 33 %}
+                Low
+              {% elif percentage <= 66 %}
+                Medium
+              {% else %}
+                High
+              {% endif %}
+        speed_count: 3
+      - name: "Ventilador Salón"
+        unique_id: "ventilador_salon"
+        value_template: "{{ not is_state('input_select.fan_speed_ventilador_salon', 'Off') }}"
+        percentage_template: >
+          {% set speed = states('input_select.fan_speed_ventilador_salon') %}
+          {% if speed == '1' %}
+            20
+          {% elif speed == '2' %}
+            40
+          {% elif speed == '3' %}
+            60
+          {% elif speed == '4' %}
+            80
+          {% elif speed == '5' %}
+            100
+          {% else %}
+            0
+          {% endif %}
+        preset_mode_template: >
+          {% if is_state('input_select.fan_speed_ventilador_salon', 'Off') %}
+            null
+          {% else %}
+            {{ states('input_select.fan_speed_ventilador_salon') }}
+          {% endif %}
+        direction_template: "{{ states('input_select.fan_direction_ventilador_salon') }}"
+        turn_on:
+          service: input_select.select_option
+          target:
+            entity_id: input_select.fan_speed_ventilador_salon
+          data:
+            option: "2" # Default speed when turned on
+        turn_off:
+          service: input_select.select_option
+          target:
+            entity_id: input_select.fan_speed_ventilador_salon
+          data:
+            option: "Off"
+        set_percentage:
+          service: input_select.select_option
+          target:
+            entity_id: input_select.fan_speed_ventilador_salon
+          data:
+            option: >
+              {% set p = percentage | int %}
+              {% if p == 0 %}
+                Off
+              {% elif p <= 20 %}
+                1
+              {% elif p <= 40 %}
+                2
+              {% elif p <= 60 %}
+                3
+              {% elif p <= 80 %}
+                4
+              {% else %}
+                5
+              {% endif %}
+        set_preset_mode:
+          service: input_select.select_option
+          target:
+            entity_id: input_select.fan_speed_ventilador_salon
+          data:
+            option: "{{ preset_mode }}" # preset_mode will be "1", "2", "3", "4", or "5"
+        set_direction:
+          service: input_select.select_option
+          target:
+            entity_id: input_select.fan_direction_ventilador_salon
+          data:
+            option: "{{ direction }}" # direction will be "forward" or "reverse"
+        speed_count: 5
+    - cover:
+      - name: "Puerta Garaje"
+        device_class: garage
+        unique_id: puerta_corredera_garaje
+        value_template: >
+          {% if is_state('binary_sensor.sensor_puerta_corredera_garaje', 'on') %}
+            open
+          {% elif is_state('binary_sensor.sensor_puerta_corredera_garaje', 'off') %}
+            closed
+          {% else %}
+            closed {# Default to 'closed' if the sensor state is unknown or unavailable #}
+          {% endif %}
+        open_cover:
+          service: switch.toggle
+          target:
+            entity_id: switch.puerta_garaje
+        close_cover:
+          service: switch.toggle
+          target:
+            entity_id: switch.puerta_garaje
+        stop_cover:
+          service: switch.toggle
+          target:
+            entity_id: switch.puerta_garaje
+        position_template: >
+          {% if is_state('binary_sensor.sensor_puerta_corredera_garaje', 'on') %}
+            100
+          {% elif is_state('binary_sensor.sensor_puerta_corredera_garaje', 'off') %}
+            0
+          {% else %}
+            {{ state_attr(this.entity_id, 'current_position') | default(0) }}
+          {% endif %}
+        icon_template: >
+          {% if is_state('binary_sensor.sensor_puerta_corredera_garaje', 'on') %}
+            mdi:garage-open-variant
+          {% elif is_state_attr(this.entity_id, 'current_position', 0) or is_state('binary_sensor.sensor_puerta_corredera_garaje', 'off') %}
+            mdi:garage-variant
+          {% else %}
+            mdi:garage-alert-variant
+          {% endif %}
