@@ -9,6 +9,8 @@ metadata:
     app: gluetun
 spec:
   replicas: 1
+  strategy:
+    type: Recreate
   selector:
     matchLabels:
       app: gluetun
