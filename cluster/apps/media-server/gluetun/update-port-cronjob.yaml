@@ -12,27 +12,28 @@ spec:
         spec:
           containers:
             - name: port-updater
-              image: alpine
+              image: busybox
+              env:
+                - name: GLUETUN_API_KEY
+                  valueFrom:
+                    secretKeyRef:
+                      name: gluetun-conf
+                      key: GLUETUN__AUTH__APIKEY
               command:
                 - "/bin/sh"
                 - "-c"
                 - |
-                  if [ ! -f /tmp/gluetun/forwarded_port ]; then
-                    echo "forwarded_port file not found, exiting"
-                    exit 0
-                  fi
-                  PORT=$(cat /tmp/gluetun/forwarded_port)
+                  # Retrieve the forwarded port from Gluetun API using wget and sed
+                  # JSON format: {"port":5914}
+                  PORT=$(wget -qO- --header "X-API-Key: $GLUETUN_API_KEY" http://gluetun:8000/v1/portforward | sed -E 's/.*"port":([0-9]*).*/\1/')
+
                   if [ -z "$PORT" ]; then
-                    echo "Port is empty, exiting"
-                    exit 0
+                    echo "Failed to retrieve port from Gluetun, exiting"
+                    exit 1
                   fi
-                  apk add --no-cache wget
-                  wget -O- --retry-connrefused -t 3 --post-data "json={\"listen_port\":$PORT}" http://qbittorrent:8080/api/v2/app/setPreferences
-              volumeMounts:
-                - name: gluetun-tmp
-                  mountPath: /tmp/gluetun
+
+                  echo "Retrieved port: $PORT"
+
+                  # Update qBittorrent preferences
+                  wget -qO- --post-data "json={\"listen_port\":$PORT}" http://qbittorrent:8080/api/v2/app/setPreferences
           restartPolicy: OnFailure
-          volumes:
-            - name: gluetun-tmp
-              persistentVolumeClaim:
-                claimName: gluetun-tmp-pvc

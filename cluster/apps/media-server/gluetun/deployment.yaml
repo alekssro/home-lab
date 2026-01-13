@@ -88,6 +88,9 @@ spec:
               mountPath: /dev/net/tun
             - name: gluetun-tmp
               mountPath: /tmp/gluetun
+            - name: gluetun-auth-config
+              mountPath: /gluetun/auth/config.toml
+              subPath: config.toml
         - name: qbittorrent
           image: lscr.io/linuxserver/qbittorrent:5.1.2
           imagePullPolicy: IfNotPresent
@@ -260,6 +263,12 @@ spec:
         - name: gluetun-config
           persistentVolumeClaim:
             claimName: gluetun-config-pvc
+        - name: gluetun-auth-config
+          secret:
+            secretName: media-secret
+            items:
+              - key: config.toml
+                path: config.toml
         - name: qbittorrent-config
           persistentVolumeClaim:
             claimName: qbittorrent-config-pvc
