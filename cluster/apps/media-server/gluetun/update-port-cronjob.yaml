@@ -17,7 +17,7 @@ spec:
                 - name: GLUETUN_API_KEY
                   valueFrom:
                     secretKeyRef:
-                      name: gluetun-conf
+                      name: media-secret
                       key: GLUETUN__AUTH__APIKEY
               command:
                 - "/bin/sh"
