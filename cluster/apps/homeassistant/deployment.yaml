@@ -58,6 +58,25 @@ spec:
               subPath: SERVICE_ACCOUNT.JSON
             - mountPath: "/var/run/dbus"
               name: dbus
+          lifecycle:
+            postStart:
+              exec:
+                command:
+                  - /bin/sh
+                  - -c
+                  - |
+                    python3 -c "
+                    from pathlib import Path
+                    for p in Path('/usr/local/lib/').glob('**/aiopvpc/pvpc_tariff.py'):
+                        t = p.read_text()
+                        old = 'national_holiday = day in _NATIONAL_EXTRA_HOLIDAYS_FOR_P3_PERIOD[day.year]'
+                        new = 'national_holiday = day in _NATIONAL_EXTRA_HOLIDAYS_FOR_P3_PERIOD.get(day.year, set())'
+                        if old in t:
+                            p.write_text(t.replace(old, new))
+                            print(f'Parcheado con éxito en: {p}')
+                        else:
+                            print(f'No se encontró el patrón en: {p} (quizás ya está parcheado)')
+                    "
       nodeSelector:
         kubernetes.io/hostname: nuc7pjyhn-rookie
       volumes:
