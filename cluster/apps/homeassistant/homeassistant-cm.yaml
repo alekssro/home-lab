@@ -120,21 +120,21 @@ data:
         turn_on:
           - service: button.press
             target:
-              entity_id: button.light_onoff_ventilador_lado_cocina
+              entity_id: button.light_on_off_ventilador_lado_cocina
         turn_off:
           - service: button.press
             target:
-              entity_id: button.light_onoff_ventilador_lado_cocina
+              entity_id: button.light_on_off_ventilador_lado_cocina
       - name: "Luz Ventilador Porche Lado Salón"
         unique_id: "luz_ventilador_porche_lado_salon"
         turn_on:
           - service: button.press
             target:
-              entity_id: button.light_onoff_ventilador_lado_salon
+              entity_id: button.light_on_off_ventilador_lado_salon
         turn_off:
           - service: button.press
             target:
-              entity_id: button.light_onoff_ventilador_lado_salon
+              entity_id: button.light_on_off_ventilador_lado_salon
       - name: "Luz Ventilador Salón"
         unique_id: "luz_ventilador_salon"
         turn_on:
