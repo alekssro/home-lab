@@ -42,6 +42,20 @@ spec:
       port: 9001
       name: mqtt-websocket
 
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: homeassistant-esphome
+  namespace: homeassistant
+spec:
+  selector:
+    app: esphome
+  ports:
+    - protocol: TCP
+      port: 6052
+      name: http
+
 # ---
 # apiVersion: v1
 # kind: Service

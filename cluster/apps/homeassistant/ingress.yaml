@@ -26,6 +26,34 @@ spec:
                 port:
                   number: 8123
 
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: homeassistant-esphome
+  namespace: homeassistant
+  annotations:
+    cert-manager.io/cluster-issuer: "letsencrypt-production"
+    traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
+    traefik.ingress.kubernetes.io/router.middlewares: "networking-internal-only@kubernetescrd"
+spec:
+  ingressClassName: traefik
+  tls:
+    - secretName: homeassistant-esphome-tls
+      hosts:
+        - "esphome.${SECRET_DOMAIN}"
+  rules:
+    - host: "esphome.${SECRET_DOMAIN}"
+      http:
+        paths:
+          - pathType: Prefix
+            path: /
+            backend:
+              service:
+                name: homeassistant-esphome
+                port:
+                  number: 6052
+
 # ---
 # apiVersion: networking.k8s.io/v1
 # kind: Ingress

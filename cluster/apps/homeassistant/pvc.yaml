@@ -46,6 +46,22 @@ spec:
     requests:
       storage: 100Mi
 
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: home-assistant-esphome-pvc
+  namespace: homeassistant
+  labels:
+    app: esphome
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: longhorn
+  resources:
+    requests:
+      storage: 200Mi
+
 # ---
 # apiVersion: v1
 # kind: PersistentVolumeClaim
