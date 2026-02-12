@@ -181,7 +181,7 @@ spec:
       hostNetwork: true
       initContainers:
         - name: wait-for-homeassistant
-          image: busybox:1.36
+          image: busybox:1.37
           command: ["/bin/sh", "-c"]
           args:
             - |
