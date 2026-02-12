@@ -94,7 +94,7 @@ spec:
               mountPath: /gluetun/auth/config.toml
               subPath: config.toml
         - name: qbittorrent
-          image: lscr.io/linuxserver/qbittorrent:5.1.2
+          image: lscr.io/linuxserver/qbittorrent:5.1.4
           imagePullPolicy: IfNotPresent
           envFrom:
             - configMapRef:
