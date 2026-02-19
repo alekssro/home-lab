@@ -37,17 +37,18 @@ data:
       blocked_response_ttl: 10
       parental_block_host: family-block.dns.adguard.com
       safebrowsing_block_host: standard-block.dns.adguard.com
-      ratelimit: 0
+      ratelimit: 20
       ratelimit_whitelist: []
       refuse_any: true
       upstream_dns:
       - https://dns.cloudflare.com/dns-query
-      # - https://dns.quad9.net/dns-query
+      - https://dns.quad9.net/dns-query
       - "[/${SECRET_DOMAIN}/]192.168.68.20"
       - "[/vpn.${SECRET_DOMAIN}/]https://dns.cloudflare.com/dns-query"
       upstream_dns_file: ""
       bootstrap_dns:
       - 1.1.1.1
+      - 9.9.9.9
       - 149.112.112.10
       - 2620:fe::10
       - 2620:fe::fe:10
@@ -57,11 +58,11 @@ data:
       disallowed_clients: []
       blocked_hosts: []
       cache_size: 4194304
-      cache_ttl_min: 0
-      cache_ttl_max: 0
+      cache_ttl_min: 3600
+      cache_ttl_max: 86400
       bogus_nxdomain: []
       aaaa_disabled: false
-      enable_dnssec: false
+      enable_dnssec: true
       edns_client_subnet: false
       max_goroutines: 300
       ipset: []
@@ -78,7 +79,9 @@ data:
       blocked_services: []
       local_domain_name: lan
       resolve_clients: true
-      local_ptr_upstreams: []
+      local_ptr_upstreams:
+      - 192.168.68.1
+      - 192.168.68.20
     tls:
       enabled: false
       server_name: ""
@@ -104,29 +107,13 @@ data:
       name: AdAway
       id: 2
     - enabled: true
-      url: https://easylist.to/easylist/easylist.txt
-      name: EasyList
-      id: 3
-    - enabled: true
-      url: https://secure.fanboy.co.nz/fanboy-cookiemonster.txt
-      name: EasyList Cookiemonster
-      id: 4
-    - enabled: true
-      url: https://easylist.to/easylist/easyprivacy.txt
-      name: EasyPrivacy
-      id: 5
-    - enabled: true
-      url: https://secure.fanboy.co.nz/fanboy-annoyance.txt
-      name: Fanboy's Annoyance
-      id: 6
-    - enabled: true
       url: https://abp.oisd.nl
       name: oisd full
       id: 7
     whitelist_filters: []
     user_rules: []
     dhcp:
-      enabled: true
+      enabled: false
       interface_name: "eth0"
       dhcpv4:
         gateway_ip: "192.168.68.1"
