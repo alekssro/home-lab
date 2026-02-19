@@ -78,10 +78,8 @@ data:
       cache_time: 30
       blocked_services: []
       local_domain_name: lan
-      resolve_clients: true
-      local_ptr_upstreams:
-      - 192.168.68.1
-      - 192.168.68.20
+      resolve_clients: false
+      local_ptr_upstreams: []
     tls:
       enabled: false
       server_name: ""
