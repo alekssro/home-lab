@@ -57,7 +57,10 @@ data:
       bogus_nxdomain: []
       aaaa_disabled: false
       enable_dnssec: true
-      edns_client_subnet: false
+      edns_client_subnet:
+        custom_ip: ""
+        enabled: false
+        use_custom: false
       max_goroutines: 300
       ipset: []
       filtering_enabled: true
@@ -120,7 +123,14 @@ data:
         lease_duration: 86400
         ra_slaac_only: false
         ra_allow_slaac: false
-    clients: []
+    clients:
+      runtime_sources:
+        whois: true
+        arp: true
+        rdns: false
+        dhcp: true
+        hosts: true
+      persistent: []
     log:
       enabled: true
       file: ""
