@@ -140,4 +140,4 @@ data:
       max_age: 3
       compress: false
       local_time: false
-      verbose: false
+      verbose: true
