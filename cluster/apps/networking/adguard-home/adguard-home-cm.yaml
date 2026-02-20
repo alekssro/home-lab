@@ -130,3 +130,4 @@ data:
       compress: false
       local_time: false
       verbose: false
+    schema_version: 33
