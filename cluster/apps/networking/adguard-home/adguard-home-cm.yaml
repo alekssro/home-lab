@@ -5,9 +5,6 @@ metadata:
   namespace: networking
 data:
   AdGuardHome.yaml: |
-    bind_host: 0.0.0.0
-    bind_port: 3000
-    beta_bind_port: 0
     users:
       - name: alekssro
         password: $2a$12$NEFRYj/k.MjYSPG3svvQ4O9efojUwu37p6pQnZ6WOZSXVq0Txz9xG
@@ -17,9 +14,6 @@ data:
     block_auth_min: 15
     http_proxy: ""
     language: en
-    rlimit_nofile: 0
-    debug_pprof: false
-    web_session_ttl: 720
     dns:
       bind_hosts:
       - 0.0.0.0
@@ -107,7 +101,7 @@ data:
     - enabled: true
       url: https://abp.oisd.nl
       name: oisd full
-      id: 7
+      id: 3
     whitelist_filters: []
     user_rules: []
     dhcp:
@@ -127,11 +121,12 @@ data:
         ra_slaac_only: false
         ra_allow_slaac: false
     clients: []
-    log_compress: false
-    log_localtime: false
-    log_max_backups: 0
-    log_max_size: 100
-    log_max_age: 3
-    log_file: ""
-    verbose: true
-    schema_version: 10
+    log:
+      enabled: true
+      file: ""
+      max_backups: 0
+      max_size: 100
+      max_age: 3
+      compress: false
+      local_time: false
+      verbose: false
