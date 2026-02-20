@@ -6,6 +6,7 @@ metadata:
 data:
   resolv.conf: |
     nameserver 192.168.68.98
+    nameserver 192.168.68.20
     nameserver 8.8.8.8
   configuration.yaml: |
     default_config:
