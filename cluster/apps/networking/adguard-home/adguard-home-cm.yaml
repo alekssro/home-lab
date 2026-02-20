@@ -5,6 +5,7 @@ metadata:
   namespace: networking
 data:
   AdGuardHome.yaml: |
+    schema_version: 33
     users:
       - name: alekssro
         password: $2a$12$NEFRYj/k.MjYSPG3svvQ4O9efojUwu37p6pQnZ6WOZSXVq0Txz9xG
@@ -140,4 +141,3 @@ data:
       compress: false
       local_time: false
       verbose: false
-    schema_version: 33
