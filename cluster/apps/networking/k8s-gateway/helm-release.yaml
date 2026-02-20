@@ -24,11 +24,11 @@ spec:
       port: 53
       annotations:
         metallb.universe.tf/loadBalancerIPs: "${METALLB_K8S_GATEWAY_ADDR}"
-      externalTrafficPolicy: Cluster
+      externalTrafficPolicy: Local
     # Increase replicaCount and set an anti-affinity if you wish to scale this
     # replicaCount: 1
-    # nodeSelector:
-    #   kubernetes.io/hostname: nuc7pjyhn
+    nodeSelector:
+      kubernetes.io/hostname: nuc7pjyhn
     # affinity:
     #   podAntiAffinity:
     #     preferredDuringSchedulingIgnoredDuringExecution:
