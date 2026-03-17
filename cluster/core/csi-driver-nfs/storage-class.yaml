@@ -3,6 +3,7 @@ kind: StorageClass
 metadata:
   name: nfs-csi
 provisioner: nfs.csi.k8s.io
+allowVolumeExpansion: true
 parameters:
   server: 192.168.68.101
   share: /volume1/K8s-homelab
