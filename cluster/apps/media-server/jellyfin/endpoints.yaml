@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Endpoints
+metadata:
+  name: jellyfin
+  namespace: media-server
+subsets:
+  - addresses:
+      - ip: 192.168.68.101
+    ports:
+      - name: http
+        port: 8096
+      - name: svc-discovery
+        port: 7359
+        protocol: UDP
