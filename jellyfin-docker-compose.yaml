@@ -1,0 +1,22 @@
+version: "3"
+services:
+  jellyfin:
+    image: linuxserver/jellyfin:10.11.6
+    container_name: jellyfin
+    environment:
+      - PUID=1000 # Make sure to adjust to the UID/GID of the user on the new instance
+      - PGID=1000
+      - TZ=Etc/UTC # Adjust to your timezone
+      # Note: The kubernetes deployment had a secret `jellyfin-conf` and a configmap `media-config`.
+      # Bring any needed environment variables here.
+    volumes:
+      - ./config:/config
+      - /path/to/your/data:/data # Update this path to where your media data will reside
+    ports:
+      - 8096:8096
+      - 7359:7359/udp
+      - 1900:1900/udp
+    devices:
+      - /dev/dri:/dev/dri # Retained from your deployment for hardware transcoding
+    privileged: true # Retained from your deployment
+    restart: unless-stopped
