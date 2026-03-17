@@ -1,10 +1,10 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: jellyseerr-ingress
+  name: seerr-ingress
   namespace: media-server
   labels:
-    app: jellyseerr
+    app: seerr
   annotations:
     cert-manager.io/cluster-issuer: "letsencrypt-production"
     traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
@@ -13,16 +13,16 @@ spec:
   ingressClassName: traefik
   tls:
     - hosts:
-        - "jellyseerr.${SECRET_DOMAIN}"
-      secretName: jellyseerr-tls
+        - "seerr.${SECRET_DOMAIN}"
+      secretName: seerr-tls
   rules:
-    - host: "jellyseerr.${SECRET_DOMAIN}"
+    - host: "seerr.${SECRET_DOMAIN}"
       http:
         paths:
           - path: /
             pathType: Prefix
             backend:
               service:
-                name: jellyseerr
+                name: seerr
                 port:
                   number: 5055

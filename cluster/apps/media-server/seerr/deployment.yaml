@@ -2,25 +2,25 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: jellyseerr
+  name: seerr
   namespace: media-server
   annotations:
     reloader.stakater.com/auto: "true"
   labels:
-    app: jellyseerr
+    app: seerr
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: jellyseerr
+      app: seerr
   template:
     metadata:
       labels:
-        app: jellyseerr
+        app: seerr
     spec:
       containers:
-        - name: jellyseerr
-          image: ghcr.io/fallenbagel/jellyseerr:2.7.3
+        - name: seerr
+          image: ghcr.io/seerr-team/seerr:3.1.0
           imagePullPolicy: IfNotPresent
           envFrom:
             - configMapRef:
@@ -35,9 +35,9 @@ spec:
             limits:
               memory: "512Mi"
           volumeMounts:
-            - name: jellyseerr-config
+            - name: seerr-config
               mountPath: /app/config
       volumes:
-        - name: jellyseerr-config
+        - name: seerr-config
           persistentVolumeClaim:
             claimName: jellyseerr-config-pvc
