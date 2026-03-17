@@ -9,7 +9,7 @@ spec:
     - ReadWriteMany
   resources:
     requests:
-      storage: 1Ti # Adjust size as needed
+      storage: 2Ti # Adjust size as needed
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
