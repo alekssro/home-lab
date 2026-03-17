@@ -8,3 +8,7 @@ spec:
     - name: http
       port: 8096
       targetPort: 8096
+    - name: svc-discovery
+      port: 7359
+      protocol: UDP
+      targetPort: 7359
