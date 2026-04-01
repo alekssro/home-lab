@@ -150,7 +150,7 @@ spec:
               protocol: TCP
           volumeMounts:
             - name: sai-usb-device
-              mountPath: /dev/bus/usb/001/003 # SAI
+              mountPath: /dev/bus/usb/001/002 # SAI
       nodeSelector:
         kubernetes.io/hostname: nuc7pjyhn-rookie
       volumes:
