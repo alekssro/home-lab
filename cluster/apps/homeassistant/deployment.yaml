@@ -149,14 +149,14 @@ spec:
               name: nut
               protocol: TCP
           volumeMounts:
-            - name: sai-usb-device
-              mountPath: /dev/bus/usb/001/002 # SAI
+            - name: sai-usb-devices
+              mountPath: /dev/bus/usb # SAI
       nodeSelector:
         kubernetes.io/hostname: nuc7pjyhn-rookie
       volumes:
-        - name: sai-usb-device
+        - name: sai-usb-devices
           hostPath:
-            path: /dev/bus/usb/001/002  # SAI
+            path: /dev/bus/usb  # SAI
 
 ---
 apiVersion: apps/v1
