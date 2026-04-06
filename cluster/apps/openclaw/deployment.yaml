@@ -17,6 +17,8 @@ spec:
     metadata:
       labels:
         app: openclaw
+      annotations:
+        reloader.stakater.com/auto: "true"
     spec:
       automountServiceAccountToken: false
       securityContext:
