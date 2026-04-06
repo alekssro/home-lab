@@ -1,0 +1,361 @@
+substitutions:
+  name: "owlbox"
+  friendly_name: "OwlBox RFID Music Speaker"
+  # WIRING CONFIGURATION
+  uart_tx_pin: GPIO17
+  uart_rx_pin: GPIO16
+  # RC522 Pins
+  spi_sck_pin: GPIO18
+  spi_miso_pin: GPIO19
+  spi_mosi_pin: GPIO23
+  pn532_cs_pin: GPIO4
+  # Buttons
+  btn_play_pin: GPIO25 # SW
+  btn_vol_up_pin: GPIO33 # DT
+  btn_vol_down_pin: GPIO32 # CLK
+  btn_next_pin: GPIO26 # Next track
+  btn_prev_pin: GPIO14 # Previous track
+  btn_power_pin: GPIO13
+  busy_pin: GPIO27
+
+globals:
+  - id: has_scanned_tag
+    type: bool
+    restore_value: no
+    initial_value: "false"
+  - id: current_folder
+    type: int
+    initial_value: "0"
+  - id: current_track
+    type: int
+    initial_value: "0"
+  - id: max_tracks
+    type: int
+    initial_value: "0"
+
+esphome:
+  name: ${name}
+  friendly_name: ${friendly_name}
+
+  # AUTO-OFF LOGIC:
+  # When the board boots, we prevent it from sleeping immediately.
+  # We start a "countdown" script. If no one touches it for 5 mins, it sleeps.
+  on_boot:
+    priority: 600
+    then:
+      - dfplayer.set_volume: 10
+      - sensor.rotary_encoder.set_value:
+          id: volume_knob
+          value: 10
+      - script.execute: auto_off_timer
+
+esp32:
+  board: esp32dev
+  framework:
+    type: arduino
+    advanced:
+      minimum_chip_revision: "3.1"
+
+# Enable logging (Optional: disable baud_rate if it interferes with DFPlayer, but usually fine on ESP32)
+logger:
+  level: DEBUG
+
+# Enable Home Assistant API (Optional)
+api:
+
+ota:
+  platform: esphome
+
+# Enable the "Emergency Settings Page"
+captive_portal:
+
+wifi:
+  ssid: !secret wifi_ssid
+  password: !secret wifi_password
+
+  # Fallback hotspot if wifi fails
+  ap:
+    ssid: !secret ap_ssid
+    password: !secret ap_password
+
+# --- HARDWARE COMPONENTS ---
+
+# 1. SPI Bus for RFID Reader
+spi:
+  clk_pin: ${spi_sck_pin}
+  mosi_pin: ${spi_mosi_pin}
+  miso_pin: ${spi_miso_pin}
+
+# 2. UART Bus for DFPlayer
+uart:
+  tx_pin: ${uart_tx_pin}
+  rx_pin: ${uart_rx_pin}
+  baud_rate: 9600
+  id: dfplayer_uart
+
+# 3. DFPlayer Component
+dfplayer:
+  uart_id: dfplayer_uart
+  id: my_dfplayer
+  # This volume is set on boot
+  on_finished_playback:
+    then:
+      - logger.log: "Song finished."
+
+# 4. RFID Component
+pn532_spi:
+  cs_pin: ${pn532_cs_pin}
+  update_interval: 1s
+  on_tag:
+    then:
+      # Log the scanned tag
+      - logger.log:
+          format: "RFID Tag Scanned: %s"
+          args: ["x"]
+
+      - globals.set:
+          id: has_scanned_tag
+          value: "true"
+
+      # Publish the UID to the sensor (triggers your automation)
+      - text_sensor.template.publish:
+          id: rfid_tag_uid
+          state: !lambda "return x;"
+
+      # Reset the sleep timer because we are active!
+      - script.execute: auto_off_timer
+
+      # --- TAG MAPPING LOGIC ---
+      # Add your tags here. 'x' is the tag ID string.
+      - if:
+          condition:
+            lambda: 'return x == "63-BE-29-07";' # NFC blue tag (testing)
+          then:
+            - dfplayer.play_folder:
+                folder: 1
+                file: 1
+
+      - if:
+          condition:
+            lambda: 'return x == "5A-F4-7D-36-0A-41-89";' # Pumba
+          then:
+            # 1. Save the folder and max tracks
+            - globals.set:
+                id: current_folder
+                value: "1"
+            - globals.set:
+                id: max_tracks
+                value: "3"
+            # 2. Pick a random track and save it
+            - globals.set:
+                id: current_track
+                value: "2"
+            # 3. Play exactly what is saved in memory!
+            - dfplayer.play_folder:
+                folder: !lambda "return id(current_folder);"
+                file: !lambda "return id(current_track);"
+
+      - if:
+          condition:
+            lambda: 'return x == "5A-E4-64-34-0A-41-89";' # Aliens
+          then:
+            # 1. Save the folder and max tracks
+            - globals.set:
+                id: current_folder
+                value: "6"
+            - globals.set:
+                id: max_tracks
+                value: "4"
+            # 2. Pick a random track and save it
+            - globals.set:
+                id: current_track
+                value: !lambda "return (esp_random() % 4) + 1;"
+            # 3. Play exactly what is saved in memory!
+            - dfplayer.play_folder:
+                folder: !lambda "return id(current_folder);"
+                file: !lambda "return id(current_track);"
+
+# 5. Deep Sleep (The Shutdown Mechanism)
+deep_sleep:
+  id: deep_sleep_component
+  # We don't set run_duration here because we handle it manually with scripts
+  wakeup_pin:
+    number: ${btn_play_pin}
+    mode: INPUT_PULLUP
+    inverted: true # Wakes up when button pulls LOW (GND)
+    allow_other_uses: true
+
+# --- BUTTONS & SENSORS ---
+
+text_sensor:
+  # RFID Tag UID
+  - platform: template
+    name: "RFID Tag UID"
+    id: rfid_tag_uid
+
+sensor:
+  - platform: rotary_encoder
+    name: "Volume Knob"
+    id: volume_knob
+    pin_a:
+      number: ${btn_vol_down_pin}
+      mode: INPUT_PULLUP
+    pin_b:
+      number: ${btn_vol_up_pin}
+      mode: INPUT_PULLUP
+
+    # Volume limits (0 to 30)
+    min_value: 0
+    max_value: 30
+    resolution: 1
+
+    on_value:
+      then:
+        - script.execute: auto_off_timer # Reset sleep timer
+        - dfplayer.set_volume: !lambda "return x;"
+        - logger.log:
+            format: "Volume set to: %.0f"
+            args: ["x"]
+
+binary_sensor:
+  # Play/Pause Button on Knob
+  - platform: gpio
+    pin:
+      number: ${btn_play_pin} # Your SW Pin
+      mode: INPUT_PULLUP
+      inverted: true # Button is usually "Active Low"
+      allow_other_uses: true
+    name: "Knob Button"
+    on_click:
+      # --- SHORT PRESS (Play / Pause) ---
+      - min_length: 50ms
+        max_length: 900ms
+        then:
+          - script.execute: auto_off_timer
+          - if:
+              condition:
+                dfplayer.is_playing:
+              then:
+                - dfplayer.pause:
+              else:
+                - if:
+                    condition:
+                      lambda: "return id(has_scanned_tag);"
+                    then:
+                      - dfplayer.start:
+                    else:
+                      - logger.log: "Ignored short press: No tag scanned yet."
+
+      # --- LONG PRESS (Manual Sleep) ---
+      - min_length: 1000ms # Hold for 1 second
+        max_length: 5000ms
+        then:
+          - logger.log: "Long press detected! Forcing sleep..."
+          - dfplayer.stop:
+          - delay: 500ms
+          - deep_sleep.enter: deep_sleep_component
+
+  # Next Track Button
+  - platform: gpio
+    pin:
+      number: ${btn_next_pin}
+      mode: INPUT_PULLUP
+      inverted: true
+    name: "Next Button"
+    on_press:
+      then:
+        - script.execute: auto_off_timer
+        - if:
+            condition:
+              lambda: "return id(has_scanned_tag);"
+            then:
+              - lambda: |-
+                  // Add 1 to the track. If it exceeds the max, loop to track 1!
+                  id(current_track) += 1;
+                  if (id(current_track) > id(max_tracks)) {
+                    id(current_track) = 1;
+                  }
+              - dfplayer.play_folder:
+                  folder: !lambda "return id(current_folder);"
+                  file: !lambda "return id(current_track);"
+            else:
+              - logger.log: "Ignored button press: No tag scanned yet."
+
+  # Previous Track Button
+  - platform: gpio
+    pin:
+      number: ${btn_prev_pin}
+      mode: INPUT_PULLUP
+      inverted: true
+    name: "Previous Button"
+    on_press:
+      then:
+        - script.execute: auto_off_timer
+        - if:
+            condition:
+              lambda: "return id(has_scanned_tag);"
+            then:
+              - lambda: |-
+                  // Subtract 1. If it drops below track 1, loop to the last track!
+                  id(current_track) -= 1;
+                  if (id(current_track) < 1) {
+                    id(current_track) = id(max_tracks);
+                  }
+              - dfplayer.play_folder:
+                  folder: !lambda "return id(current_folder);"
+                  file: !lambda "return id(current_track);"
+            else:
+              - logger.log: "Ignored button press: No tag scanned yet."
+
+  # Power Button (Manual Sleep)
+  - platform: gpio
+    pin:
+      number: ${btn_power_pin}
+      mode: INPUT_PULLUP
+      inverted: true
+      # allow_other_uses: true
+    name: "Sleep Button"
+    on_press:
+      then:
+        - logger.log: "Goodnight! Going to sleep..."
+        - dfplayer.stop:
+        - delay: 500ms
+        - deep_sleep.enter: deep_sleep_component
+
+  # The "Busy" Pin (Checks if music is playing)
+  - platform: gpio
+    pin:
+      number: ${busy_pin}
+      mode: INPUT
+      inverted: true
+    name: "DFPlayer Busy Status"
+    id: player_busy
+    # When music starts (pin goes LOW), cancel sleep timer
+    on_state:
+      then:
+        - if:
+            condition:
+              binary_sensor.is_on: player_busy # Note: BUSY pin is usually LOW when playing
+            then:
+              - script.execute: auto_off_timer
+
+# --- LOGIC SCRIPTS ---
+
+script:
+  - id: auto_off_timer
+    mode: restart # Restarting the script resets the timer
+    then:
+      - logger.log: "Activity detected. Resetting Auto-Off Timer to 5 minutes."
+      - delay: 5min
+      # If we reach here, 5 minutes have passed with NO activity
+      - if:
+          condition:
+            dfplayer.is_playing:
+          then:
+            - logger.log: "Music is still playing! Resetting the timer for another 5 minutes."
+            - script.execute: auto_off_timer
+          else:
+            - logger.log: "Silence detected. Goodnight!"
+            - dfplayer.stop:
+            - delay: 500ms
+            - deep_sleep.enter: deep_sleep_component
