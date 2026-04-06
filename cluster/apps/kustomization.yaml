@@ -21,6 +21,7 @@ resources:
   - dawarich
   - nas
   - media-server
+  - openclaw
   # - drive
   # - owncloud
   # - obsidian-sync
