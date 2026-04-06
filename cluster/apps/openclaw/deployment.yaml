@@ -43,7 +43,6 @@ spec:
               cpu: 50m
             limits:
               memory: 64Mi
-              cpu: 100m
           volumeMounts:
             - name: openclaw-home
               mountPath: /home/node/.openclaw
@@ -51,7 +50,7 @@ spec:
               mountPath: /config
       containers:
         - name: gateway
-          image: ghcr.io/openclaw/openclaw:slim
+          image: ghcr.io/openclaw/openclaw:2026.4.2
           imagePullPolicy: IfNotPresent
           command:
             - node
@@ -104,7 +103,6 @@ spec:
               cpu: 250m
             limits:
               memory: 2Gi
-              cpu: "1"
           livenessProbe:
             exec:
               command:
