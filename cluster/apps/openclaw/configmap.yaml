@@ -17,7 +17,8 @@ data:
           "mode": "token"
         },
         "controlUi": {
-          "enabled": true
+          "enabled": true,
+          "allowedOrigins": ["https://openclaw.${SECRET_DOMAIN}"]
         }
       },
       "agents": {
