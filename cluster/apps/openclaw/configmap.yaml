@@ -24,7 +24,10 @@ data:
       },
       "agents": {
         "defaults": {
-          "workspace": "~/.openclaw/workspace"
+          "workspace": "~/.openclaw/workspace",
+          "heartbeat": {
+            "every": "0m"
+          }
         },
         "list": [
           {
