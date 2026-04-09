@@ -28,6 +28,8 @@ spec:
           env:
             - name: TZ
               value: "Europe/Madrid"
+            - name: DBUS_SYSTEM_BUS_ADDRESS
+              value: unix:path=/var/run/dbus/system_bus_socket
           securityContext:
             privileged: true
             capabilities:
