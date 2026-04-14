@@ -74,6 +74,13 @@ spec:
               containerPort: 7878
             - name: lidarr
               containerPort: 8686
+          env:
+            - name: HEALTH_RESTART_VPN
+              value: "false"
+            - name: UPDATER_PERIOD
+              value: "0"
+            - name: WIREGUARD_PERSISTENT_KEEPALIVE_INTERVAL
+              value: "25"
           envFrom:
             - secretRef:
                 name: media-secret
