@@ -80,7 +80,7 @@ spec:
             - name: UPDATER_PERIOD
               value: "0"
             - name: WIREGUARD_PERSISTENT_KEEPALIVE_INTERVAL
-              value: "25"
+              value: "25s"
           envFrom:
             - secretRef:
                 name: media-secret
