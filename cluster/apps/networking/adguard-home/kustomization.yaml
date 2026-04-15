@@ -2,7 +2,7 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
-  - adguard-home-cm.yaml
+  - secret.yaml
   - adguard-home-pvc.yaml
   - adguard-home-logs-pvc.yaml
   - adguard-home-svc.yaml

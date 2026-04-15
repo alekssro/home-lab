@@ -19,7 +19,7 @@ spec:
   template:
     metadata:
       annotations:
-        configmap.reloader.stakater.com/reload: adguard-home
+        secret.reloader.stakater.com/reload: adguardhome-secret
       labels:
         service: adguard-home
     spec:
@@ -27,7 +27,7 @@ spec:
         kubernetes.io/hostname: nuc7pjyhn
       hostNetwork: true
       initContainers:
-        - name: copy-configmap
+        - name: copy-config
           image: busybox
           imagePullPolicy: IfNotPresent
           command:
@@ -35,7 +35,7 @@ spec:
             - "-c"
             - "mkdir -p /opt/adguardhome/conf && cp /tmp/AdGuardHome.yaml /opt/adguardhome/conf/AdGuardHome.yaml"
           volumeMounts:
-            - name: adguard-home-configmap
+            - name: adguard-home-secret
               mountPath: /tmp
             - name: adguard-home-config
               mountPath: /opt/adguardhome/conf
@@ -78,9 +78,9 @@ spec:
             - name: adguard-home-logs
               mountPath: /opt/adguardhome/work
       volumes:
-        - name: adguard-home-configmap
-          configMap:
-            name: adguard-home
+        - name: adguard-home-secret
+          secret:
+            secretName: adguardhome-secret
             items:
               - key: AdGuardHome.yaml
                 path: AdGuardHome.yaml
