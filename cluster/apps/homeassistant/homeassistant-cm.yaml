@@ -69,7 +69,7 @@ data:
       service_account: !include SERVICE_ACCOUNT.JSON
       report_state: true
       exposed_domains:
-        - input_boolean.google_nest_camera_power
+        - input_boolean
   templates.yaml: |
     - sensor:
       - name: Grid Importacion
