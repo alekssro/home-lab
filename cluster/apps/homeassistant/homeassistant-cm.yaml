@@ -70,6 +70,11 @@ data:
       report_state: true
       exposed_domains:
         - input_boolean
+      entity_config:
+        input_boolean.google_nest_camera_power:
+          name: "Google Nest Camera Power"
+          aliases:
+            - "Google Nest Camera Power"
   templates.yaml: |
     - sensor:
       - name: Grid Importacion
