@@ -72,9 +72,7 @@ data:
         - input_boolean
       entity_config:
         input_boolean.google_nest_camera_power:
-          name: "Google Nest Camera Power"
-          aliases:
-            - "Google Nest Camera Power"
+          expose: true
   templates.yaml: |
     - sensor:
       - name: Grid Importacion
