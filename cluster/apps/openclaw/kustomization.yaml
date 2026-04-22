@@ -11,3 +11,4 @@ resources:
   - service.yaml
   - service-ai-server.yaml
   - ingress.yaml
+  - ingress-ai-server.yaml
