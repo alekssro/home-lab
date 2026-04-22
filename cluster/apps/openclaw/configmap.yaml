@@ -29,7 +29,7 @@ data:
             "every": "0m"
           },
           "model": {
-            "primary": "qwen3.5:9b"
+            "primary": "openai/qwen3.5:9b"
           }
         },
         "list": [
