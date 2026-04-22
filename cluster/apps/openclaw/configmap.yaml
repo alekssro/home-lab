@@ -27,6 +27,9 @@ data:
           "workspace": "~/.openclaw/workspace",
           "heartbeat": {
             "every": "0m"
+          },
+          "model": {
+            "primary": "qwen3.5:9b"
           }
         },
         "list": [
