@@ -22,6 +22,15 @@ data:
           "allowedOrigins": ["https://openclaw.${SECRET_DOMAIN}"]
         }
       },
+      "models": {
+        "providers": {
+          "ollama": {
+            "apiKey": "${OLLAMA_API_KEY}",
+            "baseUrl": "http://ai-model-server:11434",
+            "api": "ollama",
+          }
+        }
+      },
       "agents": {
         "defaults": {
           "workspace": "~/.openclaw/workspace",
@@ -30,15 +39,6 @@ data:
           },
           "model": {
             "primary": "ollama/qwen3.5:9b"
-          },
-          "models": {
-            "providers": {
-              "ollama": {
-                "apiKey": "ollama-local",
-                "baseUrl": "http://ai-model-server:11434",
-                "api": "ollama",
-              }
-            }
           }
         },
         "list": [
