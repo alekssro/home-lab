@@ -27,6 +27,10 @@ data:
           "ollama": {
             "baseUrl": "http://ai-model-server:11434",
             "api": "ollama",
+            "models": [
+              "qwen3.5:9b",
+              "mistral-nemo:latest"
+            ]
           }
         }
       },
