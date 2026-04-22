@@ -25,7 +25,6 @@ data:
       "models": {
         "providers": {
           "ollama": {
-            "apiKey": "${OLLAMA_API_KEY}",
             "baseUrl": "http://ai-model-server:11434",
             "api": "ollama",
           }
