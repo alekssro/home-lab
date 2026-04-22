@@ -52,7 +52,7 @@ spec:
               mountPath: /config
       containers:
         - name: gateway
-          image: ghcr.io/openclaw/openclaw:2026.4.2
+          image: ghcr.io/openclaw/openclaw:2026.4.20
           imagePullPolicy: IfNotPresent
           command:
             - node
@@ -75,6 +75,18 @@ spec:
                 secretKeyRef:
                   name: openclaw-secrets
                   key: OPENCLAW_GATEWAY_TOKEN
+            - name: OPENAI_API_BASE
+              valueFrom:
+                secretKeyRef:
+                  name: openclaw-secrets
+                  key: OPENAI_API_BASE
+                  optional: true
+            - name: OPENCLAW_MODEL
+              valueFrom:
+                secretKeyRef:
+                  name: openclaw-secrets
+                  key: OPENCLAW_MODEL
+                  optional: true
             - name: ANTHROPIC_API_KEY
               valueFrom:
                 secretKeyRef:

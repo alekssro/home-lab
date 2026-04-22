@@ -9,4 +9,5 @@ resources:
   - secret.yaml
   - deployment.yaml
   - service.yaml
+  - service-ai-server.yaml
   - ingress.yaml
