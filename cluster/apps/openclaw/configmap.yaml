@@ -29,7 +29,16 @@ data:
             "every": "0m"
           },
           "model": {
-            "primary": "openai/qwen3.5:9b"
+            "primary": "ollama/qwen3.5:9b"
+          },
+          "models": {
+            "providers": {
+              "ollama": {
+                "apiKey": "ollama-local",
+                "baseUrl": "http://ai-model-server:11434",
+                "api": "ollama",
+              }
+            }
           }
         },
         "list": [
