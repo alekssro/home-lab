@@ -10,8 +10,8 @@ data:
   openclaw.json: |
     {
       "gateway": {
-        "mode": "lan",
-        "bind": "0.0.0.0",
+        "mode": "local",
+        "bind": "lan",
         "trustedProxies": ["10.42.0.0/16", "10.43.0.0/16"],
         "port": 18789,
         "auth": {
