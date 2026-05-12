@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: kanbn-db
+  namespace: kanbn
+spec:
+  serviceName: kanbn-db
+  replicas: 1
+  selector:
+    matchLabels:
+      app: kanbn-db
+  template:
+    metadata:
+      labels:
+        app: kanbn-db
+    spec:
+      containers:
+        - name: postgres
+          image: postgres:15
+          env:
+            - name: POSTGRES_USER
+              value: kanbn
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: kanbn-secret
+                  key: POSTGRES_PASSWORD
+            - name: POSTGRES_DB
+              value: kanbn
+          ports:
+            - containerPort: 5432
+          volumeMounts:
+            - name: data
+              mountPath: /var/lib/postgresql/data
+              subPath: postgres
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: kanbn-db-data

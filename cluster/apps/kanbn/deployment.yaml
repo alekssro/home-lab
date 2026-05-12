@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kanbn
+  namespace: kanbn
+  labels:
+    app: kanbn
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: kanbn
+  template:
+    metadata:
+      labels:
+        app: kanbn
+    spec:
+      initContainers:
+        - name: migrate
+          image: ghcr.io/kanbn/kan-migrate:latest
+          env:
+            - name: POSTGRES_URL
+              valueFrom:
+                secretKeyRef:
+                  name: kanbn-secret
+                  key: POSTGRES_URL
+      containers:
+        - name: web
+          image: ghcr.io/kanbn/kan:latest
+          ports:
+            - containerPort: 3000
+          env:
+            - name: NEXT_PUBLIC_BASE_URL
+              value: "https://kanbn.${SECRET_DOMAIN}"
+            - name: BETTER_AUTH_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: kanbn-secret
+                  key: BETTER_AUTH_SECRET
+            - name: POSTGRES_URL
+              valueFrom:
+                secretKeyRef:
+                  name: kanbn-secret
+                  key: POSTGRES_URL
+            - name: NEXT_PUBLIC_ALLOW_CREDENTIALS
+              value: "true"

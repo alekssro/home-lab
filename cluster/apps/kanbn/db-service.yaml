@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: kanbn-db
+  namespace: kanbn
+spec:
+  ports:
+    - port: 5432
+      targetPort: 5432
+  selector:
+    app: kanbn-db
