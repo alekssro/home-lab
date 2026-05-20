@@ -2,25 +2,26 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: openclaw
+  name: openclaw-kubepilot
   namespace: openclaw
   labels:
-    app: openclaw
+    app: openclaw-kubepilot
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: openclaw
+      app: openclaw-kubepilot
   strategy:
     type: Recreate
   template:
     metadata:
       labels:
-        app: openclaw
+        app: openclaw-kubepilot
       annotations:
         reloader.stakater.com/auto: "true"
     spec:
-      automountServiceAccountToken: false
+      automountServiceAccountToken: true
+      serviceAccountName: openclaw-kubepilot
       securityContext:
         fsGroup: 1000
         seccompProfile:
@@ -36,6 +37,10 @@ spec:
               cp /config/openclaw.json /home/node/.openclaw/openclaw.json
               mkdir -p /home/node/.openclaw/workspace
               cp /config/AGENTS.md /home/node/.openclaw/workspace/AGENTS.md
+              cp /config/IDENTITY.md /home/node/.openclaw/workspace/IDENTITY.md
+              cp /config/SOUL.md /home/node/.openclaw/workspace/SOUL.md
+              cp /config/USER.md /home/node/.openclaw/workspace/USER.md
+              cp /config/HEARTBEAT.md /home/node/.openclaw/workspace/HEARTBEAT.md
           securityContext:
             runAsUser: 1000
             runAsGroup: 1000
@@ -87,6 +92,24 @@ spec:
                   name: openclaw-secrets
                   key: GEMINI_API_KEY
                   optional: true
+            - name: SLACK_WEBHOOK_URL
+              valueFrom:
+                secretKeyRef:
+                  name: openclaw-secrets
+                  key: SLACK_WEBHOOK_URL
+                  optional: true
+            - name: GITHUB_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: openclaw-secrets
+                  key: GITHUB_TOKEN
+                  optional: true
+            - name: TELEGRAM_BOT_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: openclaw-secrets
+                  key: TELEGRAM_BOT_TOKEN_KUBEPILOT
+                  optional: true
           resources:
             requests:
               memory: 512Mi
@@ -128,9 +151,9 @@ spec:
       volumes:
         - name: openclaw-home
           persistentVolumeClaim:
-            claimName: openclaw-home-pvc
+            claimName: openclaw-kubepilot-home-pvc
         - name: config
           configMap:
-            name: openclaw-config
+            name: openclaw-kubepilot-config
         - name: tmp-volume
           emptyDir: {}

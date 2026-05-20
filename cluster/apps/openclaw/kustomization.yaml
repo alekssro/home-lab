@@ -4,11 +4,15 @@ kind: Kustomization
 namespace: openclaw
 resources:
   - namespace.yaml
-  - pvc.yaml
-  - configmap.yaml
   - secret.yaml
-  - deployment.yaml
-  - service.yaml
   - service-ai-server.yaml
-  - ingress.yaml
   - ingress-ai-server.yaml
+  - echo
+  - kubepilot
+  - domobot
+  - chronos
+  - apex
+
+images:
+  - name: ghcr.io/openclaw/openclaw
+    newTag: 2026.5.18

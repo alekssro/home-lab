@@ -1,0 +1,17 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: openclaw-kubepilot
+  namespace: openclaw
+  labels:
+    app: openclaw-kubepilot
+spec:
+  type: ClusterIP
+  selector:
+    app: openclaw-kubepilot
+  ports:
+    - name: gateway
+      port: 18789
+      targetPort: 18789
+      protocol: TCP

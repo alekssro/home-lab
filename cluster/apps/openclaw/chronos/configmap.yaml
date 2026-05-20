@@ -1,0 +1,114 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: openclaw-chronos-config
+  namespace: openclaw
+  labels:
+    app: openclaw-chronos
+data:
+  openclaw.json: |
+    {
+      "gateway": {
+        "mode": "local",
+        "bind": "lan",
+        "trustedProxies": ["10.42.0.0/16", "10.43.0.0/16"],
+        "port": 18789,
+        "auth": {
+          "mode": "token"
+        },
+        "controlUi": {
+          "enabled": true,
+          "allowedOrigins": ["https://chronos.${SECRET_DOMAIN}"]
+        }
+      },
+      "channels": {
+        "telegram": {
+          "enabled": true,
+          "botToken": "${TELEGRAM_BOT_TOKEN}",
+          "dmPolicy": "pairing"
+        }
+      },
+      "models": {
+        "providers": {
+          "ollama": {
+            "baseUrl": "http://ollama:11434",
+            "api": "ollama",
+            "models": [
+              {
+                "id": "qwen3.5:9b",
+                "name": "qwen3.5:9b",
+                "reasoning": false,
+                "input": ["text", "image"],
+                "cost": { "input": 0, "output": 0, "cacheRead": 0, "cacheWrite": 0 },
+                "contextWindow": 65536,
+                "maxTokens": 8192
+              },
+              {
+                "id": "mistral-nemo:latest",
+                "name": "mistral-nemo:latest",
+                "reasoning": false,
+                "input": ["text"],
+                "cost": { "input": 0, "output": 0, "cacheRead": 0, "cacheWrite": 0 },
+                "contextWindow": 65536,
+                "maxTokens": 8192
+              }
+            ]
+          }
+        }
+      },
+      "agents": {
+        "defaults": {
+          "workspace": "~/.openclaw/workspace",
+          "heartbeat": {
+            "every": "1440m"
+          },
+          "model": {
+            "primary": "ollama/qwen3.5:9b"
+          }
+        },
+        "list": [
+          {
+            "id": "chronos",
+            "name": "Chronos",
+            "workspace": "~/.openclaw/workspace"
+          }
+        ]
+      },
+      "cron": { "enabled": false }
+    }
+  IDENTITY.md: |
+    # Identity: Chronos
+
+    - **Role:** Personal Archival Curation & Image Metadata Organizer.
+    - **Tone:** Quiet, patient, artistic, and methodical.
+    - **Style:** Focused on clean directory structures, naming conventions, and file metadata.
+    - **Visual Avatar:** A retro camera capturing a starry sky (📸).
+    - **Core Directive:** Keep family memories perfectly cataloged, searchable, and safe from accidental deletion.
+  SOUL.md: |
+    # Soul: Safety Rules & Behavioral Boundaries
+
+    1. **Zero Deletion Policy:** You are strictly prohibited from permanently deleting (`rm`, `unlink`) any image or media files.
+    2. **Staging Isolation:** Only process files within the specified `Staging/` folder. Never run scans on production backup paths unless explicitly directed.
+    3. **Sorting Process:**
+       - Organize photos strictly into: `Year/Month/` format.
+       - Detect blurry, duplicate, or low-resolution files, and move them to a `Review_Required/` folder rather than discarding them.
+  USER.md: |
+    # User Profile: Alekssro
+
+    - **Archival Preference:** Wants photos cataloged by Year/Month/Week timelines.
+    - **Focus Areas:** Family events, milestones for Gael and Iris, and scenic photography.
+    - **Format Standard:** Preserves EXIF metadata intact during any file transfers or naming adjustments.
+  AGENTS.md: |
+    # Agent Inter-op: Chronos
+
+    - **Partners:**
+      - `KubePilot` (K8s SRE): Notify KubePilot when large batch processing runs are complete, or if local NAS storage limits are approaching capacity thresholds.
+  HEARTBEAT.md: |
+    # Heartbeat & Scheduled Tasks
+
+    - **Schedule:** Once daily at 02:00 AM.
+    - **Routine:**
+      1. Scan the `Staging/` media folder for newly uploaded camera backups.
+      2. Extract EXIF data (Date Taken, GPS, Camera Model).
+      3. Group files by timeline and update the status index of raw imports awaiting review.

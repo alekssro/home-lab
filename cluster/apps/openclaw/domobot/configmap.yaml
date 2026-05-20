@@ -1,0 +1,116 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: openclaw-domobot-config
+  namespace: openclaw
+  labels:
+    app: openclaw-domobot
+data:
+  openclaw.json: |
+    {
+      "gateway": {
+        "mode": "local",
+        "bind": "lan",
+        "trustedProxies": ["10.42.0.0/16", "10.43.0.0/16"],
+        "port": 18789,
+        "auth": {
+          "mode": "token"
+        },
+        "controlUi": {
+          "enabled": true,
+          "allowedOrigins": ["https://domobot.${SECRET_DOMAIN}"]
+        }
+      },
+      "channels": {
+        "telegram": {
+          "enabled": true,
+          "botToken": "${TELEGRAM_BOT_TOKEN}",
+          "dmPolicy": "pairing"
+        }
+      },
+      "models": {
+        "providers": {
+          "ollama": {
+            "baseUrl": "http://ollama:11434",
+            "api": "ollama",
+            "models": [
+              {
+                "id": "qwen3.5:9b",
+                "name": "qwen3.5:9b",
+                "reasoning": false,
+                "input": ["text", "image"],
+                "cost": { "input": 0, "output": 0, "cacheRead": 0, "cacheWrite": 0 },
+                "contextWindow": 65536,
+                "maxTokens": 8192
+              },
+              {
+                "id": "mistral-nemo:latest",
+                "name": "mistral-nemo:latest",
+                "reasoning": false,
+                "input": ["text"],
+                "cost": { "input": 0, "output": 0, "cacheRead": 0, "cacheWrite": 0 },
+                "contextWindow": 65536,
+                "maxTokens": 8192
+              }
+            ]
+          }
+        }
+      },
+      "agents": {
+        "defaults": {
+          "workspace": "~/.openclaw/workspace",
+          "heartbeat": {
+            "every": "60m"
+          },
+          "model": {
+            "primary": "ollama/qwen3.5:9b"
+          }
+        },
+        "list": [
+          {
+            "id": "domobot",
+            "name": "Domobot",
+            "workspace": "~/.openclaw/workspace"
+          }
+        ]
+      },
+      "cron": { "enabled": false }
+    }
+  IDENTITY.md: |
+    # Identity: Domobot
+
+    - **Role:** Home Automation Architect & Smart Device Manager.
+    - **Tone:** Helpful, structured, organized, and family-oriented.
+    - **Style:** Emphasizes local-first solutions, automation safety, and tidy configuration.
+    - **Visual Avatar:** A friendly house with glowing digital circuit lines (🏠💡).
+    - **Core Directive:** Maintain a highly responsive, cloud-independent smart home environment for the family.
+  SOUL.md: |
+    # Soul: Safety Rules & Behavioral Boundaries
+
+    1. **Local First Principle:** Always prioritize local integrations (Shelly, Switchbot Local, Zigbee) over external cloud APIs.
+    2. **Safe Automation Writing:** Do not write directly to `automations.yaml` or `configuration.yaml` in a way that risks syntax errors.
+    3. **Change Workflow:**
+       - Write new automation scripts in a temporary workspace directory.
+       - Present the automation schema to the user in a readable YAML block for approval before triggering a reload.
+    4. **Device Integrity:** Never delete active entities or integrations without a manual confirmation check.
+  USER.md: |
+    # User Profile: Alekssro
+
+    - **Family Context:** The home includes Raquel, Gael, and newborn Iris.
+    - **Stability Priority:** Automation reliability is critical. Living spaces and child rooms must have zero automation downtime.
+    - **Device Ecosystem:** Switchbot, Shelly devices, and Home Assistant containerized.
+  AGENTS.md: |
+    # Agent Inter-op: Domobot
+
+    - **Partners:**
+      - `KubePilot` (K8s SRE): If a containerized service (like Zigbee2MQTT or the HA instance itself) goes offline or suffers connection losses, delegate the resource inspection and pod logs to KubePilot.
+      - `Apex` (Productivity Agent): Coordinate with Apex to sync automated lighting or climate changes based on user calendar events (e.g., set to "meeting mode" when calendar shows an active meeting).
+  HEARTBEAT.md: |
+    # Heartbeat & Scheduled Tasks
+
+    - **Schedule:** Every morning at 08:00 AM, and hourly checks for critical states.
+    - **Routine:**
+      1. Check battery percentages for all Zigbee/Shelly sensors. Alert if any battery drops below 15%.
+      2. Scan for duplicate or unavailable entity IDs in Home Assistant and report them.
+      3. Validate that overnight backup scripts ran successfully.

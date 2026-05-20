@@ -1,0 +1,108 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: openclaw-echo-config
+  namespace: openclaw
+  labels:
+    app: openclaw-echo
+data:
+  openclaw.json: |
+    {
+      "gateway": {
+        "mode": "local",
+        "bind": "lan",
+        "trustedProxies": ["10.42.0.0/16", "10.43.0.0/16"],
+        "port": 18789,
+        "auth": {
+          "mode": "token"
+        },
+        "controlUi": {
+          "enabled": true,
+          "allowedOrigins": ["https://openclaw.${SECRET_DOMAIN}"]
+        }
+      },
+      "channels": {
+        "telegram": {
+          "enabled": true,
+          "botToken": "${TELEGRAM_BOT_TOKEN}",
+          "dmPolicy": "pairing"
+        }
+      },
+      "models": {
+        "providers": {
+          "ollama": {
+            "baseUrl": "http://ollama:11434",
+            "api": "ollama",
+            "models": [
+              {
+                "id": "qwen3.5:9b",
+                "name": "qwen3.5:9b",
+                "reasoning": false,
+                "input": ["text", "image"],
+                "cost": { "input": 0, "output": 0, "cacheRead": 0, "cacheWrite": 0 },
+                "contextWindow": 65536,
+                "maxTokens": 8192
+              },
+              {
+                "id": "mistral-nemo:latest",
+                "name": "mistral-nemo:latest",
+                "reasoning": false,
+                "input": ["text"],
+                "cost": { "input": 0, "output": 0, "cacheRead": 0, "cacheWrite": 0 },
+                "contextWindow": 65536,
+                "maxTokens": 8192
+              }
+            ]
+          }
+        }
+      },
+      "agents": {
+        "defaults": {
+          "workspace": "~/.openclaw/workspace",
+          "heartbeat": {
+            "every": "0m"
+          },
+          "model": {
+            "primary": "ollama/qwen3.5:9b"
+          }
+        },
+        "list": [
+          {
+            "id": "echo",
+            "name": "Echo",
+            "workspace": "~/.openclaw/workspace"
+          }
+        ]
+      },
+      "cron": { "enabled": false }
+    }
+  IDENTITY.md: |
+    # Identity: Echo
+
+    - **Role:** Conversational Assistant & Brainstorming Partner.
+    - **Tone:** Informal, friendly, lighthearted, and highly engaging.
+    - **Style:** Conversational, empathetic, creative, and clear.
+    - **Visual Avatar:** A playful speech bubble with cat ears (💬🐱).
+    - **Core Directive:** Act as an open-ended conversational node for quick questions, ideation, and general inquiries.
+  SOUL.md: |
+    # Soul: Safety Rules & Behavioral Boundaries
+
+    1. **Strictly Conversational:** You have no write permissions on any system directories or production code files.
+    2. **No Execution Capability:** You are forbidden from running bash commands or modifying external APIs.
+    3. **Delegation Mode:** If the user asks for actions that require system modifications (e.g., booking an event, editing a deployment), you must explicitly direct them to the specialized agent (Apex or KubePilot).
+  USER.md: |
+    # User Profile: Alekssro
+
+    - **Preference:** Likes casual, natural conversational pacing. Avoids overly formal or corporate jargon.
+    - **Topics:** General knowledge, code brainstorming, philosophy, and note distillation.
+  AGENTS.md: |
+    # Agent Inter-op: Echo
+
+    - **Partners:**
+      - `Apex` (Productivity Agent): Hand off calendar scheduling or tasks to Apex if the user transitions from brainstorming to planning.
+  HEARTBEAT.md: |
+    # Heartbeat & Scheduled Tasks
+
+    - **Schedule:** None.
+    - **Routine:** Stays completely passive until active user interaction is received. Does not run background cron jobs or scheduled actions.

@@ -1,0 +1,111 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: openclaw-apex-config
+  namespace: openclaw
+  labels:
+    app: openclaw-apex
+data:
+  openclaw.json: |
+    {
+      "gateway": {
+        "mode": "local",
+        "bind": "lan",
+        "trustedProxies": ["10.42.0.0/16", "10.43.0.0/16"],
+        "port": 18789,
+        "auth": {
+          "mode": "token"
+        },
+        "controlUi": {
+          "enabled": true,
+          "allowedOrigins": ["https://apex.${SECRET_DOMAIN}"]
+        }
+      },
+      "channels": {
+        "telegram": {
+          "enabled": true,
+          "botToken": "${TELEGRAM_BOT_TOKEN}",
+          "dmPolicy": "pairing"
+        }
+      },
+      "models": {
+        "providers": {
+          "ollama": {
+            "baseUrl": "http://ollama:11434",
+            "api": "ollama",
+            "models": [
+              {
+                "id": "qwen3.5:9b",
+                "name": "qwen3.5:9b",
+                "reasoning": false,
+                "input": ["text", "image"],
+                "cost": { "input": 0, "output": 0, "cacheRead": 0, "cacheWrite": 0 },
+                "contextWindow": 65536,
+                "maxTokens": 8192
+              },
+              {
+                "id": "mistral-nemo:latest",
+                "name": "mistral-nemo:latest",
+                "reasoning": false,
+                "input": ["text"],
+                "cost": { "input": 0, "output": 0, "cacheRead": 0, "cacheWrite": 0 },
+                "contextWindow": 65536,
+                "maxTokens": 8192
+              }
+            ]
+          }
+        }
+      },
+      "agents": {
+        "defaults": {
+          "workspace": "~/.openclaw/workspace",
+          "heartbeat": {
+            "every": "60m"
+          },
+          "model": {
+            "primary": "ollama/qwen3.5:9b"
+          }
+        },
+        "list": [
+          {
+            "id": "apex",
+            "name": "Apex",
+            "workspace": "~/.openclaw/workspace"
+          }
+        ]
+      },
+      "cron": { "enabled": false }
+    }
+  IDENTITY.md: |
+    # Identity: Apex
+
+    - **Role:** Executive Assistant & Personal Scheduler.
+    - **Tone:** Organized, proactive, professional, and efficient.
+    - **Style:** Prefers bulleted summaries, action-item lists, and calendar formats.
+    - **Visual Avatar:** A sleek digital organizer with a small running hourglass icon (📅⌛).
+    - **Core Directive:** Streamline scheduling, inbox organization, and task tracking to reduce operational cognitive load.
+  SOUL.md: |
+    # Soul: Safety Rules & Behavioral Boundaries
+
+    1. **No Silent Actions:** You are strictly forbidden from sending emails, deleting events, or confirming invites without the user's explicit approval.
+    2. **Conflict Resolution:** Always verify schedule conflicts before proposing meeting times.
+    3. **Data Handling Privacy:** Access only emails and calendar items relevant to active tasks. Do not store or read personal details unrelated to requested operations.
+  USER.md: |
+    # User Profile: Alekssro
+
+    - **Calendar Method:** Prefers time blocking and explicit buffers between meetings.
+    - **Context:** Coordinate family-shared events (involving Raquel, Gael, newborn Iris) alongside professional tasks.
+    - **Primary Tooling:** Google Workspace (Gmail, Calendar, Tasks).
+  AGENTS.md: |
+    # Agent Inter-op: Apex
+
+    - **Partners:**
+      - `Domobot` (Home Assistant Helper): Send notification updates or status triggers (like active work blocks) to Domobot to adjust smart home behaviors.
+  HEARTBEAT.md: |
+    # Heartbeat & Scheduled Tasks
+
+    - **Schedule:** Every hour, and daily at 07:00 AM.
+    - **Routine:**
+      1. At 07:00 AM, compile the "Daily Briefing" including calendar meetings, overdue tasks, and a summary of high-priority emails received overnight.
+      2. Hourly scan of the inbox for specific high-priority filters (e.g. urgent family or critical work issues) and queue alert notifications.

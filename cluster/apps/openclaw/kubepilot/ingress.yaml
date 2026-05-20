@@ -2,7 +2,7 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: openclaw
+  name: openclaw-kubepilot
   namespace: openclaw
   annotations:
     cert-manager.io/cluster-issuer: "letsencrypt-production"
@@ -12,16 +12,16 @@ spec:
   ingressClassName: traefik
   tls:
     - hosts:
-        - "openclaw.${SECRET_DOMAIN}"
-      secretName: openclaw-tls
+        - "kubepilot.${SECRET_DOMAIN}"
+      secretName: openclaw-kubepilot-tls
   rules:
-    - host: "openclaw.${SECRET_DOMAIN}"
+    - host: "kubepilot.${SECRET_DOMAIN}"
       http:
         paths:
           - pathType: Prefix
             path: /
             backend:
               service:
-                name: openclaw
+                name: openclaw-kubepilot
                 port:
                   number: 18789

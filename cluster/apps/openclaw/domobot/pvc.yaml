@@ -2,10 +2,10 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: openclaw-home-pvc
+  name: openclaw-domobot-home-pvc
   namespace: openclaw
   labels:
-    app: openclaw
+    app: openclaw-domobot
 spec:
   storageClassName: nfs-csi
   accessModes:
