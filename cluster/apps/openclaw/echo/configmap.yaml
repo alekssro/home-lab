@@ -38,7 +38,7 @@ data:
               {
                 "id": "qwen3.5:9b",
                 "name": "qwen3.5:9b",
-                "reasoning": false,
+                "reasoning": true,
                 "input": ["text", "image"],
                 "cost": { "input": 0, "output": 0, "cacheRead": 0, "cacheWrite": 0 },
                 "contextWindow": 65536,
@@ -47,7 +47,7 @@ data:
               {
                 "id": "mistral-nemo:latest",
                 "name": "mistral-nemo:latest",
-                "reasoning": false,
+                "reasoning": true,
                 "input": ["text"],
                 "cost": { "input": 0, "output": 0, "cacheRead": 0, "cacheWrite": 0 },
                 "contextWindow": 65536,
@@ -65,7 +65,9 @@ data:
           },
           "model": {
             "primary": "ollama/qwen3.5:9b"
-          }
+          },
+          "thinkingDefault": "high",
+          "reasoningDefault": "on"
         },
         "list": [
           {
