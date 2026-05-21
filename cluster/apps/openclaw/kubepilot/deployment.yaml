@@ -34,6 +34,7 @@ spec:
             - sh
             - -c
             - |
+              chown -R 1000:1000 /home/node/.openclaw
               cp /config/openclaw.json /home/node/.openclaw/openclaw.json
               mkdir -p /home/node/.openclaw/workspace
               cp /config/AGENTS.md /home/node/.openclaw/workspace/AGENTS.md
@@ -55,9 +56,10 @@ spec:
                 wget -q --no-check-certificate -O /home/node/.openclaw/bin/kubectl https://dl.k8s.io/release/v1.24.17/bin/linux/$ARCH/kubectl
                 chmod +x /home/node/.openclaw/bin/kubectl
               fi
+              chown -R 1000:1000 /home/node/.openclaw
           securityContext:
-            runAsUser: 1000
-            runAsGroup: 1000
+            runAsUser: 0
+            runAsGroup: 0
           resources:
             requests:
               memory: 32Mi

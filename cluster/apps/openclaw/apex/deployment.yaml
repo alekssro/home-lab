@@ -33,6 +33,7 @@ spec:
             - sh
             - -c
             - |
+              chown -R 1000:1000 /home/node/.openclaw
               cp /config/openclaw.json /home/node/.openclaw/openclaw.json
               mkdir -p /home/node/.openclaw/workspace
               cp /config/AGENTS.md /home/node/.openclaw/workspace/AGENTS.md
@@ -41,8 +42,8 @@ spec:
               cp /config/USER.md /home/node/.openclaw/workspace/USER.md
               cp /config/HEARTBEAT.md /home/node/.openclaw/workspace/HEARTBEAT.md
           securityContext:
-            runAsUser: 1000
-            runAsGroup: 1000
+            runAsUser: 0
+            runAsGroup: 0
           resources:
             requests:
               memory: 32Mi
