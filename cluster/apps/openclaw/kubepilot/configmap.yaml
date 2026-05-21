@@ -61,7 +61,7 @@ data:
         "defaults": {
           "workspace": "~/.openclaw/workspace",
           "heartbeat": {
-            "every": "240m"
+            "every": "0m"
           },
           "model": {
             "primary": "ollama/qwen3.5:9b"
