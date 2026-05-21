@@ -75,6 +75,14 @@ data:
           }
         ]
       },
+      "tools": {
+        "profile": "coding",
+        "exec": {
+          "host": "gateway",
+          "security": "full",
+          "ask": "off"
+        }
+      },
       "cron": { "enabled": false }
     }
   IDENTITY.md: |
