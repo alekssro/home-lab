@@ -64,12 +64,14 @@ spec:
             - -c
             - |
               if [ -n "$GITHUB_TOKEN" ]; then
+                git config --file /home/node/.openclaw/.gitconfig --remove-section url 2>/dev/null || true
+                git config --file /home/node/.openclaw/.gitconfig url."https://x-access-token:${GITHUB_TOKEN}@github.com/".insteadOf "https://github.com/"
                 git config --file /home/node/.openclaw/.gitconfig user.name "Domobot Bot"
                 git config --file /home/node/.openclaw/.gitconfig user.email "domobot@users.noreply.github.com"
 
                 if [ ! -d "/home/node/.openclaw/workspace/home-lab/.git" ]; then
                   echo "Cloning home-lab repository..."
-                  git clone git@github.com:alekssro/home-lab.git /home/node/.openclaw/workspace/home-lab
+                  git clone https://github.com/alekssro/home-lab.git /home/node/.openclaw/workspace/home-lab
                 fi
               fi
               exec node /app/dist/index.js gateway run
@@ -137,8 +139,6 @@ spec:
                   optional: true
             - name: GIT_CONFIG_GLOBAL
               value: /home/node/.openclaw/.gitconfig
-            - name: GIT_SSH_COMMAND
-              value: "ssh -o StrictHostKeyChecking=no -i /home/node/.ssh/id_ed25519"
           resources:
             requests:
               memory: 512Mi
@@ -168,9 +168,6 @@ spec:
               mountPath: /home/node/.openclaw
             - name: tmp-volume
               mountPath: /tmp
-            - name: ssh-key-volume
-              mountPath: /home/node/.ssh
-              readOnly: true
           securityContext:
             runAsNonRoot: true
             runAsUser: 1000
@@ -188,10 +185,3 @@ spec:
             name: openclaw-domobot-config
         - name: tmp-volume
           emptyDir: {}
-        - name: ssh-key-volume
-          secret:
-            secretName: openclaw-secrets
-            defaultMode: 0400
-            items:
-              - key: SSH_PRIVATE_KEY_DOMOBOT
-                path: id_ed25519
