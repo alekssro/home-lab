@@ -15,4 +15,4 @@ resources:
 
 images:
   - name: ghcr.io/openclaw/openclaw
-    newTag: 2026.5.18
+    newTag: 2026.5.20
