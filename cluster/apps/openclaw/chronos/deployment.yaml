@@ -34,6 +34,7 @@ spec:
             - -c
             - |
               chown -R 1000:1000 /home/node/.openclaw
+              cp /config/openclaw.json /home/node/.openclaw/openclaw.json
               mkdir -p /home/node/.openclaw/workspace/Staging
               mkdir -p /home/node/.openclaw/workspace/Photos
               cp /config/AGENTS.md /home/node/.openclaw/workspace/AGENTS.md
@@ -131,9 +132,6 @@ spec:
               mountPath: /home/node/.openclaw
             - name: tmp-volume
               mountPath: /tmp
-            - name: config
-              mountPath: /home/node/.openclaw/openclaw.json
-              subPath: openclaw.json
           securityContext:
             runAsNonRoot: true
             runAsUser: 1000
