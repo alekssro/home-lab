@@ -81,7 +81,7 @@ spec:
             - |
               if [ -n "$GITHUB_TOKEN" ]; then
                 git config --file /home/node/.openclaw/.gitconfig --remove-section url 2>/dev/null || true
-                git config --file /home/node/.openclaw/.gitconfig url."https://x-access-token:${GITHUB_TOKEN}@github.com/".insteadOf "https://github.com/"
+                git config --file /home/node/.openclaw/.gitconfig url."https://x-access-token:$${GITHUB_TOKEN}@github.com/".insteadOf "https://github.com/"
                 git config --file /home/node/.openclaw/.gitconfig user.name "KubePilot Bot"
                 git config --file /home/node/.openclaw/.gitconfig user.email "kubepilot@users.noreply.github.com"
 
