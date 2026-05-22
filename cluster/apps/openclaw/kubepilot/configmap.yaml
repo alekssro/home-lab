@@ -35,17 +35,17 @@ data:
             "baseUrl": "http://ollama:11434",
             "api": "ollama",
             "timeoutSeconds": 300,
-            "contextWindow": 32768,
+            "contextWindow": 65536,
             "maxTokens": 8192,
             "models": [
               {
-                "id": "qwen3.5:9b",
-                "name": "qwen3.5:9b",
+                "id": "qwen3.5:9B",
+                "name": "qwen3.5:9B",
                 "reasoning": true,
                 "input": ["text", "image"],
                 "cost": { "input": 0, "output": 0, "cacheRead": 0, "cacheWrite": 0 },
                 "params": {
-                  "num_ctx": 32768
+                  "num_ctx": 65536
                 }
               },
               {
@@ -54,8 +54,6 @@ data:
                 "reasoning": true,
                 "input": ["text"],
                 "cost": { "input": 0, "output": 0, "cacheRead": 0, "cacheWrite": 0 },
-                "contextWindow": 65536,
-                "maxTokens": 8192
               }
             ]
           }
@@ -68,7 +66,7 @@ data:
             "every": "0m"
           },
           "model": {
-            "primary": "ollama/qwen3.5:9b"
+            "primary": "ollama/qwen3.5:9B"
           },
           "thinkingDefault": "high",
           "reasoningDefault": "on"
