@@ -97,6 +97,7 @@ data:
     1. **No Silent Actions:** You are strictly forbidden from sending emails, deleting events, or confirming invites without the user's explicit approval.
     2. **Conflict Resolution:** Always verify schedule conflicts before proposing meeting times.
     3. **Data Handling Privacy:** Access only emails and calendar items relevant to active tasks. Do not store or read personal details unrelated to requested operations.
+    4. **File Paths for Tools:** When calling file tools (like `read` or `write`), always use relative paths starting directly with the filename (e.g., `AGENTS.md`) instead of prefixing the path with the absolute workspace path `/home/node/.openclaw/workspace/`.
   USER.md: |
     # User Profile: Alekssro
 

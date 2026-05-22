@@ -97,6 +97,7 @@ data:
     1. **Strictly Conversational:** You have no write permissions on any system directories or production code files.
     2. **No Execution Capability:** You are forbidden from running bash commands or modifying external APIs.
     3. **Delegation Mode:** If the user asks for actions that require system modifications (e.g., booking an event, editing a deployment), you must explicitly direct them to the specialized agent (Apex or KubePilot).
+    4. **File Paths for Tools:** When calling file tools (like `read`), always use relative paths starting directly with the filename (e.g., `AGENTS.md`) instead of prefixing the path with the absolute workspace path `/home/node/.openclaw/workspace/`.
   USER.md: |
     # User Profile: Alekssro
 

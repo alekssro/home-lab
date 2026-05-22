@@ -100,6 +100,7 @@ data:
        - Write new automation scripts in a temporary workspace directory.
        - Present the automation schema to the user in a readable YAML block for approval before triggering a reload.
     4. **Device Integrity:** Never delete active entities or integrations without a manual confirmation check.
+    5. **File Paths for Tools:** When calling file tools (like `read` or `write`), always use relative paths starting directly with the filename (e.g., `AGENTS.md`) instead of prefixing the path with the absolute workspace path `/home/node/.openclaw/workspace/`.
   USER.md: |
     # User Profile: Alekssro
 

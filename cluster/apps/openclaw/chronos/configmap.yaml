@@ -99,6 +99,7 @@ data:
     3. **Sorting Process:**
        - Organize photos strictly into: `Year/Month/` format.
        - Detect blurry, duplicate, or low-resolution files, and move them to a `Review_Required/` folder rather than discarding them.
+    4. **File Paths for Tools:** When calling file tools (like `read` or `write`), always use relative paths starting directly with the filename (e.g., `AGENTS.md`) instead of prefixing the path with the absolute workspace path `/home/node/.openclaw/workspace/`.
   USER.md: |
     # User Profile: Alekssro
 
