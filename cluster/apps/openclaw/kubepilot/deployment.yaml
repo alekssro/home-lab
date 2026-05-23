@@ -56,6 +56,16 @@ spec:
                 wget -q --no-check-certificate -O /home/node/.openclaw/bin/kubectl https://dl.k8s.io/release/v1.24.17/bin/linux/$ARCH/kubectl
                 chmod +x /home/node/.openclaw/bin/kubectl
               fi
+
+              # Download GitHub CLI (gh)
+              if [ ! -f /home/node/.openclaw/bin/gh ]; then
+                echo "Downloading GitHub CLI (gh) for $ARCH..."
+                wget -q --no-check-certificate -O /tmp/gh.tar.gz https://github.com/cli/cli/releases/download/v2.49.0/gh_2.49.0_linux_$ARCH.tar.gz
+                tar -xzf /tmp/gh.tar.gz -C /tmp
+                mv /tmp/gh_2.49.0_linux_$ARCH/bin/gh /home/node/.openclaw/bin/gh
+                rm -rf /tmp/gh.tar.gz /tmp/gh_2.49.0_linux_$ARCH
+                chmod +x /home/node/.openclaw/bin/gh
+              fi
               chown -R 1000:1000 /home/node/.openclaw
           securityContext:
             runAsUser: 0
