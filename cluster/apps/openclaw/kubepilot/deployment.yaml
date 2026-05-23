@@ -58,12 +58,14 @@ spec:
               fi
 
               # Download GitHub CLI (gh)
-              if [ ! -f /home/node/.openclaw/bin/gh ]; then
-                echo "Downloading GitHub CLI (gh) for $ARCH..."
-                wget -q --no-check-certificate -O /tmp/gh.tar.gz https://github.com/cli/cli/releases/download/v2.92.0/gh_2.92.0_linux_$ARCH.tar.gz
+              TARGET_GH_VER="2.92.0"
+              if [ ! -f /home/node/.openclaw/bin/gh ] || [ ! -f /home/node/.openclaw/bin/gh.version ] || [ "$(cat /home/node/.openclaw/bin/gh.version 2>/dev/null)" != "$TARGET_GH_VER" ]; then
+                echo "Downloading GitHub CLI (gh) $TARGET_GH_VER for $ARCH..."
+                wget -q --no-check-certificate -O /tmp/gh.tar.gz https://github.com/cli/cli/releases/download/v$TARGET_GH_VER/gh_${TARGET_GH_VER}_linux_$ARCH.tar.gz
                 tar -xzf /tmp/gh.tar.gz -C /tmp
-                mv /tmp/gh_2.92.0_linux_$ARCH/bin/gh /home/node/.openclaw/bin/gh
-                rm -rf /tmp/gh.tar.gz /tmp/gh_2.92.0_linux_$ARCH
+                mv /tmp/gh_${TARGET_GH_VER}_linux_$ARCH/bin/gh /home/node/.openclaw/bin/gh
+                echo "$TARGET_GH_VER" > /home/node/.openclaw/bin/gh.version
+                rm -rf /tmp/gh.tar.gz /tmp/gh_${TARGET_GH_VER}_linux_$ARCH
                 chmod +x /home/node/.openclaw/bin/gh
               fi
               chown -R 1000:1000 /home/node/.openclaw
