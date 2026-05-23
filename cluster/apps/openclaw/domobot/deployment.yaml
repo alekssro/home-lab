@@ -106,6 +106,8 @@ spec:
               value: /home/node/.openclaw
             - name: NODE_ENV
               value: production
+            - name: PATH
+              value: /home/node/.openclaw/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
             - name: OPENCLAW_GATEWAY_TOKEN
               valueFrom:
                 secretKeyRef:
