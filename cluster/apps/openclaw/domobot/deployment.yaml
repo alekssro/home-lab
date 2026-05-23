@@ -64,8 +64,8 @@ spec:
             - -c
             - |
               if [ -n "$GITHUB_TOKEN" ]; then
-                git config --file /home/node/.openclaw/.gitconfig --remove-section url 2>/dev/null || true
-                git config --file /home/node/.openclaw/.gitconfig url."https://x-access-token:${GITHUB_TOKEN}@github.com/".insteadOf "https://github.com/"
+                rm -f /home/node/.openclaw/.gitconfig
+                git config --file /home/node/.openclaw/.gitconfig url."https://x-access-token:$${GITHUB_TOKEN}@github.com/".insteadOf "https://github.com/"
                 git config --file /home/node/.openclaw/.gitconfig user.name "Domobot Bot"
                 git config --file /home/node/.openclaw/.gitconfig user.email "domobot@users.noreply.github.com"
 
