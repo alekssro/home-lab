@@ -1,0 +1,25 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: openclaw-config
+  namespace: openclaw
+data:
+  openclaw.json: |
+    {
+      "agents": {
+        "defaults": {
+          "model": {
+            "primary": "gemma4:e4b",
+            "fallbacks": [
+              "gemma4:e4b",
+              "ollama/qwen3.5:9B"
+            ],
+            "catalog": [
+              "gemma4:e4b",
+              "ollama/qwen3.5:9B",
+              "anthropic/claude-sonnet"
+            ]
+          }
+        }
+      }
+    }
