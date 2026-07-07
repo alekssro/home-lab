@@ -7,6 +7,7 @@ resources:
   - mosquitto-cm.yaml
   - pvc.yaml
   - deployment.yaml
+  - nut-upsd-cm.yaml
   - service.yaml
   - ingress.yaml
   - secret.sops.yaml

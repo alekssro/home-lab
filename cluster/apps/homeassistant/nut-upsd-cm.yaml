@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: nut-upsd-config
+  namespace: homeassistant
+data:
+  ups.conf: |
+    [server_ups]
+        driver = nutdrv_qx
+        port = auto
+        vendorid = 0665
+        productid = 5161
+        subdriver = cypress
+        desc = "Server - Salicru SPS 1500 ONE V2"

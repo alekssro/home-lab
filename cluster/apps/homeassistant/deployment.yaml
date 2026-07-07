@@ -123,12 +123,6 @@ spec:
         - name: nut-upsd
           image: instantlinux/nut-upsd:2.8.3-r2
           env:
-            - name: NAME
-              value: "server_ups"
-            - name: DESCRIPTION
-              value: "Server - Salicru SPS 1500 ONE V2"
-            - name: DRIVER
-              value: "nutdrv_qx"
             - name: API_USER
               valueFrom:
                 secretKeyRef:
@@ -153,12 +147,17 @@ spec:
           volumeMounts:
             - name: sai-usb-devices
               mountPath: /dev/bus/usb # SAI
+            - name: nut-upsd-config
+              mountPath: /etc/nut/local
       nodeSelector:
         kubernetes.io/hostname: nuc7pjyhn-rookie
       volumes:
         - name: sai-usb-devices
           hostPath:
             path: /dev/bus/usb  # SAI
+        - name: nut-upsd-config
+          configMap:
+            name: nut-upsd-config
 
 ---
 apiVersion: apps/v1
