@@ -8,5 +8,5 @@ images:
   - name: rancher/system-upgrade-controller
     newName: docker.io/rancher/system-upgrade-controller
     newTag: v0.13.4
-patchesStrategicMerge:
-  - ./system-upgrade-patches.yaml
+patches:
+  - path: ./system-upgrade-patches.yaml
