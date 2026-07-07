@@ -148,7 +148,8 @@ spec:
             - name: sai-usb-devices
               mountPath: /dev/bus/usb # SAI
             - name: nut-upsd-config
-              mountPath: /etc/nut/local
+              mountPath: /etc/nut/local/ups.conf
+              subPath: ups.conf
       nodeSelector:
         kubernetes.io/hostname: nuc7pjyhn-rookie
       volumes:

@@ -5,10 +5,10 @@ metadata:
   namespace: homeassistant
 data:
   ups.conf: |
-    [server_ups]
-        driver = nutdrv_qx
+    [ups]
+        driver = blazer_usb
         port = auto
         vendorid = 0665
         productid = 5161
-        subdriver = cypress
+        user = root
         desc = "Server - Salicru SPS 1500 ONE V2"
