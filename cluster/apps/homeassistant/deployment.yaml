@@ -122,6 +122,12 @@ spec:
       containers:
         - name: nut-upsd
           image: instantlinux/nut-upsd:2.8.3-r2
+          command:
+            - /bin/sh
+            - -c
+            - |
+              (while [ ! -f /etc/nut/upsmon.conf ]; do sleep 1; done; echo "DEADTIME 25" >> /etc/nut/upsmon.conf) &
+              exec /usr/local/bin/entrypoint.sh
           env:
             - name: API_USER
               valueFrom:

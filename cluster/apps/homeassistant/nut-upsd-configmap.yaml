@@ -11,4 +11,5 @@ data:
         vendorid = 0665
         productid = 5161
         user = root
+        pollinterval = 5
         desc = "Server - Salicru SPS 1500 ONE V2"
