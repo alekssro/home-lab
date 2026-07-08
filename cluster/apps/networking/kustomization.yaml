@@ -9,4 +9,3 @@ resources:
   - traefik
   - adguard-home
   - vpn
-  - metallb-config
