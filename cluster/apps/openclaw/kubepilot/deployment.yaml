@@ -43,7 +43,7 @@ spec:
               cp /config/USER.md /home/node/.openclaw/workspace/USER.md
               cp /config/HEARTBEAT.md /home/node/.openclaw/workspace/HEARTBEAT.md
 
-              # Detect CPU architecture and download kubectl matching the cluster version (1.31.14 skew-compatible)
+              # Detect CPU architecture and download kubectl matching the cluster version (1.32.13 skew-compatible)
               ARCH=`uname -m`
               if [ "$ARCH" = "x86_64" ]; then
                 ARCH="amd64"
@@ -53,7 +53,7 @@ spec:
               mkdir -p /home/node/.openclaw/bin
               if [ ! -f /home/node/.openclaw/bin/kubectl ]; then
                 echo "Downloading kubectl for $ARCH..."
-                wget -q --no-check-certificate -O /home/node/.openclaw/bin/kubectl https://dl.k8s.io/release/v1.31.14/bin/linux/$ARCH/kubectl
+                wget -q --no-check-certificate -O /home/node/.openclaw/bin/kubectl https://dl.k8s.io/release/v1.32.13/bin/linux/$ARCH/kubectl
                 chmod +x /home/node/.openclaw/bin/kubectl
               fi
 
