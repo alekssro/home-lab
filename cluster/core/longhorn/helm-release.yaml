@@ -22,7 +22,7 @@ spec:
     remediation:
       retries: 3
   values:
-    enablePSP: true
+    enablePSP: false
     replicaCount: 2
     ingress:
       enabled: true
