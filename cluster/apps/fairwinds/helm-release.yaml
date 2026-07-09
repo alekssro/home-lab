@@ -9,7 +9,7 @@ spec:
   chart:
     spec:
       chart: insights-agent
-      version: 2.15.1
+      version: 5.7.1
       sourceRef:
         kind: HelmRepository
         name: insights-agent
