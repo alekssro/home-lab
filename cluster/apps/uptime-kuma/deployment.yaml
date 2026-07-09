@@ -45,10 +45,7 @@ spec:
           volumeMounts:
             - name: kuma-data
               mountPath: /app/data
-      nodeSelector:
-        kubernetes.io/hostname: nuc7pjyhn-rookie
-
       volumes:
         - name: kuma-data
           persistentVolumeClaim:
-            claimName: uptime-kuma-nfs-pvc
+            claimName: uptime-kuma-pvc
