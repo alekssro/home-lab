@@ -7,3 +7,13 @@ apiVersion: v1
 kind: Namespace
 metadata:
   name: system-upgrade
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: system-upgrade-controller
+  namespace: system-upgrade
+spec:
+  strategy:
+    $patch: replace
+    type: Recreate
