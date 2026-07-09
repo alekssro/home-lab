@@ -26,7 +26,8 @@ spec:
     replicaCount: 2
     defaultSettings:
       defaultReplicaCount: 2
-      backupTarget: "nfs://192.168.68.101:/volume1/K8s-homelab"
+      backupTarget: "s3://longhorn-backups@us-east-1/"
+      backupTargetCredentialSecret: "longhorn-secret"
       nodeDownPodDeletionPolicy: "delete-both-statefulset-and-deployment-pod"
     ingress:
       enabled: true
