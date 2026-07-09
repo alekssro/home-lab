@@ -5,8 +5,8 @@ metadata:
   namespace: vpn
 spec:
   accessModes:
-    - ReadWriteOnce
-  storageClassName: longhorn
+    - ReadWriteMany
+  storageClassName: nfs-csi
   resources:
     requests:
       storage: 256Mi
