@@ -27,7 +27,7 @@ spec:
     defaultSettings:
       defaultReplicaCount: 2
       backupTarget: "nfs://192.168.68.101:/volume1/K8s-homelab/longhorn-backups"
-      podDeletionPolicy: "delete-both-statefulset-and-deployment-pod"
+      nodeDownPodDeletionPolicy: "delete-both-statefulset-and-deployment-pod"
     ingress:
       enabled: true
       ingressClassName: "traefik"
