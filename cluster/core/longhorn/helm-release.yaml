@@ -6,6 +6,8 @@ metadata:
   namespace: storage-system
 spec:
   interval: 5m
+  dependsOn:
+    - name: longhorn-crd
   chart:
     spec:
       chart: longhorn
