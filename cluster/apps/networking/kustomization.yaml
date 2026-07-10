@@ -8,4 +8,5 @@ resources:
   - k8s-gateway
   - traefik
   - adguard-home
+  - adguard-home-2
   - vpn

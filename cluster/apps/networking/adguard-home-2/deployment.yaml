@@ -1,0 +1,91 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: adguard-home-2
+  namespace: networking
+  labels:
+    service: adguard-home-2
+spec:
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+      maxSurge: 0
+  selector:
+    matchLabels:
+      service: adguard-home-2
+  template:
+    metadata:
+      annotations:
+        secret.reloader.stakater.com/reload: adguardhome-secret
+      labels:
+        service: adguard-home-2
+    spec:
+      nodeSelector:
+        kubernetes.io/hostname: nuc7pjyhn-cripple
+      hostNetwork: true
+      initContainers:
+        - name: copy-config
+          image: busybox
+          imagePullPolicy: IfNotPresent
+          command:
+            - "sh"
+            - "-c"
+            - "mkdir -p /opt/adguardhome/conf && cp /tmp/AdGuardHome.yaml /opt/adguardhome/conf/AdGuardHome.yaml"
+          volumeMounts:
+            - name: adguard-home-secret
+              mountPath: /tmp
+            - name: adguard-home-config
+              mountPath: /opt/adguardhome/conf
+          securityContext:
+            runAsUser: 0
+      containers:
+        - name: adguard-home
+          image: adguard/adguardhome:v0.107.72
+          env:
+            - name: TZ
+              value: "Europe/Madrid"
+          args:
+            - "-c"
+            - "/opt/adguardhome/conf/AdGuardHome.yaml"
+            - "--work-dir"
+            - "/opt/adguardhome/work"
+            - "--no-check-update"
+          securityContext:
+            privileged: false
+            allowPrivilegeEscalation: false
+          ports:
+            - name: web
+              containerPort: 3000
+              protocol: TCP
+            - name: dns
+              containerPort: 53
+              protocol: UDP
+            - name: dns-tcp
+              containerPort: 853
+              protocol: TCP
+          resources:
+            requests:
+              cpu: "500m"
+              memory: "512Mi"
+            limits:
+              memory: "1024Mi"
+          volumeMounts:
+            - name: adguard-home-config
+              mountPath: /opt/adguardhome/conf
+            - name: adguard-home-logs
+              mountPath: /opt/adguardhome/work
+      volumes:
+        - name: adguard-home-secret
+          secret:
+            secretName: adguardhome-secret
+            items:
+              - key: AdGuardHome.yaml
+                path: AdGuardHome.yaml
+        - name: adguard-home-config
+          persistentVolumeClaim:
+            claimName: adguard-home-2
+        - name: adguard-home-logs
+          persistentVolumeClaim:
+            claimName: adguard-home-2-logs
