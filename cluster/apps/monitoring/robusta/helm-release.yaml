@@ -70,6 +70,8 @@ spec:
           value: https://api.eu.robusta.dev
         - name: ROBUSTA_UI_DOMAIN
           value: https://platform.eu.robusta.dev
+        - name: PROMETHEUS_URL
+          value: http://prometheus-service.monitoring.svc.cluster.local:9090
       additional_env_froms:
         - secretRef:
             name: robusta-secrets
