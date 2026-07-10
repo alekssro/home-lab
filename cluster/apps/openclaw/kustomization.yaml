@@ -10,8 +10,8 @@ resources:
   - echo
   - kubepilot
   - domobot
-  - chronos
-  - apex
+  # - chronos
+  # - apex
 
 images:
   - name: ghcr.io/openclaw/openclaw
