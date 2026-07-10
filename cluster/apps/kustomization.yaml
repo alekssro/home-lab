@@ -23,6 +23,7 @@ resources:
   - media-server
   - openclaw
   - kanbn
+  - monitoring
   # - drive
   # - owncloud
   # - obsidian-sync
