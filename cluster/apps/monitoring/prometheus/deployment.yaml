@@ -29,6 +29,7 @@ spec:
             - '--config.file=/etc/prometheus/prometheus.yml'
             - '--storage.tsdb.path=/prometheus'
             - '--storage.tsdb.retention.time=15d'
+            - '--storage.tsdb.no-lockfile'
             - '--web.enable-lifecycle'
           ports:
             - name: prometheus
