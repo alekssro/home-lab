@@ -52,6 +52,12 @@ spec:
               add:
                 - NET_ADMIN
                 - NET_RAW
+          resources:
+            requests:
+              cpu: 50m
+              memory: 64Mi
+            limits:
+              memory: 64Mi
       hostAliases:
         - hostnames:
             - kubernetes

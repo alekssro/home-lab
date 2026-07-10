@@ -26,23 +26,23 @@ spec:
     resources:
       requests:
         cpu: 50m
-        memory: 256Mi
+        memory: 64Mi
       limits:
-        memory: 256Mi
+        memory: 64Mi
     webhook:
       resources:
         requests:
           cpu: 50m
-          memory: 256Mi
+          memory: 64Mi
         limits:
-          memory: 256Mi
+          memory: 64Mi
     cainjector:
       resources:
         requests:
           cpu: 50m
-          memory: 256Mi
+          memory: 64Mi
         limits:
-          memory: 256Mi
+          memory: 64Mi
     extraArgs:
       - --dns01-recursive-nameservers=1.1.1.1:53,9.9.9.9:53
       - --dns01-recursive-nameservers-only

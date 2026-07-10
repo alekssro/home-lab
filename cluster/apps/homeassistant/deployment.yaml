@@ -39,10 +39,10 @@ spec:
                 - SYS_ADMIN
           resources:
             requests:
-              cpu: "1000m"
-              memory: "3Gi"
+              cpu: 100m
+              memory: 3Gi
             limits:
-              memory: "3Gi"
+              memory: 3Gi
           volumeMounts:
             - mountPath: "/config"
               name: home-assistant-pvc
@@ -225,10 +225,10 @@ spec:
                 - SYS_ADMIN
           resources:
             requests:
-              cpu: "100m"
-              memory: "256Mi"
+              cpu: 100m
+              memory: 256Mi
             limits:
-              memory: "256Mi"
+              memory: 256Mi
           volumeMounts:
             - mountPath: "/data"
               name: home-assistant-matter-pvc
@@ -284,10 +284,10 @@ spec:
               name: mqtt-websocket
           resources:
             requests:
-              cpu: "50m"
-              memory: "64Mi"
+              cpu: 50m
+              memory: 64Mi
             limits:
-              memory: "64Mi"
+              memory: 64Mi
           volumeMounts:
             - mountPath: "/mosquitto"
               name: home-assistant-mqtt-pvc

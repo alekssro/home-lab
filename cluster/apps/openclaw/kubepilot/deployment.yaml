@@ -154,7 +154,7 @@ spec:
               value: /home/node/.openclaw/.gitconfig
           resources:
             requests:
-              cpu: 250m
+              cpu: 59m
               memory: 512Mi
             limits:
               memory: 512Mi

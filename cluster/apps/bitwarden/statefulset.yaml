@@ -58,10 +58,10 @@ spec:
               name: bitwarden-data
           resources:
             requests:
-              cpu: 100m
-              memory: 256Mi
+              cpu: 50m
+              memory: 128Mi
             limits:
-              memory: 256Mi
+              memory: 128Mi
       nodeSelector:
         kubernetes.io/arch: amd64
       volumes:

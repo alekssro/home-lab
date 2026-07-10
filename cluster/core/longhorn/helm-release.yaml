@@ -47,3 +47,49 @@ spec:
         memory: 256Mi
       limits:
         memory: 256Mi
+    longhornManager:
+      resources:
+        requests:
+          cpu: 50m
+          memory: 224Mi
+        limits:
+          memory: 224Mi
+    longhornDriver:
+      resources:
+        requests:
+          cpu: 50m
+          memory: 64Mi
+        limits:
+          memory: 64Mi
+    longhornUI:
+      resources:
+        requests:
+          cpu: 50m
+          memory: 64Mi
+        limits:
+          memory: 64Mi
+    csi:
+      attacherResources:
+        requests:
+          cpu: 20m
+          memory: 64Mi
+        limits:
+          memory: 64Mi
+      provisionerResources:
+        requests:
+          cpu: 20m
+          memory: 64Mi
+        limits:
+          memory: 64Mi
+      resizerResources:
+        requests:
+          cpu: 20m
+          memory: 64Mi
+        limits:
+          memory: 64Mi
+      snapshotterResources:
+        requests:
+          cpu: 20m
+          memory: 64Mi
+        limits:
+          memory: 64Mi
