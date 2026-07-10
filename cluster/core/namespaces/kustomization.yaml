@@ -6,3 +6,5 @@ resources:
   - metallb-system.yaml
   - networking.yaml
   - system-upgrade.yaml
+  - storage-system.yaml
+  - kube-system.yaml
