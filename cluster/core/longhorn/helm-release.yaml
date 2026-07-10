@@ -71,26 +71,6 @@ spec:
                           limits:
                             memory: 224Mi
           - target:
-              kind: DaemonSet
-              name: longhorn-csi-plugin
-            patch: |
-              apiVersion: apps/v1
-              kind: DaemonSet
-              metadata:
-                name: longhorn-csi-plugin
-                namespace: storage-system
-              spec:
-                template:
-                  spec:
-                    containers:
-                      - name: longhorn-csi-plugin
-                        resources:
-                          requests:
-                            cpu: 50m
-                            memory: 64Mi
-                          limits:
-                            memory: 64Mi
-          - target:
               kind: Deployment
               name: longhorn-ui
             patch: |
@@ -112,78 +92,18 @@ spec:
                             memory: 64Mi
           - target:
               kind: Deployment
-              name: csi-attacher
+              name: longhorn-driver-deployer
             patch: |
               apiVersion: apps/v1
               kind: Deployment
               metadata:
-                name: csi-attacher
+                name: longhorn-driver-deployer
                 namespace: storage-system
               spec:
                 template:
                   spec:
                     containers:
-                      - name: csi-attacher
-                        resources:
-                          requests:
-                            cpu: 50m
-                            memory: 64Mi
-                          limits:
-                            memory: 64Mi
-          - target:
-              kind: Deployment
-              name: csi-provisioner
-            patch: |
-              apiVersion: apps/v1
-              kind: Deployment
-              metadata:
-                name: csi-provisioner
-                namespace: storage-system
-              spec:
-                template:
-                  spec:
-                    containers:
-                      - name: csi-provisioner
-                        resources:
-                          requests:
-                            cpu: 50m
-                            memory: 64Mi
-                          limits:
-                            memory: 64Mi
-          - target:
-              kind: Deployment
-              name: csi-resizer
-            patch: |
-              apiVersion: apps/v1
-              kind: Deployment
-              metadata:
-                name: csi-resizer
-                namespace: storage-system
-              spec:
-                template:
-                  spec:
-                    containers:
-                      - name: csi-resizer
-                        resources:
-                          requests:
-                            cpu: 50m
-                            memory: 64Mi
-                          limits:
-                            memory: 64Mi
-          - target:
-              kind: Deployment
-              name: csi-snapshotter
-            patch: |
-              apiVersion: apps/v1
-              kind: Deployment
-              metadata:
-                name: csi-snapshotter
-                namespace: storage-system
-              spec:
-                template:
-                  spec:
-                    containers:
-                      - name: csi-snapshotter
+                      - name: longhorn-driver-deployer
                         resources:
                           requests:
                             cpu: 50m
