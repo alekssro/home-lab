@@ -26,5 +26,5 @@ resources:
   # - drive
   # - owncloud
   # - obsidian-sync
-  - goldilocks
+  # - goldilocks
   # - fairwinds

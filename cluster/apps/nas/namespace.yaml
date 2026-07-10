@@ -3,5 +3,3 @@ apiVersion: v1
 kind: Namespace
 metadata:
   name: nas
-  labels:
-    goldilocks.fairwinds.com/enabled: "true"
