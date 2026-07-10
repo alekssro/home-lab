@@ -36,10 +36,10 @@ spec:
               protocol: TCP
           resources:
             requests:
-              cpu: "100m"
-              memory: "512Mi"
+              cpu: 100m
+              memory: 256Mi
             limits:
-              memory: "1Gi"
+              memory: 256Mi
           livenessProbe:
             httpGet:
               path: /-/healthy
