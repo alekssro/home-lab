@@ -1,0 +1,65 @@
+# Credentials are loaded from the robusta-secrets Kubernetes Secret via additional_env_froms. Apply the secret manifest first, then install with this file.
+
+clusterName: robusta-agent # NOTE - adjust the clusterName when adding additional clusters
+globalConfig:
+  signing_key: "{{ env.SIGNING_KEY }}"
+  account_id: f194ce61-6fa5-4373-93ac-5e9ad0fd51a4
+sinksConfig:
+  - robusta_sink:
+      name: robusta_ui_sink
+      token: "{{ env.ROBUSTA_UI_TOKEN }}"
+enablePrometheusStack: false
+enablePlatformPlaybooks: true
+runner:
+  sendAdditionalTelemetry: true
+  additional_env_vars:
+    - name: RELAY_EXTERNAL_ACTIONS_URL
+      value: https://api.eu.robusta.dev/integrations/generic/actions
+    - name: WEBSOCKET_RELAY_ADDRESS
+      value: wss://relay.eu.robusta.dev
+    - name: ROBUSTA_UI_DOMAIN
+      value: https://platform.eu.robusta.dev
+    - name: ROBUSTA_TELEMETRY_ENDPOINT
+      value: https://api.eu.robusta.dev/telemetry
+    - name: ROBUSTA_API_ENDPOINT
+      value: https://api.eu.robusta.dev
+  additional_env_froms:
+    - secretRef:
+        name: robusta-secrets
+  resources:
+    requests:
+      memory: 1Gi
+      cpu: 100m
+    limits:
+      memory: 1536Mi
+enableHolmesGPT: true
+enabledManagedConfiguration: true
+holmes:
+  additionalEnvVars:
+    - name: ROBUSTA_AI
+      value: "true"
+    - name: ROBUSTA_UI_TOKEN
+      valueFrom:
+        secretKeyRef:
+          name: robusta-secrets
+          key: ROBUSTA_UI_TOKEN
+    - name: ROBUSTA_API_ENDPOINT
+      value: https://api.eu.robusta.dev
+    - name: ROBUSTA_UI_DOMAIN
+      value: https://platform.eu.robusta.dev
+  additional_env_froms:
+    - secretRef:
+        name: robusta-secrets
+  resources:
+    requests:
+      memory: 1Gi
+      cpu: 100m
+    limits:
+      memory: 1Gi
+kubewatch:
+  resources:
+    requests:
+      memory: 128Mi
+      cpu: 50m
+    limits:
+      memory: 128Mi
