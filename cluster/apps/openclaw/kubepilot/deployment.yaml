@@ -73,8 +73,8 @@ spec:
             runAsGroup: 0
           resources:
             requests:
-              memory: 32Mi
               cpu: 50m
+              memory: 64Mi
             limits:
               memory: 64Mi
           volumeMounts:
@@ -154,8 +154,8 @@ spec:
               value: /home/node/.openclaw/.gitconfig
           resources:
             requests:
-              memory: 512Mi
               cpu: 250m
+              memory: 2Gi
             limits:
               memory: 2Gi
           livenessProbe:

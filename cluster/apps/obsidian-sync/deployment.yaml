@@ -19,29 +19,28 @@ spec:
         app: obsidian-sync
     spec:
       containers:
-      - image: syncthing/syncthing:1.23
-        name: syncthing
-        resources:
-          requests:
-            cpu: 50m
-            memory: 256Mi
-          limits:
-            cpu: 500m
-            memory: 256Mi
-        ports:
-        - containerPort: 8384
+        - image: syncthing/syncthing:1.23
           name: syncthing
-          protocol: TCP
-        - containerPort: 22000
-          protocol: TCP
-          name: to-listen
-        - containerPort: 22000
-          protocol: UDP
-          name: to-discover
-        volumeMounts:
-        - name: obsidian-sync-pvc
-          mountPath: /var/syncthing
+          resources:
+            requests:
+              cpu: 50m
+              memory: 256Mi
+            limits:
+              memory: 256Mi
+          ports:
+            - containerPort: 8384
+              name: syncthing
+              protocol: TCP
+            - containerPort: 22000
+              protocol: TCP
+              name: to-listen
+            - containerPort: 22000
+              protocol: UDP
+              name: to-discover
+          volumeMounts:
+            - name: obsidian-sync-pvc
+              mountPath: /var/syncthing
       volumes:
-      - name: obsidian-sync-pvc
-        persistentVolumeClaim:
-          claimName: obsidian-sync-pvc
+        - name: obsidian-sync-pvc
+          persistentVolumeClaim:
+            claimName: obsidian-sync-pvc
