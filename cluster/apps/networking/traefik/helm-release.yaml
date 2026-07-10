@@ -82,8 +82,7 @@ spec:
         maxVersion: VersionTLS13
         sniStrict: true
     experimental:
-      plugins:
-        enabled: false
+      plugins: {}
     resources:
       requests:
         cpu: 50m
