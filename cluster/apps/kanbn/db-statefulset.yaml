@@ -33,6 +33,12 @@ spec:
             - name: data
               mountPath: /var/lib/postgresql/data
               subPath: postgres
+          resources:
+            requests:
+              cpu: 100m
+              memory: 256Mi
+            limits:
+              memory: 256Mi
       volumes:
         - name: data
           persistentVolumeClaim:

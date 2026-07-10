@@ -18,6 +18,12 @@ spec:
   values:
     fullnameOverride: k8s-gateway
     domain: ${SECRET_DOMAIN}
+    resources:
+      requests:
+        cpu: 50m
+        memory: 64Mi
+      limits:
+        memory: 64Mi
     ttl: 1
     service:
       type: LoadBalancer

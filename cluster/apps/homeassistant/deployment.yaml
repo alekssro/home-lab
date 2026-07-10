@@ -146,6 +146,12 @@ spec:
                   key: NUT_UPS_ADMIN_PASSWORD
           securityContext:
             privileged: true
+          resources:
+            requests:
+              cpu: 10m
+              memory: 64Mi
+            limits:
+              memory: 64Mi
           ports:
             - containerPort: 3493
               name: nut
@@ -337,6 +343,12 @@ spec:
           volumeMounts:
             - mountPath: "/config"
               name: config
+          resources:
+            requests:
+              cpu: 100m
+              memory: 256Mi
+            limits:
+              memory: 256Mi
       nodeSelector:
         kubernetes.io/hostname: nuc7pjyhn-rookie
       volumes:

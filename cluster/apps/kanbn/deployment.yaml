@@ -24,11 +24,23 @@ spec:
                 secretKeyRef:
                   name: kanbn-secret
                   key: POSTGRES_URL
+          resources:
+            requests:
+              cpu: 50m
+              memory: 128Mi
+            limits:
+              memory: 128Mi
       containers:
         - name: web
           image: ghcr.io/kanbn/kan:latest
           ports:
             - containerPort: 3000
+          resources:
+            requests:
+              cpu: 100m
+              memory: 256Mi
+            limits:
+              memory: 256Mi
           env:
             - name: NEXT_PUBLIC_BASE_URL
               value: "https://kanbn.${SECRET_DOMAIN}"
