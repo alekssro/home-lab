@@ -18,7 +18,7 @@ spec:
     spec:
       containers:
         - name: wireguard
-          image: linuxserver/wireguard:1.0.20250521
+          image: linuxserver/wireguard:1.0.20260223
           imagePullPolicy: IfNotPresent
           securityContext:
             privileged: true
