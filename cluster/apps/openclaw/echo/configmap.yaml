@@ -37,6 +37,18 @@ data:
             "timeoutSeconds": 300,
             "models": [
               {
+                "id": "gemma4:12b",
+                "name": "gemma4:12b",
+                "reasoning": true,
+                "input": ["text", "image"],
+                "contextWindow": 65536,
+                "maxTokens": 16384,
+                "cost": { "input": 0, "output": 0, "cacheRead": 0, "cacheWrite": 0 },
+                "params": {
+                  "num_ctx": 65536
+                }
+              },
+              {
                 "id": "qwen3.5:9B",
                 "name": "qwen3.5:9B",
                 "reasoning": true,
@@ -68,7 +80,7 @@ data:
             "every": "0m"
           },
           "model": {
-            "primary": "ollama/qwen3.5:9B"
+            "primary": "ollama/gemma4:12b"
           },
           "thinkingDefault": "medium",
           "reasoningDefault": "on",
