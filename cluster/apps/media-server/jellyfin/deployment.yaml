@@ -21,7 +21,7 @@ spec:
     spec:
       containers:
         - name: jellyfin
-          image: linuxserver/jellyfin:10.11.10
+          image: linuxserver/jellyfin:10.11.11
           imagePullPolicy: IfNotPresent
           envFrom:
             - secretRef:
