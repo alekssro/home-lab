@@ -9,6 +9,7 @@ subsets:
     ports:
       - name: http
         port: 8096
+        protocol: TCP
       - name: svc-discovery
         port: 7359
         protocol: UDP
