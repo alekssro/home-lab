@@ -20,7 +20,7 @@ spec:
     spec:
       containers:
         - name: alekssro-web
-          image: nginx:1.16.1
+          image: nginx:1.31.2
           ports:
             - name: alekssro-web
               containerPort: 80
