@@ -126,6 +126,34 @@ spec:
             - /bin/sh
             - -c
             - |
+              # Reset USB device 0665:5161 using sysfs if available
+              for dev in /sys/bus/usb/devices/*; do
+                if [ -f "$dev/idVendor" ] && [ -f "$dev/idProduct" ]; then
+                  vid=$(cat "$dev/idVendor")
+                  pid=$(cat "$dev/idProduct")
+                  if [ "$vid" = "0665" ] && [ "$pid" = "5161" ]; then
+                    dev_name=$(basename "$dev")
+                    echo "Resetting USB device $dev_name (0665:5161)..."
+                    if [ -f "/sys/bus/usb/devices/$dev_name/authorized" ]; then
+                      echo 0 > "/sys/bus/usb/devices/$dev_name/authorized"
+                      sleep 1
+                      echo 1 > "/sys/bus/usb/devices/$dev_name/authorized"
+                      echo "Reset completed via authorization toggle."
+                    else
+                      # Fallback to unbind/bind
+                      driver_dir="/sys/bus/usb/drivers/usb"
+                      if [ -f "$driver_dir/unbind" ] && [ -f "$driver_dir/bind" ]; then
+                        echo -n "$dev_name" > "$driver_dir/unbind"
+                        sleep 1
+                        echo -n "$dev_name" > "$driver_dir/bind"
+                        echo "Reset completed via driver unbind/bind."
+                      fi
+                    fi
+                    break
+                  fi
+                fi
+              done
+
               (while [ ! -f /etc/nut/upsmon.conf ]; do sleep 1; done; echo "DEADTIME 25" >> /etc/nut/upsmon.conf) &
               exec /usr/local/bin/entrypoint.sh
           env:
@@ -156,12 +184,23 @@ spec:
             - containerPort: 3493
               name: nut
               protocol: TCP
+          livenessProbe:
+            exec:
+              command:
+                - upsc
+                - ups@localhost
+            initialDelaySeconds: 45
+            periodSeconds: 30
+            timeoutSeconds: 5
+            failureThreshold: 3
           volumeMounts:
             - name: sai-usb-devices
               mountPath: /dev/bus/usb # SAI
             - name: nut-upsd-config
               mountPath: /etc/nut/local/ups.conf
               subPath: ups.conf
+            - name: sys-fs
+              mountPath: /sys
       nodeSelector:
         kubernetes.io/hostname: nuc7pjyhn-rookie
       volumes:
@@ -171,6 +210,9 @@ spec:
         - name: nut-upsd-config
           configMap:
             name: nut-upsd-config
+        - name: sys-fs
+          hostPath:
+            path: /sys
 
 ---
 apiVersion: apps/v1
