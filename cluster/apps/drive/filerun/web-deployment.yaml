@@ -19,7 +19,7 @@ spec:
     spec:
       containers:
         - name: filerun-web
-          image: filerun/filerun:7.4
+          image: filerun/filerun:8.4
           imagePullPolicy: IfNotPresent
           env:
             - name: TZ
