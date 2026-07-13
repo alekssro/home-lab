@@ -225,7 +225,7 @@ spec:
             - name: data
               mountPath: /data
         - name: radarr
-          image: lscr.io/linuxserver/radarr:5.28.0
+          image: lscr.io/linuxserver/radarr:6.3.0
           imagePullPolicy: IfNotPresent
           envFrom:
             - secretRef:
