@@ -19,7 +19,7 @@ spec:
         app: obsidian-sync
     spec:
       containers:
-        - image: syncthing/syncthing:1.23
+        - image: syncthing/syncthing:1.30
           name: syncthing
           resources:
             requests:
