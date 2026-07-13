@@ -37,10 +37,10 @@ spec:
             - containerPort: 3000
           resources:
             requests:
-              cpu: 50m
-              memory: 192Mi
+              cpu: 20m
+              memory: 160Mi
             limits:
-              memory: 192Mi
+              memory: 160Mi
           env:
             - name: NEXT_PUBLIC_BASE_URL
               value: "https://kanbn.${SECRET_DOMAIN}"

@@ -163,10 +163,10 @@ spec:
               value: /home/node/.openclaw/.gitconfig
           resources:
             requests:
-              cpu: 51m
-              memory: 512Mi
+              cpu: 50m
+              memory: 448Mi
             limits:
-              memory: 512Mi
+              memory: 448Mi
           livenessProbe:
             exec:
               command:

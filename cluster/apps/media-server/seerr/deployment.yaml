@@ -30,10 +30,10 @@ spec:
               containerPort: 5055
           resources:
             requests:
-              cpu: "100m"
-              memory: "512Mi"
+              cpu: "20m"
+              memory: "288Mi"
             limits:
-              memory: "512Mi"
+              memory: "288Mi"
           volumeMounts:
             - name: seerr-config
               mountPath: /app/config

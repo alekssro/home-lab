@@ -100,10 +100,10 @@ spec:
                   optional: true
           resources:
             requests:
-              cpu: 90m
-              memory: 512Mi
+              cpu: 50m
+              memory: 448Mi
             limits:
-              memory: 512Mi
+              memory: 448Mi
           livenessProbe:
             exec:
               command:
