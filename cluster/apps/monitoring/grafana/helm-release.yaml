@@ -47,7 +47,7 @@ spec:
       datasources.yaml:
         apiVersion: 1
         datasources:
-          - name: Prometheus
+          - name: prometheus
             type: prometheus
             access: proxy
             url: http://prometheus-service.monitoring.svc.cluster.local:9090
@@ -70,11 +70,11 @@ spec:
         kubernetes-pods:
           gnetId: 3119
           revision: 2
-          datasource: Prometheus
+          datasource: prometheus
         kubernetes-nodes:
           gnetId: 15760
           revision: 1
-          datasource: Prometheus
+          datasource: prometheus
     alerting:
       rules.yaml:
         apiVersion: 1
