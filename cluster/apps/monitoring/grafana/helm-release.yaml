@@ -81,6 +81,7 @@ spec:
         groups:
           - orgId: 1
             name: 'HomeLab Alerts'
+            folder: 'HomeLab'
             interval: 1m
             rules:
               - uid: 'container-cpu-high'
