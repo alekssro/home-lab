@@ -67,12 +67,20 @@ spec:
               path: /var/lib/grafana/dashboards/default
     dashboards:
       default:
-        kubernetes-pods:
-          gnetId: 3119
-          revision: 2
+        host-os:
+          gnetId: 1860
+          revision: 1
           datasource: prometheus
-        kubernetes-nodes:
-          gnetId: 15760
+        host-os-2:
+          gnetId: 13702
+          revision: 1
+          datasource: prometheus
+        containers:
+          gnetId: 13946
+          revision: 1
+          datasource: prometheus
+        nvidia-gpu:
+          gnetId: 14574
           revision: 1
           datasource: prometheus
     alerting:

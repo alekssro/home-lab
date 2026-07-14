@@ -51,3 +51,7 @@ data:
             target_label: __address__
             regex: ([^:]+)(?::\d+)?;(\d+)
             replacement: $1:$2
+
+      - job_name: 'nvidia-gpu-exporter'
+        static_configs:
+          - targets: ['192.168.68.116:9835']
