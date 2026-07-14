@@ -50,6 +50,112 @@ spec:
             access: proxy
             url: http://prometheus-service.monitoring.svc.cluster.local:9090
             isDefault: true
+            uid: prometheus
+    dashboardProviders:
+      dashboardproviders.yaml:
+        apiVersion: 1
+        providers:
+          - name: 'default'
+            orgId: 1
+            folder: ''
+            type: file
+            disableDeletion: false
+            editable: true
+            options:
+              path: /var/lib/grafana/dashboards/default
+    dashboards:
+      default:
+        kubernetes-pods:
+          gnetId: 3119
+          revision: 2
+          datasource: Prometheus
+        kubernetes-nodes:
+          gnetId: 15760
+          revision: 1
+          datasource: Prometheus
+    alerting:
+      rules.yaml:
+        apiVersion: 1
+        groups:
+          - orgId: 1
+            name: 'HomeLab Alerts'
+            rules:
+              - uid: 'container-cpu-high'
+                title: 'Container High CPU Usage'
+                condition: 'B'
+                data:
+                  - refId: 'A'
+                    relativeTimeRange:
+                      from: 300
+                      to: 0
+                    datasourceUid: 'prometheus'
+                    model:
+                      expr: 'sum(rate(container_cpu_usage_seconds_total{container!=""}[5m])) by (pod, namespace) > 0.85'
+                      intervalMs: 10000
+                      maxDataPoints: 43200
+                      refId: 'A'
+                  - refId: 'B'
+                    datasourceUid: '-100'
+                    model:
+                      expression: 'A'
+                      type: 'classic_conditions'
+                      refId: 'B'
+                      conditions:
+                        - evaluator:
+                            params:
+                              - 0.85
+                            type: gt
+                          operator:
+                            type: and
+                          query:
+                            params:
+                              - A
+                          reducer:
+                            params: []
+                            type: last
+                for: '5m'
+                annotations:
+                  summary: 'CPU usage of container in pod {{ $labels.pod }} is high'
+                labels:
+                  severity: 'warning'
+              - uid: 'container-memory-high'
+                title: 'Container High Memory Usage'
+                condition: 'B'
+                data:
+                  - refId: 'A'
+                    relativeTimeRange:
+                      from: 300
+                      to: 0
+                    datasourceUid: 'prometheus'
+                    model:
+                      expr: 'sum(container_memory_working_set_bytes{container!=""}) by (pod, namespace) > 500000000'
+                      intervalMs: 10000
+                      maxDataPoints: 43200
+                      refId: 'A'
+                  - refId: 'B'
+                    datasourceUid: '-100'
+                    model:
+                      expression: 'A'
+                      type: 'classic_conditions'
+                      refId: 'B'
+                      conditions:
+                        - evaluator:
+                            params:
+                              - 500000000
+                            type: gt
+                          operator:
+                            type: and
+                          query:
+                            params:
+                              - A
+                          reducer:
+                            params: []
+                            type: last
+                for: '5m'
+                annotations:
+                  summary: 'Memory usage of container in pod {{ $labels.pod }} is high'
+                labels:
+                  severity: 'warning'
     resources:
       requests:
         cpu: 100m
