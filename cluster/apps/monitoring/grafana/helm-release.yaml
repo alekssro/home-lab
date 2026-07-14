@@ -115,7 +115,7 @@ spec:
                             type: last
                 for: '5m'
                 annotations:
-                  summary: 'CPU usage of container in pod {{ $labels.pod }} is high'
+                  summary: 'CPU usage of container in pod {{ "{{" }} $labels.pod {{ "}}" }} is high'
                 labels:
                   severity: 'warning'
               - uid: 'container-memory-high'
@@ -153,7 +153,7 @@ spec:
                             type: last
                 for: '5m'
                 annotations:
-                  summary: 'Memory usage of container in pod {{ $labels.pod }} is high'
+                  summary: 'Memory usage of container in pod {{ "{{" }} $labels.pod {{ "}}" }} is high'
                 labels:
                   severity: 'warning'
     resources:
