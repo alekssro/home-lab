@@ -24,6 +24,8 @@ spec:
       retries: 3
   values:
     adminPassword: admin
+    deploymentStrategy:
+      type: Recreate
     ingress:
       enabled: true
       ingressClassName: traefik
