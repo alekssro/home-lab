@@ -390,7 +390,7 @@ spec:
               cpu: 50m
               memory: 256Mi
             limits:
-              memory: 512Mi
+              memory: 1Gi
       nodeSelector:
         kubernetes.io/hostname: nuc7pjyhn-rookie
       volumes:
