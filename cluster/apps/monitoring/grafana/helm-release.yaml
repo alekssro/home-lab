@@ -81,6 +81,7 @@ spec:
         groups:
           - orgId: 1
             name: 'HomeLab Alerts'
+            interval: 1m
             rules:
               - uid: 'container-cpu-high'
                 title: 'Container High CPU Usage'
@@ -88,8 +89,8 @@ spec:
                 data:
                   - refId: 'A'
                     relativeTimeRange:
-                      from: 300s
-                      to: 0s
+                      from: 300
+                      to: 0
                     datasourceUid: 'prometheus'
                     model:
                       expr: 'sum(rate(container_cpu_usage_seconds_total{container!=""}[5m])) by (pod, namespace) > 0.85'
@@ -126,8 +127,8 @@ spec:
                 data:
                   - refId: 'A'
                     relativeTimeRange:
-                      from: 300s
-                      to: 0s
+                      from: 300
+                      to: 0
                     datasourceUid: 'prometheus'
                     model:
                       expr: 'sum(container_memory_working_set_bytes{container!=""}) by (pod, namespace) > 500000000'
