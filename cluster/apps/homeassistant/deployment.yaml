@@ -388,9 +388,9 @@ spec:
           resources:
             requests:
               cpu: 50m
-              memory: 192Mi
+              memory: 256Mi
             limits:
-              memory: 192Mi
+              memory: 256Mi
       nodeSelector:
         kubernetes.io/hostname: nuc7pjyhn-rookie
       volumes:
