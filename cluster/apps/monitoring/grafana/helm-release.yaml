@@ -97,7 +97,7 @@ spec:
                       maxDataPoints: 43200
                       refId: 'A'
                   - refId: 'B'
-                    datasourceUid: '-100'
+                    datasourceUid: '__expr__'
                     model:
                       expression: 'A'
                       type: 'classic_conditions'
@@ -135,7 +135,7 @@ spec:
                       maxDataPoints: 43200
                       refId: 'A'
                   - refId: 'B'
-                    datasourceUid: '-100'
+                    datasourceUid: '__expr__'
                     model:
                       expression: 'A'
                       type: 'classic_conditions'
