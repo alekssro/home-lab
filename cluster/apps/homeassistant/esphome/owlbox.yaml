@@ -258,6 +258,48 @@ pn532_spi:
                 folder: !lambda "return id(current_folder);"
                 file: !lambda "return id(current_track);"
 
+      # 5A-D4-7D-36-0A-41-89 - Baloo
+      - if:
+          condition:
+            lambda: 'return x == "5A-D4-7D-36-0A-41-89";' # Baloo
+          then:
+            # 1. Save the folder and max tracks
+            - globals.set:
+                id: current_folder
+                value: "11"
+            - globals.set:
+                id: max_tracks
+                value: "2"
+            # 2. Pick a random track and save it
+            - globals.set:
+                id: current_track
+                value: "1"
+            # 3. Play exactly what is saved in memory!
+            - dfplayer.play_folder:
+                folder: !lambda "return id(current_folder);"
+                file: !lambda "return id(current_track);"
+
+      # 5A-C4-64-34-0A-41-89 - Enano Blancanieves
+      - if:
+          condition:
+            lambda: 'return x == "5A-C4-64-34-0A-41-89";' # Enano Blancanieves
+          then:
+            # 1. Save the folder and max tracks
+            - globals.set:
+                id: current_folder
+                value: "4"
+            - globals.set:
+                id: max_tracks
+                value: "2"
+            # 2. Pick a random track and save it
+            - globals.set:
+                id: current_track
+                value: !lambda "return (esp_random() % id(max_tracks)) + 1;"
+            # 3. Play exactly what is saved in memory!
+            - dfplayer.play_folder:
+                folder: !lambda "return id(current_folder);"
+                file: !lambda "return id(current_track);"
+
 # 5. Deep Sleep (The Shutdown Mechanism)
 deep_sleep:
   id: deep_sleep_component
