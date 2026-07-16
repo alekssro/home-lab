@@ -144,8 +144,8 @@ spec:
                   - "-c"
                   - |
                     # Add DestDir and InterDir if they don't already exist
-                    if ! grep -q '^DestDir=' /config/nzbget.conf; then sed -i '/^MainDir=.*/a DestDir=${MainDir}/completed' /config/nzbget.conf; fi
-                    if ! grep -q '^InterDir=' /config/nzbget.conf; then sed -i '/^MainDir=.*/a InterDir=${MainDir}/intermediate' /config/nzbget.conf; fi
+                    if ! grep -q '^DestDir=' /config/nzbget.conf; then sed -i '/^MainDir=.*/a DestDir=$${MainDir}/completed' /config/nzbget.conf; fi
+                    if ! grep -q '^InterDir=' /config/nzbget.conf; then sed -i '/^MainDir=.*/a InterDir=$${MainDir}/intermediate' /config/nzbget.conf; fi
                     # Change config values
                     sed -i 's#^MainDir=.*#MainDir=/data/downloads/nzbget#' /config/nzbget.conf
                     sed -i 's#^DestDir=.*#DestDir=/data/downloads/nzbget/completed#' /config/nzbget.conf
