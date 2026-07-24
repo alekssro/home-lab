@@ -42,7 +42,7 @@ spec:
                 secretKeyRef:
                   key: MYSQL_DATABASE
                   name: filerun-secret
-          image: mariadb:10.11
+          image: mariadb:12.3
           name: filerun-db
           resources:
             requests:
