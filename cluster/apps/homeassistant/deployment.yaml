@@ -374,7 +374,7 @@ spec:
     spec:
       hostNetwork: true
       containers:
-        - image: esphome/esphome:2026.6
+        - image: esphome/esphome:2026.7
           name: esphome
           env:
             - name: TZ
