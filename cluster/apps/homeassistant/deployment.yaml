@@ -434,13 +434,13 @@ spec:
                 - SYS_ADMIN
           resources:
             requests:
-              cpu: "100m"
-              memory: "256Mi"
+              cpu: 20m
+              memory: 64Mi
             limits:
-              memory: "256Mi"
+              memory: 128Mi
           volumeMounts:
             - mountPath: "/data"
-              name: home-assistant-music-assistant-pvc
+              name: music-assistant-pvc
         - image: ghcr.io/music-assistant/server:2.10.1
           name: music-assistant
           env:
@@ -455,16 +455,16 @@ spec:
                 - SYS_ADMIN
           resources:
             requests:
-              cpu: "100m"
-              memory: "256Mi"
+              cpu: 100m
+              memory: 512Mi
             limits:
-              memory: "256Mi"
+              memory: 2Gi
           volumeMounts:
             - mountPath: "/data"
-              name: home-assistant-music-assistant-pvc
+              name: music-assistant-pvc
       nodeSelector:
         kubernetes.io/hostname: nuc7pjyhn-rookie
       volumes:
-        - name: home-assistant-music-assistant-pvc
+        - name: music-assistant-pvc
           persistentVolumeClaim:
-            claimName: home-assistant-music-assistant-pvc
+            claimName: music-assistant-pvc
