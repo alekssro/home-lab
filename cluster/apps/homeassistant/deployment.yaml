@@ -420,7 +420,7 @@ spec:
     spec:
       hostNetwork: true
       containers:
-        - image: brainicism/bgutil-ytdlp-pot-provider:1.1.0
+        - image: brainicism/bgutil-ytdlp-pot-provider:1.2.1
           name: bgutil-ytdlp-pot-provider
           env:
             - name: TZ
