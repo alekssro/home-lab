@@ -62,18 +62,18 @@ spec:
     requests:
       storage: 20Gi
 
-# ---
-# apiVersion: v1
-# kind: PersistentVolumeClaim
-# metadata:
-#   name: home-assistant-music-assistant-pvc
-#   namespace: homeassistant
-#   labels:
-#     app: home-assistant-music-assistant
-# spec:
-#   accessModes:
-#     - ReadWriteOnce
-#   storageClassName: longhorn
-#   resources:
-#     requests:
-#       storage: 7Gi
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: music-assistant-pvc
+  namespace: homeassistant
+  labels:
+    app: music-assistant
+spec:
+  accessModes:
+    - ReadWriteMany
+  storageClassName: nfs-csi
+  resources:
+    requests:
+      storage: 20Gi
