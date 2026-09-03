@@ -163,7 +163,7 @@ spec:
             - name: data
               mountPath: /data
         - name: prowlarr
-          image: lscr.io/linuxserver/prowlarr:2.4.0
+          image: lscr.io/linuxserver/prowlarr:2.5.2
           imagePullPolicy: IfNotPresent
           env:
             - name: PROWLARR__AUTH__METHOD
