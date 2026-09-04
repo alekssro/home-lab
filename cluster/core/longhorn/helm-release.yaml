@@ -67,9 +67,9 @@ spec:
                         resources:
                           requests:
                             cpu: 50m
-                            memory: 224Mi
+                            memory: 256Mi
                           limits:
-                            memory: 224Mi
+                            memory: 256Mi
           - target:
               kind: Deployment
               name: longhorn-ui
