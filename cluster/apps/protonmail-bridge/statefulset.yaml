@@ -1,0 +1,45 @@
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: protonmail-bridge
+  namespace: mail
+  labels:
+    app.kubernetes.io/name: protonmail-bridge
+spec:
+  serviceName: protonmail-bridge
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: protonmail-bridge
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: protonmail-bridge
+    spec:
+      containers:
+        - name: protonmail-bridge
+          image: shenxn/protonmail-bridge:build
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: smtp
+              containerPort: 25
+              protocol: TCP
+            - name: imap
+              containerPort: 143
+              protocol: TCP
+          resources:
+            requests:
+              cpu: 50m
+              memory: 128Mi
+            limits:
+              memory: 128Mi
+          volumeMounts:
+            - name: data
+              mountPath: /root
+      nodeSelector:
+        kubernetes.io/arch: amd64
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: protonmail-bridge-data

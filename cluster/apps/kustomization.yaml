@@ -24,6 +24,7 @@ resources:
   - openclaw
   - kanbn
   - monitoring
+  - protonmail-bridge
   # - drive
   # - owncloud
   # - obsidian-sync
