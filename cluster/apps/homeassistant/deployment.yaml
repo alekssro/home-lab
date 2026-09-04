@@ -462,8 +462,6 @@ spec:
           volumeMounts:
             - mountPath: "/data"
               name: music-assistant-pvc
-      nodeSelector:
-        kubernetes.io/hostname: nuc7pjyhn-rookie
       volumes:
         - name: music-assistant-pvc
           persistentVolumeClaim:

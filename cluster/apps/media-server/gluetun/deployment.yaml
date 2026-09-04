@@ -19,6 +19,18 @@ spec:
       labels:
         app: gluetun
     spec:
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            - labelSelector:
+                matchExpressions:
+                  - key: app
+                    operator: In
+                    values:
+                      - homeassistant
+              namespaces:
+                - homeassistant
+              topologyKey: kubernetes.io/hostname
       initContainers:
         - name: volume-permission-fixes
           image: busybox:latest
