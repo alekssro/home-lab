@@ -113,8 +113,8 @@ spec:
             folder: 'HomeLab'
             interval: 1m
             rules:
-              - uid: 'container-cpu-high'
-                title: 'Container High CPU Usage'
+              - uid: 'target-down'
+                title: 'Infrastructure Target Down'
                 condition: 'C'
                 data:
                   - refId: 'A'
@@ -123,8 +123,8 @@ spec:
                       to: 0
                     datasourceUid: 'prometheus'
                     model:
-                      expr: 'sum(rate(container_cpu_usage_seconds_total{container!=""}[5m])) by (pod, namespace)'
-                      intervalMs: 10000
+                      expr: 'up == 0'
+                      intervalMs: 15000
                       maxDataPoints: 43200
                       refId: 'A'
                   - refId: 'B'
@@ -143,31 +143,69 @@ spec:
                       to: 0
                     datasourceUid: '__expr__'
                     model:
-                      expression: '$B > 0.85'
+                      expression: '$B > 0'
+                      type: 'math'
+                      refId: 'C'
+                for: '3m'
+                annotations:
+                  summary: 'Target {{ "{{" }} $labels.instance {{ "}}" }} (job: {{ "{{" }} $labels.job {{ "}}" }}) is unreachable'
+                labels:
+                  severity: 'critical'
+              - uid: 'container-memory-near-limit'
+                title: 'Container Nearing Memory Limit'
+                condition: 'C'
+                data:
+                  - refId: 'A'
+                    relativeTimeRange:
+                      from: 300
+                      to: 0
+                    datasourceUid: 'prometheus'
+                    model:
+                      expr: '(container_memory_working_set_bytes{container!="", container!="POD"} / (container_spec_memory_limit_bytes{container!="", container!="POD"} > 0 < 100000000000)) * 100'
+                      intervalMs: 15000
+                      maxDataPoints: 43200
+                      refId: 'A'
+                  - refId: 'B'
+                    relativeTimeRange:
+                      from: 300
+                      to: 0
+                    datasourceUid: '__expr__'
+                    model:
+                      expression: 'A'
+                      reducer: 'last'
+                      type: 'reduce'
+                      refId: 'B'
+                  - refId: 'C'
+                    relativeTimeRange:
+                      from: 300
+                      to: 0
+                    datasourceUid: '__expr__'
+                    model:
+                      expression: '$B > 88'
                       type: 'math'
                       refId: 'C'
                 for: '5m'
                 annotations:
-                  summary: 'CPU usage of container in pod {{ "{{" }} $labels.pod {{ "}}" }} is high'
+                  summary: 'Container {{ "{{" }} $labels.container {{ "}}" }} in pod {{ "{{" }} $labels.pod {{ "}}" }} is exceeding 88% of memory limit'
                 labels:
                   severity: 'warning'
-              - uid: 'container-memory-high'
-                title: 'Container High Memory Usage'
+              - uid: 'node-memory-high'
+                title: 'Node Memory Usage High'
                 condition: 'C'
                 data:
                   - refId: 'A'
                     relativeTimeRange:
-                      from: 300
+                      from: 600
                       to: 0
                     datasourceUid: 'prometheus'
                     model:
-                      expr: 'sum(container_memory_working_set_bytes{container!=""}) by (pod, namespace)'
-                      intervalMs: 10000
+                      expr: '(sum(container_memory_working_set_bytes{container!=""}) by (instance) / on(instance) machine_memory_bytes) * 100'
+                      intervalMs: 15000
                       maxDataPoints: 43200
                       refId: 'A'
                   - refId: 'B'
                     relativeTimeRange:
-                      from: 300
+                      from: 600
                       to: 0
                     datasourceUid: '__expr__'
                     model:
@@ -177,16 +215,92 @@ spec:
                       refId: 'B'
                   - refId: 'C'
                     relativeTimeRange:
-                      from: 300
+                      from: 600
                       to: 0
                     datasourceUid: '__expr__'
                     model:
-                      expression: '$B > 500000000'
+                      expression: '$B > 88'
                       type: 'math'
                       refId: 'C'
-                for: '5m'
+                for: '10m'
                 annotations:
-                  summary: 'Memory usage of container in pod {{ "{{" }} $labels.pod {{ "}}" }} is high'
+                  summary: 'Node {{ "{{" }} $labels.instance {{ "}}" }} memory usage is sustained above 88%'
+                labels:
+                  severity: 'warning'
+              - uid: 'node-cpu-sustained-high'
+                title: 'Node Sustained High CPU'
+                condition: 'C'
+                data:
+                  - refId: 'A'
+                    relativeTimeRange:
+                      from: 900
+                      to: 0
+                    datasourceUid: 'prometheus'
+                    model:
+                      expr: '(sum(rate(container_cpu_usage_seconds_total{container!=""}[5m])) by (instance) / on(instance) machine_cpu_cores) * 100'
+                      intervalMs: 15000
+                      maxDataPoints: 43200
+                      refId: 'A'
+                  - refId: 'B'
+                    relativeTimeRange:
+                      from: 900
+                      to: 0
+                    datasourceUid: '__expr__'
+                    model:
+                      expression: 'A'
+                      reducer: 'last'
+                      type: 'reduce'
+                      refId: 'B'
+                  - refId: 'C'
+                    relativeTimeRange:
+                      from: 900
+                      to: 0
+                    datasourceUid: '__expr__'
+                    model:
+                      expression: '$B > 90'
+                      type: 'math'
+                      refId: 'C'
+                for: '15m'
+                annotations:
+                  summary: 'Node {{ "{{" }} $labels.instance {{ "}}" }} CPU is sustained above 90% for >15m'
+                labels:
+                  severity: 'warning'
+              - uid: 'node-disk-space-low'
+                title: 'Node Root Disk Space Low'
+                condition: 'C'
+                data:
+                  - refId: 'A'
+                    relativeTimeRange:
+                      from: 900
+                      to: 0
+                    datasourceUid: 'prometheus'
+                    model:
+                      expr: '(container_fs_usage_bytes{id="/"} / container_fs_limit_bytes{id="/"}) * 100'
+                      intervalMs: 30000
+                      maxDataPoints: 43200
+                      refId: 'A'
+                  - refId: 'B'
+                    relativeTimeRange:
+                      from: 900
+                      to: 0
+                    datasourceUid: '__expr__'
+                    model:
+                      expression: 'A'
+                      reducer: 'last'
+                      type: 'reduce'
+                      refId: 'B'
+                  - refId: 'C'
+                    relativeTimeRange:
+                      from: 900
+                      to: 0
+                    datasourceUid: '__expr__'
+                    model:
+                      expression: '$B > 85'
+                      type: 'math'
+                      refId: 'C'
+                for: '15m'
+                annotations:
+                  summary: 'Node {{ "{{" }} $labels.instance {{ "}}" }} root filesystem is above 85% full'
                 labels:
                   severity: 'warning'
       contactpoints.yaml:
