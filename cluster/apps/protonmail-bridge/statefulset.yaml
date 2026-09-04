@@ -30,10 +30,10 @@ spec:
               protocol: TCP
           resources:
             requests:
-              cpu: 50m
-              memory: 128Mi
+              cpu: 100m
+              memory: 256Mi
             limits:
-              memory: 128Mi
+              memory: 512Mi
           volumeMounts:
             - name: data
               mountPath: /root
