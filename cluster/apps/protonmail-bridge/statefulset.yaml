@@ -19,7 +19,7 @@ spec:
     spec:
       containers:
         - name: protonmail-bridge
-          image: shenxn/protonmail-bridge:build
+          image: dancwilliams/protonmail-bridge:v3.26.0-4
           imagePullPolicy: IfNotPresent
           ports:
             - name: smtp
