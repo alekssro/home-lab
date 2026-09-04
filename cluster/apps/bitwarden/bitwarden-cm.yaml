@@ -10,7 +10,7 @@ data:
   # Proton Mail Bridge SMTP Settings
   SMTP_HOST: "protonmail-bridge.mail.svc.cluster.local"
   SMTP_PORT: "1025"
-  SMTP_SECURITY: "STARTTLS"
+  SMTP_SECURITY: "starttls"
   SMTP_FROM: "lab@alekssro.com"
   SMTP_FROM_NAME: "AlekssRo's Vault"
   SMTP_AUTH_MECHANISM: "Login"
