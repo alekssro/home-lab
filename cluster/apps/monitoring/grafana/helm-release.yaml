@@ -42,10 +42,11 @@ spec:
         root_url: "https://grafana.${SECRET_DOMAIN}"
       smtp:
         enabled: true
-        host: smtp-relay.brevo.com:587
+        host: protonmail-bridge.mail.svc.cluster.local:25
         from_address: lab@alekssro.com
         from_name: Grafana HomeLab
         startTLS_policy: OpportunisticStartTLS
+        skip_verify: true
     ingress:
       enabled: true
       ingressClassName: traefik

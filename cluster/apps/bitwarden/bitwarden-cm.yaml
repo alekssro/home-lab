@@ -1,3 +1,4 @@
+---
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -6,10 +7,10 @@ metadata:
 data:
   DOMAIN: "https://bitwarden.${SECRET_DOMAIN}"
 
-  # Brevo SMTP Settings
-  SMTP_HOST: "smtp-relay.brevo.com"
-  SMTP_PORT: "587"
-  SMTP_SECURITY: "starttls"
+  # Proton Mail Bridge SMTP Settings
+  SMTP_HOST: "protonmail-bridge.mail.svc.cluster.local"
+  SMTP_PORT: "1025"
+  SMTP_SECURITY: "STARTTLS"
   SMTP_FROM: "lab@alekssro.com"
   SMTP_FROM_NAME: "AlekssRo's Vault"
   SMTP_AUTH_MECHANISM: "Login"
