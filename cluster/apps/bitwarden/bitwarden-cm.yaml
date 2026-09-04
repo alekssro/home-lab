@@ -5,11 +5,15 @@ metadata:
   namespace: bitwarden
 data:
   DOMAIN: "https://bitwarden.${SECRET_DOMAIN}"
-  SMTP_FROM_NAME: "AlekssRo's Vault"
-  SMTP_HOST: "smtp.gmail.com"
-  SMTP_FROM: "alekss.ro.noreply@gmail.com"
+
+  # Brevo SMTP Settings
+  SMTP_HOST: "smtp-relay.brevo.com"
   SMTP_PORT: "587"
   SMTP_SECURITY: "starttls"
+  SMTP_FROM: "lab@alekssro.com"
+  SMTP_FROM_NAME: "AlekssRo's Vault"
+  SMTP_AUTH_MECHANISM: "Login"
+
   # Enable Vault interface, when disabled, only API is served
   WEB_VAULT_ENABLED: "true"
   SIGNUPS_ALLOWED: "false"
