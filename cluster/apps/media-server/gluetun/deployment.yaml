@@ -120,7 +120,7 @@ spec:
             - name: data
               mountPath: /data
         - name: nzbget
-          image: lscr.io/linuxserver/nzbget:26.2.20260717
+          image: lscr.io/linuxserver/nzbget:26.3.20260904
           imagePullPolicy: IfNotPresent
           env:
             - name: NZBGET_USER
