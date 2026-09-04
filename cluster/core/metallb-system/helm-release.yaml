@@ -24,7 +24,11 @@ spec:
   values:
     crds:
       enabled: false
+    frrk8s:
+      enabled: false
     speaker:
+      frr:
+        enabled: false
       resources:
         requests:
           cpu: 50m
