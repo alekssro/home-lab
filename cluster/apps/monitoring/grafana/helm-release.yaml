@@ -107,6 +107,11 @@ spec:
     alerting:
       rules.yaml:
         apiVersion: 1
+        deleteRules:
+          - orgId: 1
+            uid: "container-cpu-high"
+          - orgId: 1
+            uid: "container-memory-high"
         groups:
           - orgId: 1
             name: 'HomeLab Alerts'
