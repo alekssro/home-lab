@@ -8,8 +8,8 @@ resources:
   - service-ai-server.yaml
   - ingress-ai-server.yaml
   - echo
-  - kubepilot
-  - domobot
+  # - kubepilot
+  # - domobot
   # - chronos
   # - apex
 
