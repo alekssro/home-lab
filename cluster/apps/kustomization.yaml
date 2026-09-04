@@ -13,12 +13,12 @@ resources:
   - kube-system
   - networking
   - flux-system
-  - filerun
+  # - filerun
   - uptime-kuma
   - alekssro-web
   - homeassistant
-  - homarr
-  - dawarich
+  # - homarr
+  # - dawarich
   - nas
   - media-server
   - openclaw

@@ -154,7 +154,7 @@ spec:
           resources:
             requests:
               cpu: "20m"
-              memory: "128Mi"
+              memory: "40Mi"
             limits:
               memory: "128Mi"
           volumeMounts:
@@ -186,7 +186,7 @@ spec:
               cpu: "20m"
               memory: "192Mi"
             limits:
-              memory: "192Mi"
+              memory: "256Mi"
           volumeMounts:
             - name: prowlarr-config
               mountPath: /config
@@ -199,9 +199,9 @@ spec:
           resources:
             requests:
               cpu: "20m"
-              memory: "448Mi"
+              memory: "256Mi"
             limits:
-              memory: "448Mi"
+              memory: "512Mi"
         - name: sonarr
           image: lscr.io/linuxserver/sonarr:4.0.19
           imagePullPolicy: IfNotPresent
@@ -240,7 +240,7 @@ spec:
               cpu: "20m"
               memory: "192Mi"
             limits:
-              memory: "192Mi"
+              memory: "384Mi"
           volumeMounts:
             - name: radarr-config
               mountPath: /config
@@ -307,5 +307,4 @@ spec:
           persistentVolumeClaim:
             claimName: lidarr-config-pvc
         - name: gluetun-tmp
-          persistentVolumeClaim:
-            claimName: gluetun-tmp-pvc
+          emptyDir: {}
