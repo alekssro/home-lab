@@ -275,7 +275,7 @@ spec:
                       to: 0
                     datasourceUid: 'prometheus'
                     model:
-                      expr: '(container_fs_usage_bytes{id="/"} / container_fs_limit_bytes{id="/"}) * 100'
+                      expr: '(container_fs_usage_bytes{device=~"^/dev/(sda2|mapper/.*-.*)$"} / container_fs_limit_bytes{device=~"^/dev/(sda2|mapper/.*-.*)$"}) * 100'
                       intervalMs: 30000
                       maxDataPoints: 43200
                       refId: 'A'
@@ -300,7 +300,7 @@ spec:
                       refId: 'C'
                 for: '15m'
                 annotations:
-                  summary: 'Node {{ "{{" }} $labels.instance {{ "}}" }} root filesystem is above 85% full'
+                  summary: 'Node {{ "{{" }} $labels.instance {{ "}}" }} root filesystem ({{ "{{" }} $labels.device {{ "}}" }}) is above 85% full'
                 labels:
                   severity: 'warning'
       contactpoints.yaml:
