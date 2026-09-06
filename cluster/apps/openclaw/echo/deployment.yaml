@@ -57,7 +57,7 @@ spec:
               mountPath: /config
       containers:
         - name: gateway
-          image: ghcr.io/openclaw/openclaw:2026.9.2
+          image: ghcr.io/openclaw/openclaw:2026.9.2-browser
           imagePullPolicy: IfNotPresent
           command:
             - sh
@@ -102,9 +102,9 @@ spec:
           resources:
             requests:
               cpu: 50m
-              memory: 512Mi
-            limits:
               memory: 1Gi
+            limits:
+              memory: 2Gi
           livenessProbe:
             exec:
               command:
@@ -128,6 +128,8 @@ spec:
               mountPath: /home/node/.openclaw
             - name: tmp-volume
               mountPath: /tmp
+            - name: dshm
+              mountPath: /dev/shm
           securityContext:
             runAsNonRoot: true
             runAsUser: 1000
@@ -145,3 +147,7 @@ spec:
             name: openclaw-echo-config
         - name: tmp-volume
           emptyDir: {}
+        - name: dshm
+          emptyDir:
+            medium: Memory
+            sizeLimit: 256Mi

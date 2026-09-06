@@ -22,6 +22,11 @@ data:
           "allowedOrigins": ["https://openclaw.${SECRET_DOMAIN}"]
         }
       },
+      "browser": {
+        "enabled": true,
+        "headless": true,
+        "noSandbox": true
+      },
       "channels": {
         "telegram": {
           "enabled": true,
