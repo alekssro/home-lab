@@ -12,7 +12,3 @@ resources:
   # - domobot
   # - chronos
   # - apex
-
-images:
-  - name: ghcr.io/openclaw/openclaw
-    newTag: 2026.9.2-browser

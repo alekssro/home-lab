@@ -41,6 +41,10 @@ spec:
               cp /config/SOUL.md /home/node/.openclaw/workspace/SOUL.md
               cp /config/USER.md /home/node/.openclaw/workspace/USER.md
               cp /config/HEARTBEAT.md /home/node/.openclaw/workspace/HEARTBEAT.md
+              mkdir -p /tmp/openclaw-1000
+              chown -R 1000:1000 /tmp
+              chmod 1777 /tmp
+              chmod 700 /tmp/openclaw-1000
           securityContext:
             runAsUser: 0
             runAsGroup: 0
@@ -55,6 +59,8 @@ spec:
               mountPath: /home/node/.openclaw
             - name: config
               mountPath: /config
+            - name: tmp-volume
+              mountPath: /tmp
       containers:
         - name: gateway
           image: ghcr.io/openclaw/openclaw:2026.9.2-browser
@@ -63,6 +69,8 @@ spec:
             - sh
             - -c
             - |
+              mkdir -p /tmp/openclaw-1000
+              chmod 700 /tmp/openclaw-1000
               node /app/dist/index.js doctor --fix --non-interactive
               exec node /app/dist/index.js gateway run
           ports:
@@ -79,7 +87,9 @@ spec:
             - name: TMPDIR
               value: /tmp
             - name: XDG_CACHE_HOME
-              value: /home/node/.cache
+              value: /tmp/.cache
+            - name: PLAYWRIGHT_BROWSERS_PATH
+              value: /home/node/.cache/ms-playwright
             - name: OPENCLAW_GATEWAY_TOKEN
               valueFrom:
                 secretKeyRef:
@@ -134,8 +144,6 @@ spec:
               mountPath: /tmp
             - name: dshm
               mountPath: /dev/shm
-            - name: cache-volume
-              mountPath: /home/node/.cache
           securityContext:
             runAsNonRoot: true
             runAsUser: 1000
@@ -157,5 +165,3 @@ spec:
           emptyDir:
             medium: Memory
             sizeLimit: 256Mi
-        - name: cache-volume
-          emptyDir: {}

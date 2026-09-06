@@ -41,6 +41,10 @@ spec:
               cp /config/SOUL.md /home/node/.openclaw/workspace/SOUL.md
               cp /config/USER.md /home/node/.openclaw/workspace/USER.md
               cp /config/HEARTBEAT.md /home/node/.openclaw/workspace/HEARTBEAT.md
+              mkdir -p /tmp/openclaw-1000
+              chown -R 1000:1000 /tmp
+              chmod 1777 /tmp
+              chmod 700 /tmp/openclaw-1000
           securityContext:
             runAsUser: 0
             runAsGroup: 0
@@ -55,6 +59,8 @@ spec:
               mountPath: /home/node/.openclaw
             - name: config
               mountPath: /config
+            - name: tmp-volume
+              mountPath: /tmp
       containers:
         - name: gateway
           image: ghcr.io/openclaw/openclaw:2026.9.2
@@ -63,6 +69,8 @@ spec:
             - sh
             - -c
             - |
+              mkdir -p /tmp/openclaw-1000
+              chmod 700 /tmp/openclaw-1000
               node /app/dist/index.js doctor --fix --non-interactive
               exec node /app/dist/index.js gateway run
           ports:
@@ -79,7 +87,7 @@ spec:
             - name: TMPDIR
               value: /tmp
             - name: XDG_CACHE_HOME
-              value: /home/node/.cache
+              value: /tmp/.cache
             - name: OPENCLAW_GATEWAY_TOKEN
               valueFrom:
                 secretKeyRef:
@@ -126,7 +134,7 @@ spec:
               cpu: 50m
               memory: 512Mi
             limits:
-              memory: 2Gi
+              memory: 512Mi
           livenessProbe:
             exec:
               command:
@@ -150,10 +158,6 @@ spec:
               mountPath: /home/node/.openclaw
             - name: tmp-volume
               mountPath: /tmp
-            - name: dshm
-              mountPath: /dev/shm
-            - name: cache-volume
-              mountPath: /home/node/.cache
           securityContext:
             runAsNonRoot: true
             runAsUser: 1000
@@ -170,10 +174,4 @@ spec:
           configMap:
             name: openclaw-apex-config
         - name: tmp-volume
-          emptyDir: {}
-        - name: dshm
-          emptyDir:
-            medium: Memory
-            sizeLimit: 256Mi
-        - name: cache-volume
           emptyDir: {}
