@@ -61,10 +61,11 @@ spec:
           image: ghcr.io/openclaw/openclaw:2026.9.2
           imagePullPolicy: IfNotPresent
           command:
-            - node
-            - /app/dist/index.js
-            - gateway
-            - run
+            - sh
+            - -c
+            - |
+              node /app/dist/index.js doctor --fix --non-interactive
+              exec node /app/dist/index.js gateway run
           ports:
             - name: gateway
               containerPort: 18789
