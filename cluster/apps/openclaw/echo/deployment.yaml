@@ -76,6 +76,10 @@ spec:
               value: /home/node/.openclaw
             - name: NODE_ENV
               value: production
+            - name: TMPDIR
+              value: /tmp
+            - name: XDG_CACHE_HOME
+              value: /home/node/.cache
             - name: OPENCLAW_GATEWAY_TOKEN
               valueFrom:
                 secretKeyRef:
@@ -130,6 +134,8 @@ spec:
               mountPath: /tmp
             - name: dshm
               mountPath: /dev/shm
+            - name: cache-volume
+              mountPath: /home/node/.cache
           securityContext:
             runAsNonRoot: true
             runAsUser: 1000
@@ -151,3 +157,5 @@ spec:
           emptyDir:
             medium: Memory
             sizeLimit: 256Mi
+        - name: cache-volume
+          emptyDir: {}

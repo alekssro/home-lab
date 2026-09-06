@@ -77,6 +77,10 @@ spec:
               value: /home/node/.openclaw
             - name: NODE_ENV
               value: production
+            - name: TMPDIR
+              value: /tmp
+            - name: XDG_CACHE_HOME
+              value: /home/node/.cache
             - name: OPENCLAW_GATEWAY_TOKEN
               valueFrom:
                 secretKeyRef:
@@ -109,7 +113,7 @@ spec:
               cpu: 50m
               memory: 512Mi
             limits:
-              memory: 512Mi
+              memory: 2Gi
           livenessProbe:
             exec:
               command:
@@ -133,6 +137,10 @@ spec:
               mountPath: /home/node/.openclaw
             - name: tmp-volume
               mountPath: /tmp
+            - name: dshm
+              mountPath: /dev/shm
+            - name: cache-volume
+              mountPath: /home/node/.cache
           securityContext:
             runAsNonRoot: true
             runAsUser: 1000
@@ -149,4 +157,10 @@ spec:
           configMap:
             name: openclaw-chronos-config
         - name: tmp-volume
+          emptyDir: {}
+        - name: dshm
+          emptyDir:
+            medium: Memory
+            sizeLimit: 256Mi
+        - name: cache-volume
           emptyDir: {}
