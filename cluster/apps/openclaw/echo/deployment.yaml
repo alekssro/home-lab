@@ -33,14 +33,17 @@ spec:
             - sh
             - -c
             - |
-              chown -R 1000:1000 /home/node/.openclaw
-              cp /config/openclaw.json /home/node/.openclaw/openclaw.json
               mkdir -p /home/node/.openclaw/workspace
+              cp /config/openclaw.json /home/node/.openclaw/openclaw.json
               cp /config/AGENTS.md /home/node/.openclaw/workspace/AGENTS.md
               cp /config/IDENTITY.md /home/node/.openclaw/workspace/IDENTITY.md
               cp /config/SOUL.md /home/node/.openclaw/workspace/SOUL.md
               cp /config/USER.md /home/node/.openclaw/workspace/USER.md
               cp /config/HEARTBEAT.md /home/node/.openclaw/workspace/HEARTBEAT.md
+              for f in /home/node/.openclaw/workspace/openclaw-workspace-state.json /home/node/.openclaw/workspace/workspace-state.json; do
+                [ -e "$f" ] && mv "$f" "$f.migrated.bak"
+              done
+              chown -R 1000:1000 /home/node/.openclaw
               mkdir -p /tmp/openclaw-1000
               chown -R 1000:1000 /tmp
               chmod 1777 /tmp
@@ -71,7 +74,6 @@ spec:
             - |
               mkdir -p /tmp/openclaw-1000
               chmod 700 /tmp/openclaw-1000
-              node /app/dist/index.js doctor --fix --non-interactive
               exec node /app/dist/index.js gateway run
           ports:
             - name: gateway
@@ -119,13 +121,23 @@ spec:
               memory: 1Gi
             limits:
               memory: 2Gi
+          startupProbe:
+            exec:
+              command:
+                - node
+                - -e
+                - "require('http').get('http://127.0.0.1:18789/healthz', r => process.exit(r.statusCode < 400 ? 0 : 1)).on('error', () => process.exit(1))"
+            initialDelaySeconds: 10
+            periodSeconds: 5
+            failureThreshold: 30
+            timeoutSeconds: 5
           livenessProbe:
             exec:
               command:
                 - node
                 - -e
                 - "require('http').get('http://127.0.0.1:18789/healthz', r => process.exit(r.statusCode < 400 ? 0 : 1)).on('error', () => process.exit(1))"
-            initialDelaySeconds: 60
+            initialDelaySeconds: 15
             periodSeconds: 30
             timeoutSeconds: 10
           readinessProbe:
