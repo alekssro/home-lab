@@ -35,11 +35,6 @@ spec:
             - |
               mkdir -p /home/node/.openclaw/workspace
               cp /config/openclaw.json /home/node/.openclaw/openclaw.json
-              cp /config/AGENTS.md /home/node/.openclaw/workspace/AGENTS.md
-              cp /config/IDENTITY.md /home/node/.openclaw/workspace/IDENTITY.md
-              cp /config/SOUL.md /home/node/.openclaw/workspace/SOUL.md
-              cp /config/USER.md /home/node/.openclaw/workspace/USER.md
-              cp /config/HEARTBEAT.md /home/node/.openclaw/workspace/HEARTBEAT.md
               for f in /home/node/.openclaw/workspace/openclaw-workspace-state.json /home/node/.openclaw/workspace/workspace-state.json; do
                 [ -e "$f" ] && mv "$f" "$f.migrated.bak"
               done

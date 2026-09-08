@@ -37,11 +37,6 @@ spec:
               chown -R 1000:1000 /home/node/.openclaw
               cp /config/openclaw.json /home/node/.openclaw/openclaw.json
               mkdir -p /home/node/.openclaw/workspace
-              cp /config/AGENTS.md /home/node/.openclaw/workspace/AGENTS.md
-              cp /config/IDENTITY.md /home/node/.openclaw/workspace/IDENTITY.md
-              cp /config/SOUL.md /home/node/.openclaw/workspace/SOUL.md
-              cp /config/USER.md /home/node/.openclaw/workspace/USER.md
-              cp /config/HEARTBEAT.md /home/node/.openclaw/workspace/HEARTBEAT.md
 
               # Detect CPU architecture and download kubectl matching the cluster version (1.36.2 skew-compatible)
               ARCH=`uname -m`
