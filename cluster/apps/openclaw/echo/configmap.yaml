@@ -94,13 +94,15 @@ data:
             "reserveTokensFloor": 0
           }
         },
-        "list": [
-          {
-            "id": "echo",
+        "entries": {
+          "echo": {
             "name": "Echo",
-            "workspace": "~/.openclaw/workspace"
+            "workspace": "~/.openclaw/workspace",
+            "model": {
+              "primary": "ollama/gemma4:12b"
+            }
           }
-        ]
+        }
       },
       "cron": { "enabled": false },
       "mcp": {

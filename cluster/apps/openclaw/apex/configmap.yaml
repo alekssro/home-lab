@@ -89,13 +89,15 @@ data:
             "reserveTokensFloor": 0
           }
         },
-        "list": [
-          {
-            "id": "apex",
+        "entries": {
+          "apex": {
             "name": "Apex",
-            "workspace": "~/.openclaw/workspace"
+            "workspace": "~/.openclaw/workspace",
+            "model": {
+              "primary": "ollama/gemma4:12b"
+            }
           }
-        ]
+        }
       },
       "cron": { "enabled": false }
     }
