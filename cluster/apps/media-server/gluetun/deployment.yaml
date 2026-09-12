@@ -203,7 +203,7 @@ spec:
             - name: prowlarr-config
               mountPath: /config
         - name: flaresolverr
-          image: flaresolverr/flaresolverr:v3.5.0
+          image: flaresolverr/flaresolverr:v3.5.2
           imagePullPolicy: IfNotPresent
           ports:
             - name: http
