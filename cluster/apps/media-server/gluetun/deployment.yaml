@@ -56,7 +56,7 @@ spec:
               mountPath: /config-prowlarr
       containers:
         - name: gluetun
-          image: qmcgaw/gluetun:v3.41.1
+          image: qmcgaw/gluetun:v3.41.3
           imagePullPolicy: IfNotPresent
           securityContext:
             capabilities:
@@ -132,7 +132,7 @@ spec:
             - name: data
               mountPath: /data
         - name: nzbget
-          image: lscr.io/linuxserver/nzbget:26.2.20260717
+          image: lscr.io/linuxserver/nzbget:26.3.20260911
           imagePullPolicy: IfNotPresent
           env:
             - name: NZBGET_USER
@@ -175,7 +175,7 @@ spec:
             - name: data
               mountPath: /data
         - name: prowlarr
-          image: lscr.io/linuxserver/prowlarr:2.4.0
+          image: lscr.io/linuxserver/prowlarr:2.5.2
           imagePullPolicy: IfNotPresent
           env:
             - name: PROWLARR__AUTH__METHOD
@@ -203,7 +203,7 @@ spec:
             - name: prowlarr-config
               mountPath: /config
         - name: flaresolverr
-          image: flaresolverr/flaresolverr:v3.5.0
+          image: flaresolverr/flaresolverr:v3.5.2
           imagePullPolicy: IfNotPresent
           ports:
             - name: http
