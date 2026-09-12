@@ -39,6 +39,8 @@ spec:
           volumeMounts:
             - name: seerr-config
               mountPath: /app/config
+      nodeSelector:
+        kubernetes.io/hostname: nuc7pjyhn-cripple
       volumes:
         - name: seerr-config
           persistentVolumeClaim:

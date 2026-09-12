@@ -115,7 +115,7 @@ spec:
               cpu: 50m
               memory: 1Gi
             limits:
-              memory: 2Gi
+              memory: 1536Mi
           startupProbe:
             exec:
               command:
@@ -159,6 +159,8 @@ spec:
             capabilities:
               drop:
                 - ALL
+      nodeSelector:
+        kubernetes.io/hostname: nuc7pjyhn-cripple
       volumes:
         - name: openclaw-home
           persistentVolumeClaim:

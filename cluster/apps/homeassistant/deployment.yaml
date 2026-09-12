@@ -458,10 +458,12 @@ spec:
               cpu: 100m
               memory: 512Mi
             limits:
-              memory: 2Gi
+              memory: 1Gi
           volumeMounts:
             - mountPath: "/data"
               name: music-assistant-pvc
+      nodeSelector:
+        kubernetes.io/hostname: nuc7pjyhn-cripple
       volumes:
         - name: music-assistant-pvc
           persistentVolumeClaim:
