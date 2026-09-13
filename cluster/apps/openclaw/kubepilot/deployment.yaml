@@ -85,7 +85,7 @@ spec:
               mountPath: /tmp
       containers:
         - name: gateway
-          image: ghcr.io/openclaw/openclaw:2026.9.2
+          image: ghcr.io/openclaw/openclaw:2026.9.4
           imagePullPolicy: IfNotPresent
           command:
             - sh
