@@ -25,7 +25,7 @@ spec:
   values:
     image:
       repository: nextcloud
-      tag: 34.0.3-apache
+      tag: 34.0.4-apache
       pullPolicy: IfNotPresent
     ingress:
       main:
