@@ -1,3 +1,4 @@
+---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
@@ -81,3 +82,31 @@ spec:
                 name: music-assistant
                 port:
                   number: 8095
+
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: homeassistant-matter
+  namespace: homeassistant
+  annotations:
+    cert-manager.io/cluster-issuer: "letsencrypt-production"
+    traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
+    traefik.ingress.kubernetes.io/router.middlewares: "networking-internal-only@kubernetescrd"
+spec:
+  ingressClassName: traefik
+  tls:
+    - hosts:
+        - "matter.${SECRET_DOMAIN}"
+      secretName: homeassistant-matter-tls
+  rules:
+    - host: "matter.${SECRET_DOMAIN}"
+      http:
+        paths:
+          - pathType: Prefix
+            path: /
+            backend:
+              service:
+                name: homeassistant-matter
+                port:
+                  number: 5580

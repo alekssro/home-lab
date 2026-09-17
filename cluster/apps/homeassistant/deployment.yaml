@@ -235,7 +235,25 @@ spec:
         app: homeassistant-matter
     spec:
       hostNetwork: true
+      securityContext:
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
       initContainers:
+        - name: prepare-matter-data
+          image: busybox:1.38
+          command: ["/bin/sh", "-c"]
+          args:
+            - |
+              echo "Fixing permissions on /data for UID 1000 (matterjs)..."
+              chown -R 1000:1000 /data
+              chmod -R u+rwX,go+rX /data
+              echo "Permissions updated successfully."
+          securityContext:
+            runAsUser: 0
+          volumeMounts:
+            - mountPath: "/data"
+              name: home-assistant-matter-pvc
         - name: wait-for-homeassistant
           image: busybox:1.38
           command: ["/bin/sh", "-c"]
@@ -253,29 +271,64 @@ spec:
               sleep 30
               echo "Init container finished."
       containers:
-        - image: ghcr.io/home-assistant-libs/python-matter-server:8.1
+        - image: ghcr.io/matter-js/matterjs-server:1.4.0
           name: home-assistant-matter
           env:
             - name: TZ
               value: "Europe/Madrid"
+            - name: STORAGE_PATH
+              value: "/data"
+            - name: PORT
+              value: "5580"
+            - name: PRODUCTION_MODE
+              value: "true"
+            - name: NOBLE_BINDINGS
+              value: "dbus"
+            - name: BLUETOOTH_ADAPTER
+              value: "0"
+            - name: DBUS_SYSTEM_BUS_ADDRESS
+              value: "unix:path=/run/dbus/system_bus_socket"
           securityContext:
-            privileged: true
+            privileged: false
             capabilities:
               add:
-                - NET_ADMIN
                 - NET_RAW
-                - SYS_ADMIN
           resources:
             requests:
               cpu: 50m
-              memory: 192Mi
+              memory: 256Mi
             limits:
-              memory: 192Mi
+              memory: 1Gi
+          ports:
+            - containerPort: 5580
+              name: matter
+              protocol: TCP
+          startupProbe:
+            httpGet:
+              path: /health
+              port: 5580
+            failureThreshold: 30
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 5580
+            periodSeconds: 30
+            timeoutSeconds: 5
+            failureThreshold: 3
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 5580
+            periodSeconds: 10
+            timeoutSeconds: 5
+            failureThreshold: 3
           volumeMounts:
             - mountPath: "/data"
               name: home-assistant-matter-pvc
-            - mountPath: "/var/run/dbus"
+            - mountPath: "/run/dbus"
               name: dbus
+              readOnly: true
       nodeSelector:
         kubernetes.io/hostname: nuc7pjyhn-rookie
       volumes:
