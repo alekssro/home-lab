@@ -77,11 +77,6 @@ data:
           {% else %}
             off
           {% endif %}
-    - binary_sensor:
-      - name: "Grid Power Online"
-        device_class: power
-        state: >
-          {{ states('sensor.goodwe_on_grid_l1_voltage') | float(0) > 50 }}
 
     - light:
       - name: "Luz Ventilador Habitación"
