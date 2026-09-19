@@ -10,4 +10,4 @@ resources:
 
 images:
   - name: ghcr.io/openclaw/openclaw
-    newTag: 2026.9.4-browser
+    newTag: 2026.9.5-browser
