@@ -28,7 +28,7 @@ spec:
         cpu: 50m
         memory: 192Mi
       limits:
-        memory: 192Mi
+        memory: 256Mi
     configuration:
       logging:
         minimumLevel: Debug
