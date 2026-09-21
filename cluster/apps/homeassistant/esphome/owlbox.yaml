@@ -343,15 +343,15 @@ pn532_spi:
                 file: !lambda "return id(current_track);"
 
 
-# 5. Deep Sleep (The Shutdown Mechanism)
-deep_sleep:
-  id: deep_sleep_component
-  # We don't set run_duration here because we handle it manually with scripts
-  wakeup_pin:
-    number: ${btn_play_pin}
-    mode: INPUT_PULLUP
-    inverted: true # Wakes up when button pulls LOW (GND)
-    allow_other_uses: true
+# 5. Deep Sleep (The Shutdown Mechanism) - TEMPORARILY DISABLED (device used plugged in)
+# deep_sleep:
+#   id: deep_sleep_component
+#   # We don't set run_duration here because we handle it manually with scripts
+#   wakeup_pin:
+#     number: ${btn_play_pin}
+#     mode: INPUT_PULLUP
+#     inverted: true # Wakes up when button pulls LOW (GND)
+#     allow_other_uses: true
 
 # --- BUTTONS & SENSORS ---
 
@@ -386,42 +386,42 @@ sensor:
             args: ["x"]
 
 binary_sensor:
-  # Play/Pause Button on Knob
-  - platform: gpio
-    pin:
-      number: ${btn_play_pin} # Your SW Pin
-      mode: INPUT_PULLUP
-      inverted: true # Button is usually "Active Low"
-      allow_other_uses: true
-    name: "Knob Button"
-    on_click:
-      # --- SHORT PRESS (Play / Pause) ---
-      - min_length: 50ms
-        max_length: 900ms
-        then:
-          - script.execute: auto_off_timer
-          - if:
-              condition:
-                dfplayer.is_playing:
-              then:
-                - dfplayer.pause:
-              else:
-                - if:
-                    condition:
-                      lambda: "return id(has_scanned_tag);"
-                    then:
-                      - dfplayer.start:
-                    else:
-                      - logger.log: "Ignored short press: No tag scanned yet."
-
-      # --- LONG PRESS (Manual Sleep) ---
-      - min_length: 1000ms # Hold for 1 second
-        max_length: 5000ms
-        then:
-          - logger.log: "Long press detected! Forcing sleep..."
-          - dfplayer.stop:
-          - delay: 500ms
-          - deep_sleep.enter: deep_sleep_component
+  # Play/Pause Button on Knob - DISABLED (physically broken, remapped to Previous Button)
+  # - platform: gpio
+  #   pin:
+  #     number: ${btn_play_pin} # Your SW Pin
+  #     mode: INPUT_PULLUP
+  #     inverted: true # Button is usually "Active Low"
+  #     allow_other_uses: true
+  #   name: "Knob Button"
+  #   on_click:
+  #     # --- SHORT PRESS (Play / Pause) ---
+  #     - min_length: 50ms
+  #       max_length: 900ms
+  #       then:
+  #         - script.execute: auto_off_timer
+  #         - if:
+  #             condition:
+  #               dfplayer.is_playing:
+  #             then:
+  #               - dfplayer.pause:
+  #             else:
+  #               - if:
+  #                   condition:
+  #                     lambda: "return id(has_scanned_tag);"
+  #                   then:
+  #                     - dfplayer.start:
+  #                   else:
+  #                     - logger.log: "Ignored short press: No tag scanned yet."
+  #
+  #     # --- LONG PRESS (Manual Sleep) ---
+  #     - min_length: 1000ms # Hold for 1 second
+  #       max_length: 5000ms
+  #       then:
+  #         - logger.log: "Long press detected! Forcing sleep..."
+  #         - dfplayer.stop:
+  #         - delay: 500ms
+  #         - deep_sleep.enter: deep_sleep_component
 
   # Next Track Button
   - platform: gpio
@@ -449,33 +449,55 @@ binary_sensor:
             else:
               - logger.log: "Ignored button press: No tag scanned yet."
 
-  # Previous Track Button
+  # Previous Track Button (remap: short press = Play/Pause, long press = Previous Track)
   - platform: gpio
     pin:
       number: ${btn_prev_pin}
       mode: INPUT_PULLUP
       inverted: true
     name: "Previous Button"
-    on_press:
-      then:
-        - script.execute: auto_off_timer
-        - if:
-            condition:
-              lambda: "return id(has_scanned_tag);"
-            then:
-              - lambda: |-
-                  // Subtract 1. If it drops below track 1, loop to the last track!
-                  id(current_track) -= 1;
-                  if (id(current_track) < 1) {
-                    id(current_track) = id(max_tracks);
-                  }
-              - dfplayer.play_folder:
-                  folder: !lambda "return id(current_folder);"
-                  file: !lambda "return id(current_track);"
-            else:
-              - logger.log: "Ignored button press: No tag scanned yet."
+    on_click:
+      # --- SHORT PRESS (Play / Pause) ---
+      - min_length: 50ms
+        max_length: 900ms
+        then:
+          - script.execute: auto_off_timer
+          - if:
+              condition:
+                dfplayer.is_playing:
+              then:
+                - dfplayer.pause:
+              else:
+                - if:
+                    condition:
+                      lambda: "return id(has_scanned_tag);"
+                    then:
+                      - dfplayer.start:
+                    else:
+                      - logger.log: "Ignored short press: No tag scanned yet."
 
-  # Power Button (Manual Sleep)
+      # --- LONG PRESS (Previous Track) ---
+      - min_length: 1000ms
+        max_length: 5000ms
+        then:
+          - script.execute: auto_off_timer
+          - if:
+              condition:
+                lambda: "return id(has_scanned_tag);"
+              then:
+                - lambda: |-
+                    // Subtract 1. If it drops below track 1, loop to the last track!
+                    id(current_track) -= 1;
+                    if (id(current_track) < 1) {
+                      id(current_track) = id(max_tracks);
+                    }
+                - dfplayer.play_folder:
+                    folder: !lambda "return id(current_folder);"
+                    file: !lambda "return id(current_track);"
+              else:
+                - logger.log: "Ignored button press: No tag scanned yet."
+
+  # Power Button (Manual Sleep / Stop)
   - platform: gpio
     pin:
       number: ${btn_power_pin}
@@ -485,10 +507,10 @@ binary_sensor:
     name: "Sleep Button"
     on_press:
       then:
-        - logger.log: "Goodnight! Going to sleep..."
+        - logger.log: "Stopping playback..."
         - dfplayer.stop:
-        - delay: 500ms
-        - deep_sleep.enter: deep_sleep_component
+        # - delay: 500ms
+        # - deep_sleep.enter: deep_sleep_component
 
   # The "Busy" Pin (Checks if music is playing)
   - platform: gpio
@@ -523,7 +545,7 @@ script:
             - logger.log: "Music is still playing! Resetting the timer for another 5 minutes."
             - script.execute: auto_off_timer
           else:
-            - logger.log: "Silence detected. Goodnight!"
+            - logger.log: "Silence detected. Stopping playback."
             - dfplayer.stop:
-            - delay: 500ms
-            - deep_sleep.enter: deep_sleep_component
+            # - delay: 500ms
+            # - deep_sleep.enter: deep_sleep_component
