@@ -300,10 +300,10 @@ pn532_spi:
                 folder: !lambda "return id(current_folder);"
                 file: !lambda "return id(current_track);"
 
-      # PLACEHOLDER_CERDITO - Cerdito
+      # 5A-24-BB-37-0A-41-89 - Cerdito
       - if:
           condition:
-            lambda: 'return x == "PLACEHOLDER_CERDITO";' # Cerdito
+            lambda: 'return x == "5A-24-BB-37-0A-41-89";' # Cerdito
           then:
             # 1. Save the folder and max tracks
             - globals.set:
@@ -321,10 +321,10 @@ pn532_spi:
                 folder: !lambda "return id(current_folder);"
                 file: !lambda "return id(current_track);"
 
-      # PLACEHOLDER_LOBO_FEROZ - Lobo Feroz
+      # 5A-44-40-33-0A-41-89 - Lobo Feroz
       - if:
           condition:
-            lambda: 'return x == "PLACEHOLDER_LOBO_FEROZ";' # Lobo Feroz
+            lambda: 'return x == "5A-44-40-33-0A-41-89";' # Lobo Feroz
           then:
             # 1. Save the folder and max tracks
             - globals.set:
