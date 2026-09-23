@@ -18,15 +18,6 @@ data:
     scene: !include scenes.yaml
     template: !include templates.yaml
 
-    utility_meter:
-      consumo_red_diario:
-        source: sensor.goodwe_meter_total_energy_import
-        cycle: daily
-        tariffs:
-          - punta
-          - llano
-          - valle
-
     frontend:
       themes: !include_dir_merge_named themes
       extra_module_url:
