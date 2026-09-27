@@ -81,10 +81,13 @@ spec:
                     "
         - name: dash-capture
           image: zenika/alpine-chrome:with-puppeteer
-          command: ["node", "/app/capture.js"]
+          workingDir: /usr/src/app
+          command: ["node", "/usr/src/app/capture.js"]
           env:
             - name: TZ
               value: "Europe/Madrid"
+            - name: NODE_PATH
+              value: "/usr/src/app/node_modules"
             - name: TARGET_URL
               value: "http://127.0.0.1:8123/lovelace-epaper/0?kiosk"
             - name: OUTPUT_FILE
@@ -100,6 +103,7 @@ spec:
             - name: PORT
               value: "8099"
           securityContext:
+            runAsUser: 0
             capabilities:
               add:
                 - SYS_ADMIN
@@ -112,7 +116,7 @@ spec:
           volumeMounts:
             - mountPath: "/config"
               name: home-assistant-pvc
-            - mountPath: "/app/capture.js"
+            - mountPath: "/usr/src/app/capture.js"
               name: dash-capture-script
               subPath: capture.js
       nodeSelector:
