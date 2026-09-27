@@ -16,7 +16,7 @@ data:
     const WIDTH = parseInt(process.env.VIEWPORT_WIDTH || '800', 10);
     const HEIGHT = parseInt(process.env.VIEWPORT_HEIGHT || '480', 10);
     const DELAY = parseInt(process.env.RENDER_DELAY || '3000', 10);
-    const TOKEN = process.env.HA_ACCESS_TOKEN || '';
+    const USER_DATA_DIR = process.env.USER_DATA_DIR || '/tmp/puppeteer_profile';
 
     let isCapturing = false;
 
@@ -31,6 +31,7 @@ data:
       try {
         browser = await puppeteer.launch({
           executablePath: '/usr/bin/chromium-browser',
+          userDataDir: USER_DATA_DIR,
           args: [
             '--no-sandbox',
             '--disable-setuid-sandbox',
@@ -43,28 +44,42 @@ data:
         const page = await browser.newPage();
         await page.setViewport({ width: WIDTH, height: HEIGHT });
 
-        if (TOKEN) {
-          const urlObj = new URL(TARGET_URL);
-          await page.goto(urlObj.origin + '/', { waitUntil: 'domcontentloaded', timeout: 15000 }).catch(() => {});
-          await page.evaluate((tok) => {
-            const tokens = {
-              access_token: tok,
-              token_type: "Bearer",
-              expires_in: 315360000
-            };
-            localStorage.setItem('hassTokens', JSON.stringify(tokens));
-          }, TOKEN);
+        await page.goto(TARGET_URL, { waitUntil: 'networkidle2', timeout: 35000 }).catch(function(e) {
+          console.warn('Initial goto warning:', e.message);
+        });
+
+        // Check if redirected to an authentication/login page
+        if (page.url().indexOf('/auth/') !== -1) {
+          console.log('Detected auth page (' + page.url() + '), attempting user selection...');
+          await new Promise(function(r) { setTimeout(r, 2000); });
+          var clicked = await page.evaluate(function() {
+            var elements = Array.from(document.querySelectorAll('*'));
+            for (var i = 0; i < elements.length; i++) {
+              var el = elements[i];
+              var txt = (el.textContent || '').trim();
+              if ((txt === 'Alejandro' || txt.indexOf('Alejandro') !== -1) && el.children.length === 0) {
+                el.click();
+                return true;
+              }
+            }
+            return false;
+          });
+          if (clicked) {
+            console.log('Clicked Alejandro user button, waiting for redirect...');
+            await page.waitForNavigation({ waitUntil: 'networkidle2', timeout: 15000 }).catch(function() {});
+          }
         }
 
-        await page.goto(TARGET_URL, { waitUntil: 'networkidle0', timeout: 30000 }).catch(e => {
-          console.warn('Navigation note:', e.message);
+        // Wait for Lovelace UI view container to render
+        await page.waitForSelector('ha-panel-lovelace, hui-view, home-assistant', { timeout: 15000 }).catch(function(e) {
+          console.warn('Lovelace selector wait warning:', e.message);
         });
 
         if (DELAY > 0) {
-          await new Promise(r => setTimeout(r, DELAY));
+          await new Promise(function(r) { setTimeout(r, DELAY); });
         }
 
-        const dir = path.dirname(OUTPUT_FILE);
+        var dir = path.dirname(OUTPUT_FILE);
         if (!fs.existsSync(dir)) {
           fs.mkdirSync(dir, { recursive: true });
         }
@@ -76,27 +91,27 @@ data:
         throw err;
       } finally {
         if (browser) {
-          await browser.close().catch(() => {});
+          await browser.close().catch(function() {});
         }
         isCapturing = false;
       }
     }
 
     // Initial capture on startup after short delay
-    setTimeout(() => {
-      capture().catch(err => console.error('Initial startup capture failed:', err.message));
+    setTimeout(function() {
+      capture().catch(function(err) { console.error('Initial startup capture failed:', err.message); });
     }, 15000);
 
     // Scheduled interval capture (default: every 10 minutes = 600000ms)
-    const INTERVAL_MS = parseInt(process.env.INTERVAL_MS || '600000', 10);
+    var INTERVAL_MS = parseInt(process.env.INTERVAL_MS || '600000', 10);
     if (INTERVAL_MS > 0) {
-      setInterval(() => {
-        capture().catch(err => console.error('Periodic capture failed:', err.message));
+      setInterval(function() {
+        capture().catch(function(err) { console.error('Periodic capture failed:', err.message); });
       }, INTERVAL_MS);
     }
 
     // HTTP Server
-    const server = http.createServer(async (req, res) => {
+    var server = http.createServer(async function(req, res) {
       if (req.url === '/capture' || req.url === '/capture/') {
         try {
           await capture();
@@ -115,6 +130,6 @@ data:
       }
     });
 
-    server.listen(PORT, '0.0.0.0', () => {
+    server.listen(PORT, '0.0.0.0', function() {
       console.log('dash-capture listening on port ' + PORT);
     });

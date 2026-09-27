@@ -32,12 +32,15 @@ data:
 
     homeassistant:
       auth_providers:
-        - type: homeassistant
         - type: trusted_networks
           trusted_networks:
             - 127.0.0.1
             - ::1
+          trusted_users:
+            127.0.0.1: 62bab29c78eb46d4bdc4fea5002a83d1
+            "::1": 62bab29c78eb46d4bdc4fea5002a83d1
           allow_bypass_login: true
+        - type: homeassistant
       customize:
         sensor.consumo_red_diario_punta:
           unit_of_measurement: "kWh"
