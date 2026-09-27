@@ -26,7 +26,7 @@ data:
         return;
       }
       isCapturing = true;
-      console.log(`[${new Date().toISOString()}] Starting capture of ${TARGET_URL}...`);
+      console.log('[' + new Date().toISOString() + '] Starting capture of ' + TARGET_URL + '...');
       let browser;
       try {
         browser = await puppeteer.launch({
@@ -45,7 +45,7 @@ data:
 
         if (TOKEN) {
           const urlObj = new URL(TARGET_URL);
-          await page.goto(`${urlObj.origin}/`, { waitUntil: 'domcontentloaded', timeout: 15000 }).catch(() => {});
+          await page.goto(urlObj.origin + '/', { waitUntil: 'domcontentloaded', timeout: 15000 }).catch(() => {});
           await page.evaluate((tok) => {
             const tokens = {
               access_token: tok,
@@ -70,7 +70,7 @@ data:
         }
 
         await page.screenshot({ path: OUTPUT_FILE, type: 'png' });
-        console.log(`[${new Date().toISOString()}] Screenshot successfully saved to ${OUTPUT_FILE}`);
+        console.log('[' + new Date().toISOString() + '] Screenshot successfully saved to ' + OUTPUT_FILE);
       } catch (err) {
         console.error('Error in capture():', err);
         throw err;
@@ -116,5 +116,5 @@ data:
     });
 
     server.listen(PORT, '0.0.0.0', () => {
-      console.log(`dash-capture listening on port ${PORT}`);
+      console.log('dash-capture listening on port ' + PORT);
     });
