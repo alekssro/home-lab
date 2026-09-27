@@ -1,0 +1,281 @@
+esphome:
+  name: reterminal-dashboard
+  friendly_name: reTerminal E-Ink Dashboard
+  on_boot:
+    - priority: 600
+      then:
+        - output.turn_on: bsp_sd_enable
+        - output.turn_on: bsp_battery_enable
+        - delay: 200ms
+        - component.update: battery_voltage
+        - component.update: battery_level
+    - priority: -100
+      then:
+        - logger.log: "*** Device woke up from deep sleep ***"
+        - light.turn_on: onboard_led
+        - delay: 1s
+        - logger.log: "*** Starting application ***"
+
+esp32:
+  board: esp32-s3-devkitc-1
+  framework:
+    #    type: arduino
+    type: esp-idf
+
+# Enable logging
+logger:
+  hardware_uart: UART0
+
+# Enable Home Assistant API
+api:
+  encryption:
+    key: !secret reterminal_dashboard__home_assistant_api_key
+  on_client_connected:
+    - logger.log:
+        format: "*** Client %s connected to API with IP %s ***"
+        args: ["client_info.c_str()", "client_address.c_str()"]
+
+ota:
+  - platform: esphome
+    encryption:
+
+wifi:
+  ssid: !secret wifi_ssid
+  password: !secret wifi_password
+  min_auth_mode: WPA2
+  on_connect:
+    then:
+      - lambda: |-
+          id(wifi_status) = 1;
+      - logger.log: "*** WiFi Connected Successfully! ***"
+      - delay: 1s
+      - component.update: dashboard_image
+  on_disconnect:
+    then:
+      - lambda: |-
+          id(wifi_status) = 0;
+      - logger.log: "*** WiFi Disconnected ***"
+  ap:
+    ssid: "reTerminal-Fallback"
+    password: !secret reterminal_dashboard__ap_password
+
+psram:
+  mode: octal
+  speed: 80MHz
+
+captive_portal:
+
+globals:
+  - id: sleep_counter
+    type: int
+    restore_value: yes # Use RTC storage to maintain counter during sleep
+    initial_value: "0"
+  - id: battery_glyph
+    type: std::string
+    restore_value: no
+    initial_value: "\"\\U000F0079\"" # default full battery
+  - id: wifi_status
+    type: int
+    restore_value: no
+    initial_value: "0"
+  - id: recorded_display_refresh
+    type: int
+    restore_value: yes
+    initial_value: "0"
+
+# Deep-sleep, wake by GPIO3
+deep_sleep:
+  id: deep_sleep_1
+  run_duration: 120s # Device wake up and run 120s (enough to pull data and update)
+  sleep_duration: 30min # deep sleep for 30m
+  wakeup_pin: GPIO3 # Green button
+  wakeup_pin_mode: INVERT_WAKEUP
+
+# SPI bus for display
+spi:
+  clk_pin: GPIO7
+  mosi_pin: GPIO9
+# I2C bus for temperature and humidity sensor
+i2c:
+  scl: GPIO20
+  sda: GPIO19
+
+http_request:
+  verify_ssl: false
+  timeout: 20s
+  watchdog_timeout: 25s
+
+image:
+  - platform: online_image
+    id: dashboard_image
+    format: PNG
+    type: RGB565
+    buffer_size: 65536
+    url: https://home-assistant.alekssro.com/energy/overview?viewport=800x480&lang=en
+    #    update_interval: 20s
+    on_download_finished:
+      - component.update: epaper_display
+      - delay: 45s
+      - deep_sleep.enter: deep_sleep_1
+    on_error:
+      - delay: 30s
+      - deep_sleep.enter: deep_sleep_1
+
+display:
+  - platform: epaper_spi
+    id: epaper_display
+    model: Seeed-reTerminal-E1002
+    full_update_every: 10
+    update_interval: never
+    lambda: |-
+      it.image(0, 0, id(dashboard_image));
+
+# Home Assistant time
+time:
+  - platform: homeassistant
+    id: ha_time
+
+sensor:
+  - platform: wifi_signal # Reports the WiFi signal strength/RSSI in dB
+    update_interval: 60s
+    name: "WiFi Signal dB"
+    id: wifi_signal_db
+    entity_category: "diagnostic"
+  - platform: copy # Reports the WiFi signal strength in %
+    source_id: wifi_signal_db
+    name: "WiFi Signal Percent"
+    id: wifi_signal_percent
+    filters:
+      - lambda: return min(max(2 * (x + 100.0), 0.0), 100.0);
+    unit_of_measurement: "%"
+    entity_category: "diagnostic"
+  - platform: uptime
+    update_interval: 60s
+    name: Uptime
+  - platform: internal_temperature
+    update_interval: 60s
+    name: "Internal Temperature"
+  - platform: template
+    update_interval: 60s
+    name: "Display Last Update"
+    device_class: timestamp
+    entity_category: "diagnostic"
+    id: display_last_update
+    lambda: "return id(ha_time).now().timestamp;"
+  - platform: template
+    name: "Display Refresh Count"
+    accuracy_decimals: 0
+    unit_of_measurement: "Refreshes"
+    state_class: "total_increasing"
+    entity_category: "diagnostic"
+    lambda: "return id(recorded_display_refresh) += 1;"
+  - platform: sht4x
+    update_interval: 60s
+    temperature:
+      name: "Temperature"
+      id: temp_sensor
+    humidity:
+      name: "Relative Humidity"
+      id: hum_sensor
+  - platform: adc
+    update_interval: 60s
+    pin: GPIO1
+    name: "Battery Voltage"
+    id: battery_voltage
+    attenuation: 12db
+    filters:
+      - multiply: 2.0
+  - platform: template
+    update_interval: 60s
+    name: "Battery Level"
+    id: battery_level
+    unit_of_measurement: "%"
+    icon: "mdi:battery"
+    device_class: battery
+    state_class: measurement
+    lambda: "return id(battery_voltage).state;"
+    on_value:
+      then:
+        - lambda: |-
+            int pct = int(x);
+            if (pct <= 10)      id(battery_glyph) = "\U000F007A";
+            else if (pct <= 20) id(battery_glyph) = "\U000F007B";
+            else if (pct <= 30) id(battery_glyph) = "\U000F007C";
+            else if (pct <= 40) id(battery_glyph) = "\U000F007D";
+            else if (pct <= 50) id(battery_glyph) = "\U000F007E";
+            else if (pct <= 60) id(battery_glyph) = "\U000F007F";
+            else if (pct <= 70) id(battery_glyph) = "\U000F0080";
+            else if (pct <= 80) id(battery_glyph) = "\U000F0081";
+            else if (pct <= 90) id(battery_glyph) = "\U000F0082";
+            else                id(battery_glyph) = "\U000F0079";
+    filters:
+      - calibrate_linear:
+          - 4.15 -> 100.0
+          - 3.96 -> 90.0
+          - 3.91 -> 80.0
+          - 3.85 -> 70.0
+          - 3.80 -> 60.0
+          - 3.75 -> 50.0
+          - 3.68 -> 40.0
+          - 3.58 -> 30.0
+          - 3.49 -> 20.0
+          - 3.41 -> 10.0
+          - 3.30 -> 5.0
+          - 3.27 -> 0.0
+      - clamp:
+          min_value: 0
+          max_value: 100
+
+# Button configuration
+binary_sensor:
+  #  - platform: gpio
+  #    pin:
+  #      number: GPIO3         # Green button ***Using as wakeup***
+  #      mode: INPUT_PULLUP
+  #      inverted: true
+  #    id: button_1
+  #    name: "Green Button"
+  #    on_press:
+  #      then:
+  #        - logger.log: "*** Green Button (GPIO3) Pressed ***"
+
+  - platform: gpio
+    pin:
+      number: GPIO4 # Right white button
+      mode: INPUT_PULLUP
+      inverted: true
+    id: button_2
+    name: "Right Button"
+    on_press:
+      then:
+        - logger.log: "*** Right Button (GPIO4) Pressed ***"
+
+  - platform: gpio
+    pin:
+      number: GPIO5 # Left white button
+      mode: INPUT_PULLUP
+      inverted: true
+    id: button_3
+    name: "Left Button"
+    on_press:
+      then:
+        - logger.log: "*** Left Button (GPIO5) Pressed ***"
+
+output:
+  - platform: gpio
+    pin: GPIO6
+    id: bsp_led
+    inverted: true
+  - platform: gpio
+    pin: GPIO16
+    id: bsp_sd_enable
+  - platform: gpio
+    pin: GPIO21
+    id: bsp_battery_enable
+
+# Onboard LED
+light:
+  - platform: binary
+    name: "Onboard LED"
+    output: bsp_led
+    id: onboard_led
