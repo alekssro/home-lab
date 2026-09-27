@@ -18,6 +18,9 @@ data:
     scene: !include scenes.yaml
     template: !include templates.yaml
 
+    shell_command:
+      generar_captura_epaper: "curl -s http://127.0.0.1:8099/capture"
+
     utility_meter:
       consumo_red_diario:
         source: sensor.goodwe_meter_total_energy_import
@@ -28,6 +31,13 @@ data:
           - valle
 
     homeassistant:
+      auth_providers:
+        - type: homeassistant
+        - type: trusted_networks
+          trusted_networks:
+            - 127.0.0.1
+            - ::1
+          allow_bypass_login: true
       customize:
         sensor.consumo_red_diario_punta:
           unit_of_measurement: "kWh"

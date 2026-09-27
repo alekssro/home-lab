@@ -16,7 +16,7 @@ spec:
   template:
     metadata:
       annotations:
-        configmap.reloader.stakater.com/reload: homeassistant-config
+        configmap.reloader.stakater.com/reload: homeassistant-config,dash-capture-config
         secret.reloader.stakater.com/reload: home-assistant-secret
       labels:
         app: homeassistant
@@ -79,12 +79,51 @@ spec:
                         else:
                             print(f'No se encontró el patrón en: {p} (quizás ya está parcheado)')
                     "
+        - name: dash-capture
+          image: zenika/alpine-chrome:with-puppeteer
+          command: ["node", "/app/capture.js"]
+          env:
+            - name: TZ
+              value: "Europe/Madrid"
+            - name: TARGET_URL
+              value: "http://127.0.0.1:8123/lovelace-epaper/0?kiosk"
+            - name: OUTPUT_FILE
+              value: "/config/www/dashboard_epaper.png"
+            - name: VIEWPORT_WIDTH
+              value: "800"
+            - name: VIEWPORT_HEIGHT
+              value: "480"
+            - name: RENDER_DELAY
+              value: "3000"
+            - name: INTERVAL_MS
+              value: "600000"
+            - name: PORT
+              value: "8099"
+          securityContext:
+            capabilities:
+              add:
+                - SYS_ADMIN
+          resources:
+            requests:
+              cpu: 50m
+              memory: 256Mi
+            limits:
+              memory: 1Gi
+          volumeMounts:
+            - mountPath: "/config"
+              name: home-assistant-pvc
+            - mountPath: "/app/capture.js"
+              name: dash-capture-script
+              subPath: capture.js
       nodeSelector:
         kubernetes.io/hostname: nuc7pjyhn-rookie
       volumes:
         - name: home-assistant-config
           configMap:
             name: homeassistant-config
+        - name: dash-capture-script
+          configMap:
+            name: dash-capture-config
         - name: home-assistant-secret
           secret:
             secretName: home-assistant-secret

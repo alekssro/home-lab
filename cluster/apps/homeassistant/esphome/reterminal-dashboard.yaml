@@ -111,7 +111,7 @@ image:
     format: PNG
     type: RGB565
     buffer_size: 65536
-    url: https://home-assistant.alekssro.com/energy/overview?viewport=800x480&lang=en
+    url: https://home-assistant.alekssro.com/local/dashboard_epaper.png
     #    update_interval: 20s
     on_download_finished:
       - component.update: epaper_display
