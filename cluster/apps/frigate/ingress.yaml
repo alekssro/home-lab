@@ -1,0 +1,27 @@
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: frigate
+  namespace: frigate
+  annotations:
+    cert-manager.io/cluster-issuer: "letsencrypt-production"
+    traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
+    traefik.ingress.kubernetes.io/router.middlewares: "networking-internal-only@kubernetescrd"
+spec:
+  ingressClassName: traefik
+  rules:
+    - host: "frigate.${SECRET_DOMAIN}"
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: frigate
+                port:
+                  number: 5000
+  tls:
+    - hosts:
+        - "frigate.${SECRET_DOMAIN}"
+      secretName: frigate-tls
