@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: life-os-config
+  namespace: life-os
+data:
+  NODE_ENV: "production"
+  PORT: "3000"
+  AI_PROVIDER: "auto"
+  OLLAMA_BASE_URL: "https://ollama.alekssro.com"
+  OLLAMA_MODEL: "gemma4:12b"
+  GEMINI_MODEL: "gemini-3.8-flash"
+  ANTHROPIC_MODEL: "claude-3-5-haiku-20241022"
+  OPENAI_MODEL: "gpt-4o-mini"
+  SEED_ON_BOOT: "false"

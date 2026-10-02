@@ -26,6 +26,7 @@ resources:
   - kanbn
   - monitoring
   - protonmail-bridge
+  - life-os
   # - drive
   # - owncloud
   # - obsidian-sync
