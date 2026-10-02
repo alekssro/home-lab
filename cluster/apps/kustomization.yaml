@@ -23,7 +23,7 @@ resources:
   - frigate
   - media-server
   - openclaw
-  - kanbn
+  # - kanbn
   - monitoring
   - protonmail-bridge
   - life-os

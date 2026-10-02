@@ -484,7 +484,7 @@ metadata:
   labels:
     app: music-assistant
 spec:
-  replicas: 1
+  replicas: 0
   strategy:
     type: Recreate
   selector:
