@@ -40,9 +40,9 @@ spec:
           resources:
             requests:
               cpu: 100m
-              memory: 512Mi
+              memory: 320Mi
             limits:
-              memory: 512Mi
+              memory: 640Mi
           livenessProbe:
             httpGet:
               path: /-/healthy

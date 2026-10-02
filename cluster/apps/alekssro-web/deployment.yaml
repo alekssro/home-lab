@@ -28,9 +28,9 @@ spec:
           resources:
             requests:
               cpu: "50m"
-              memory: "64Mi"
+              memory: "16Mi"
             limits:
-              memory: "64Mi"
+              memory: "32Mi"
           volumeMounts:
             - name: alekssro-web-index
               mountPath: /usr/share/nginx/html/

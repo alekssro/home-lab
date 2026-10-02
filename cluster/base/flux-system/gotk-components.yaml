@@ -4643,12 +4643,11 @@ spec:
               path: /
               port: http
           resources:
-            limits:
-              cpu: 1000m
-              memory: 1Gi
             requests:
               cpu: 50m
-              memory: 64Mi
+              memory: 192Mi
+            limits:
+              memory: 896Mi
           securityContext:
             allowPrivilegeEscalation: false
             capabilities:
@@ -6393,12 +6392,11 @@ spec:
               path: /readyz
               port: healthz
           resources:
-            limits:
-              cpu: 1000m
-              memory: 1Gi
             requests:
               cpu: 100m
-              memory: 64Mi
+              memory: 128Mi
+            limits:
+              memory: 256Mi
           securityContext:
             allowPrivilegeEscalation: false
             capabilities:
@@ -9524,12 +9522,11 @@ spec:
               path: /readyz
               port: healthz
           resources:
-            limits:
-              cpu: 1000m
-              memory: 1Gi
             requests:
               cpu: 100m
-              memory: 64Mi
+              memory: 96Mi
+            limits:
+              memory: 256Mi
           securityContext:
             allowPrivilegeEscalation: false
             capabilities:
@@ -11406,12 +11403,11 @@ spec:
               path: /readyz
               port: healthz
           resources:
-            limits:
-              cpu: 1000m
-              memory: 1Gi
             requests:
               cpu: 100m
               memory: 64Mi
+            limits:
+              memory: 192Mi
           securityContext:
             allowPrivilegeEscalation: false
             capabilities:
@@ -12754,12 +12750,11 @@ spec:
               path: /readyz
               port: healthz
           resources:
-            limits:
-              cpu: 1000m
-              memory: 1Gi
             requests:
               cpu: 100m
-              memory: 64Mi
+              memory: 160Mi
+            limits:
+              memory: 256Mi
           securityContext:
             allowPrivilegeEscalation: false
             capabilities:
@@ -13518,12 +13513,11 @@ spec:
               path: /readyz
               port: healthz
           resources:
-            limits:
-              cpu: 1000m
-              memory: 1Gi
             requests:
               cpu: 100m
               memory: 64Mi
+            limits:
+              memory: 192Mi
           securityContext:
             allowPrivilegeEscalation: false
             capabilities:

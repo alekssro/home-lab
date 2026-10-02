@@ -38,9 +38,9 @@ spec:
           resources:
             requests:
               cpu: 50m
-              memory: 256Mi
+              memory: 160Mi
             limits:
-              memory: 256Mi
+              memory: 192Mi
           env:
             - name: NEXT_PUBLIC_BASE_URL
               value: "https://kanbn.${SECRET_DOMAIN}"

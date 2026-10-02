@@ -93,7 +93,7 @@ spec:
               cpu: 50m
               memory: 256Mi
             limits:
-              memory: 1Gi
+              memory: 768Mi
           volumeMounts:
             - mountPath: "/config"
               name: home-assistant-pvc
@@ -201,9 +201,9 @@ spec:
           resources:
             requests:
               cpu: 10m
-              memory: 128Mi
+              memory: 16Mi
             limits:
-              memory: 128Mi
+              memory: 64Mi
           ports:
             - containerPort: 3493
               name: nut
@@ -320,9 +320,9 @@ spec:
           resources:
             requests:
               cpu: 50m
-              memory: 256Mi
+              memory: 192Mi
             limits:
-              memory: 1Gi
+              memory: 256Mi
           ports:
             - containerPort: 5580
               name: matter
@@ -404,9 +404,9 @@ spec:
           resources:
             requests:
               cpu: 20m
-              memory: 128Mi
+              memory: 16Mi
             limits:
-              memory: 128Mi
+              memory: 64Mi
           volumeMounts:
             - mountPath: "/mosquitto"
               name: home-assistant-mqtt-pvc
@@ -467,7 +467,7 @@ spec:
               cpu: 50m
               memory: 256Mi
             limits:
-              memory: 2Gi
+              memory: 1920Mi
       nodeSelector:
         kubernetes.io/hostname: nuc7pjyhn-rookie
       volumes:
@@ -512,9 +512,9 @@ spec:
           resources:
             requests:
               cpu: 20m
-              memory: 64Mi
-            limits:
               memory: 128Mi
+            limits:
+              memory: 192Mi
           volumeMounts:
             - mountPath: "/data"
               name: music-assistant-pvc
@@ -533,9 +533,9 @@ spec:
           resources:
             requests:
               cpu: 100m
-              memory: 512Mi
+              memory: 256Mi
             limits:
-              memory: 1Gi
+              memory: 320Mi
           volumeMounts:
             - mountPath: "/data"
               name: music-assistant-pvc

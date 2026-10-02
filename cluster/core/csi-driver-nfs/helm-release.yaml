@@ -17,3 +17,48 @@ spec:
     controller:
       replicas: 2
       enableSnapshotter: false
+      resources:
+        csiProvisioner:
+          requests:
+            cpu: 10m
+            memory: 24Mi
+          limits:
+            memory: 128Mi
+        csiResizer:
+          requests:
+            cpu: 10m
+            memory: 24Mi
+          limits:
+            memory: 128Mi
+        livenessProbe:
+          requests:
+            cpu: 10m
+            memory: 16Mi
+          limits:
+            memory: 64Mi
+        nfs:
+          requests:
+            cpu: 10m
+            memory: 24Mi
+          limits:
+            memory: 128Mi
+    node:
+      resources:
+        livenessProbe:
+          requests:
+            cpu: 10m
+            memory: 16Mi
+          limits:
+            memory: 64Mi
+        nodeDriverRegistrar:
+          requests:
+            cpu: 10m
+            memory: 16Mi
+          limits:
+            memory: 64Mi
+        nfs:
+          requests:
+            cpu: 10m
+            memory: 24Mi
+          limits:
+            memory: 128Mi
