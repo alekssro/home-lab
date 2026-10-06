@@ -6,4 +6,3 @@ resources:
   - system-upgrade-controller
   - traefik
   - metallb
-  - gateway-api
