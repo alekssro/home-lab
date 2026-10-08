@@ -28,7 +28,7 @@ spec:
         fsGroup: 1001
       containers:
         - name: app
-          image: ghcr.io/alekssro/life-os-dashboard:1.2.2
+          image: ghcr.io/alekssro/life-os-dashboard:1.2.3
           imagePullPolicy: IfNotPresent
           securityContext:
             allowPrivilegeEscalation: false
