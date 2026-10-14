@@ -67,8 +67,8 @@ spec:
               protocol: TCP
           resources:
             requests:
-              cpu: 50m
-              memory: 416Mi
+              cpu: 250m
+              memory: 512Mi
             limits:
               memory: 1088Mi
           volumeMounts:
