@@ -42,35 +42,8 @@ spec:
           envFrom:
             - configMapRef:
                 name: life-os-config
-          env:
-            - name: DATABASE_URL
-              valueFrom:
-                secretKeyRef:
-                  name: life-os-secrets
-                  key: DATABASE_URL
-            - name: API_SECRET_KEY
-              valueFrom:
-                secretKeyRef:
-                  name: life-os-secrets
-                  key: API_SECRET_KEY
-            - name: GEMINI_API_KEY
-              valueFrom:
-                secretKeyRef:
-                  name: life-os-secrets
-                  key: GEMINI_API_KEY
-                  optional: true
-            - name: ANTHROPIC_API_KEY
-              valueFrom:
-                secretKeyRef:
-                  name: life-os-secrets
-                  key: ANTHROPIC_API_KEY
-                  optional: true
-            - name: OPENAI_API_KEY
-              valueFrom:
-                secretKeyRef:
-                  name: life-os-secrets
-                  key: OPENAI_API_KEY
-                  optional: true
+            - secretRef:
+                name: life-os-secrets
           resources:
             requests:
               cpu: 100m
