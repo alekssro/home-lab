@@ -46,9 +46,10 @@
 
 # Pin node DNS to the AdGuard Home instances instead of relying on
 # router-provided DHCP DNS (which has changed under us before).
-# Do NOT add public resolvers here: kube-dns forwards ". /etc/resolv.conf"
-# with the default "random" upstream policy, so an extra entry would make
-# ~1/3 of cluster queries bypass AdGuard and break split-horizon answers.
+# Keep this list AdGuard-only: kube-dns inherits the node resolv.conf, and
+# a public entry here would leak into CoreDNS upstream selection. The
+# public fallback for when AdGuard is down lives in the CoreDNS override
+# (cluster/core/kube-system/coredns/coredns-custom.yaml), not here.
 - name: Configure DNS servers via netplan
   ansible.builtin.copy:
     dest: /etc/netplan/80-dns.yaml

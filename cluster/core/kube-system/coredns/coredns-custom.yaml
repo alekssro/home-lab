@@ -1,0 +1,26 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: coredns-custom
+  namespace: kube-system
+data:
+  # k3s imports keys matching *.override into the .:53 server block.
+  # CoreDNS evaluates plugin directives in order, so this forward sits
+  # before the built-in "forward . /etc/resolv.conf" and takes over:
+  # only the first forward for a zone is used for a given query.
+  #
+  # Nodes resolve solely via AdGuard (.98/.97). When both AdGuard pods are
+  # down, CoreDNS marks them unhealthy and falls through to public
+  # resolvers so external lookups keep working instead of SERVFAILing.
+  #
+  # Trade-off: the public resolvers know nothing about the internal
+  # *.alekssro.com split-horizon zone, so those names resolve to their
+  # public records for the duration of an AdGuard outage.
+  dns-fallback.override: |
+    forward . 192.168.68.98 192.168.68.97 1.1.1.1 85.208.114.51 {
+      policy sequential
+      health_check 5s
+      max_fails 1
+      failover SERVFAIL REFUSED
+    }
