@@ -9,3 +9,11 @@
     daemon_reload: true
     enabled: true
     state: restarted
+
+- name: Restart systemd-resolved
+  ansible.builtin.service:
+    name: systemd-resolved
+    state: restarted
+
+- name: Apply netplan
+  ansible.builtin.command: netplan apply

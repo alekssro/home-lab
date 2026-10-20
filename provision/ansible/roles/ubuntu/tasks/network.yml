@@ -44,6 +44,55 @@
       - dbus-broker
       - bluez
 
+# Pin node DNS to the AdGuard Home instances instead of relying on
+# router-provided DHCP DNS (which has changed under us before).
+# Do NOT add public resolvers here: kube-dns forwards ". /etc/resolv.conf"
+# with the default "random" upstream policy, so an extra entry would make
+# ~1/3 of cluster queries bypass AdGuard and break split-horizon answers.
+- name: Configure DNS servers via netplan
+  ansible.builtin.copy:
+    dest: /etc/netplan/80-dns.yaml
+    owner: root
+    group: root
+    mode: "0600"
+    content: |
+      network:
+        version: 2
+        ethernets:
+          eno1:
+            dhcp4-overrides:
+              use-dns: false
+            nameservers:
+              addresses:
+                - 192.168.68.98
+                - 192.168.68.97
+  notify: Apply netplan
+
+- name: Remove legacy systemd-resolved drop-in (pinned Global DNS=127.0.0.1)
+  ansible.builtin.file:
+    path: /etc/systemd/resolved.conf.d/adguardhome.conf
+    state: absent
+  notify: Restart systemd-resolved
+
+- name: Ensure systemd resolved configuration directory exists
+  ansible.builtin.file:
+    path: /etc/systemd/resolved.conf.d
+    state: directory
+    owner: root
+    group: root
+    mode: "0755"
+
+- name: Keep stub listener disabled so /etc/resolv.conf stays the non-stub file
+  ansible.builtin.copy:
+    dest: /etc/systemd/resolved.conf.d/10-dns-stub.conf
+    owner: root
+    group: root
+    mode: "0644"
+    content: |
+      [Resolve]
+      DNSStubListener=no
+  notify: Restart systemd-resolved
+
 # - name: Configure WiFi
 #   vars:
 #     wifi_config_content: |
