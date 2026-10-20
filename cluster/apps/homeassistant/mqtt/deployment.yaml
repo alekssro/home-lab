@@ -1,0 +1,65 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: homeassistant-mqtt
+  namespace: homeassistant
+  labels:
+    app: mosquitto
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: mosquitto
+  template:
+    metadata:
+      annotations:
+        configmap.reloader.stakater.com/reload: mosquitto-config
+        secret.reloader.stakater.com/reload: home-assistant-secret
+      labels:
+        app: mosquitto
+    spec:
+      hostNetwork: true
+      securityContext:
+        runAsUser: 1883
+        runAsGroup: 1883
+      containers:
+        - image: eclipse-mosquitto:2.0.22
+          name: mosquitto
+          env:
+            - name: TZ
+              value: "Europe/Madrid"
+          ports:
+            - containerPort: 1883
+              name: mqtt
+            - containerPort: 9001
+              name: mqtt-websocket
+          resources:
+            requests:
+              cpu: 20m
+              memory: 16Mi
+            limits:
+              memory: 64Mi
+          volumeMounts:
+            - mountPath: "/mosquitto"
+              name: home-assistant-mqtt-pvc
+            - mountPath: /mosquitto/config/mosquitto.conf
+              subPath: mosquitto.conf
+              name: mosquitto-config
+            - mountPath: "/mosquitto/config/mosquitto.passwd"
+              name: home-assistant-secret
+              subPath: MOSQUITTO_PASSWORD_FILE
+      nodeSelector:
+        kubernetes.io/hostname: nuc7pjyhn-rookie
+      volumes:
+        - name: home-assistant-mqtt-pvc
+          persistentVolumeClaim:
+            claimName: home-assistant-mqtt-pvc
+        - name: mosquitto-config
+          configMap:
+            name: mosquitto-config
+        - name: home-assistant-secret
+          secret:
+            secretName: home-assistant-secret

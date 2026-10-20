@@ -1,0 +1,124 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: homeassistant-matter
+  namespace: homeassistant
+  labels:
+    app: homeassistant-matter
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: homeassistant-matter
+  template:
+    metadata:
+      labels:
+        app: homeassistant-matter
+    spec:
+      hostNetwork: true
+      securityContext:
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+      initContainers:
+        - name: prepare-matter-data
+          image: busybox:1.38
+          command: ["/bin/sh", "-c"]
+          args:
+            - |
+              echo "Fixing permissions on /data for UID 1000 (matterjs)..."
+              chown -R 1000:1000 /data
+              chmod -R u+rwX,go+rX /data
+              echo "Permissions updated successfully."
+          securityContext:
+            runAsUser: 0
+          volumeMounts:
+            - mountPath: "/data"
+              name: home-assistant-matter-pvc
+        - name: wait-for-homeassistant
+          image: busybox:1.38
+          command: ["/bin/sh", "-c"]
+          args:
+            - |
+              echo "Waiting for Home Assistant to be ready at localhost:8123..."
+              # This works because both pods use hostNetwork: true on the same node
+              while ! wget -q --spider http://localhost:8123; do
+                echo "Home Assistant not up yet, retrying in 5s..."
+                sleep 5
+              done
+
+              echo "Home Assistant is READY."
+              echo "Waiting an additional 30 seconds before starting Matter server..."
+              sleep 30
+              echo "Init container finished."
+      containers:
+        - image: ghcr.io/matter-js/matterjs-server:1.4.0
+          name: home-assistant-matter
+          env:
+            - name: TZ
+              value: "Europe/Madrid"
+            - name: STORAGE_PATH
+              value: "/data"
+            - name: PORT
+              value: "5580"
+            - name: PRODUCTION_MODE
+              value: "true"
+            - name: NOBLE_BINDINGS
+              value: "dbus"
+            - name: BLUETOOTH_ADAPTER
+              value: "0"
+            - name: DBUS_SYSTEM_BUS_ADDRESS
+              value: "unix:path=/run/dbus/system_bus_socket"
+          securityContext:
+            privileged: false
+            capabilities:
+              add:
+                - NET_RAW
+          resources:
+            requests:
+              cpu: 50m
+              memory: 192Mi
+            limits:
+              memory: 256Mi
+          ports:
+            - containerPort: 5580
+              name: matter
+              protocol: TCP
+          startupProbe:
+            httpGet:
+              path: /health
+              port: 5580
+            failureThreshold: 30
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 5580
+            periodSeconds: 30
+            timeoutSeconds: 5
+            failureThreshold: 3
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 5580
+            periodSeconds: 10
+            timeoutSeconds: 5
+            failureThreshold: 3
+          volumeMounts:
+            - mountPath: "/data"
+              name: home-assistant-matter-pvc
+            - mountPath: "/run/dbus"
+              name: dbus
+              readOnly: true
+      nodeSelector:
+        kubernetes.io/hostname: nuc7pjyhn-rookie
+      volumes:
+        - name: home-assistant-matter-pvc
+          persistentVolumeClaim:
+            claimName: home-assistant-matter-pvc
+        - name: dbus
+          hostPath:
+            path: "/var/run/dbus"

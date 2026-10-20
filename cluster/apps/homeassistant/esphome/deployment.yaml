@@ -1,0 +1,45 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: homeassistant-esphome
+  namespace: homeassistant
+  labels:
+    app: esphome
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: esphome
+  template:
+    metadata:
+      labels:
+        app: esphome
+    spec:
+      hostNetwork: true
+      containers:
+        - image: esphome/esphome:2026.9
+          name: esphome
+          env:
+            - name: TZ
+              value: "Europe/Madrid"
+          ports:
+            - containerPort: 6052
+              name: esphome
+          volumeMounts:
+            - mountPath: "/config"
+              name: config
+          resources:
+            requests:
+              cpu: 50m
+              memory: 256Mi
+            limits:
+              memory: 1920Mi
+      nodeSelector:
+        kubernetes.io/hostname: nuc7pjyhn-rookie
+      volumes:
+        - name: config
+          persistentVolumeClaim:
+            claimName: home-assistant-esphome-pvc

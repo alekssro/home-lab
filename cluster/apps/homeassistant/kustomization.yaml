@@ -2,13 +2,16 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
-  - homeassistant-ns.yaml
+  - namespace.yaml
   - homeassistant-cm.yaml
   - dash-capture-cm.yaml
-  - mosquitto-cm.yaml
   - pvc.yaml
   - deployment.yaml
-  - nut-upsd-configmap.yaml
+  - nut-upsd
+  - matter
+  - mqtt
+  - esphome
+  - music-assistant
   - service.yaml
   - ingress.yaml
   - secret.sops.yaml
