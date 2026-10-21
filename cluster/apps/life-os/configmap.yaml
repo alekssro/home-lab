@@ -6,6 +6,7 @@ metadata:
 data:
   NODE_ENV: "production"
   PORT: "3000"
+  TZ: "Europe/Madrid"
   AI_PROVIDER: "auto"
   OLLAMA_BASE_URL: "https://ollama.alekssro.com"
   OLLAMA_MODEL: "gemma4:12b"
