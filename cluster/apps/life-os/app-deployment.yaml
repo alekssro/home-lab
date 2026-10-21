@@ -3,6 +3,8 @@ kind: Deployment
 metadata:
   name: life-os-app
   namespace: life-os
+  annotations:
+    reloader.stakater.com/auto: "true"
   labels:
     app.kubernetes.io/name: life-os-app
     app.kubernetes.io/part-of: life-os
