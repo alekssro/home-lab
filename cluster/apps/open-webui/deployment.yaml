@@ -68,4 +68,4 @@ spec:
       volumes:
         - name: appdata
           persistentVolumeClaim:
-            claimName: open-webui-appdata-nfs
+            claimName: open-webui-appdata
