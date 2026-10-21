@@ -1,0 +1,26 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: open-webui-config
+  namespace: open-webui
+data:
+  # Built-in auth is enabled; the first account created becomes the admin.
+  WEBUI_AUTH: "True"
+  # Ollama runs in the `openclaw` namespace. Short names only resolve inside
+  # their own namespace, so the fully qualified service name is required here.
+  OLLAMA_BASE_URL: "http://ollama.openclaw.svc.cluster.local:11434"
+  # No OpenAI-compatible endpoint is deployed, so hide that connection and
+  # keep the app talking to Ollama only.
+  ENABLE_OPENAI_API: "False"
+  # OIDC/Authentik is pre-staged but not wired up yet. To enable it: add
+  # OAUTH_CLIENT_ID and OAUTH_CLIENT_SECRET to open-webui-secret, then flip
+  # ENABLE_OAUTH to "True".
+  ENABLE_OAUTH: "False"
+  ENABLE_OAUTH_SIGNUP: "False"
+  OAUTH_MERGE_ACCOUNTS_BY_EMAIL: "False"
+  # Authlib fetches this URL verbatim, so it has to be the full discovery
+  # document, not the bare application URL.
+  OPENID_PROVIDER_URL: "https://authentik.${SECRET_DOMAIN}/application/o/open-webui/.well-known/openid-configuration"
+  OAUTH_SCOPES: "openid email profile"
+  OAUTH_PROVIDER_NAME: "Authentik"
