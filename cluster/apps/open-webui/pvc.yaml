@@ -6,8 +6,8 @@ metadata:
   namespace: open-webui
 spec:
   accessModes:
-    - ReadWriteMany
-  storageClassName: nfs-csi
+    - ReadWriteOnce
+  storageClassName: longhorn
   resources:
     requests:
       storage: 5Gi
