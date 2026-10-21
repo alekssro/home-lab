@@ -22,7 +22,7 @@ resources:
   - nas
   - frigate
   - media-server
-  - openclaw
+  # - openclaw
   - open-webui
   # - kanbn
   - monitoring

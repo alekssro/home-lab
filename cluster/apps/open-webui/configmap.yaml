@@ -7,9 +7,9 @@ metadata:
 data:
   # Built-in auth is enabled; the first account created becomes the admin.
   WEBUI_AUTH: "True"
-  # Ollama runs in the `openclaw` namespace. Short names only resolve inside
-  # their own namespace, so the fully qualified service name is required here.
-  OLLAMA_BASE_URL: "http://ollama.openclaw.svc.cluster.local:11434"
+  # Ollama itself runs on a host outside the cluster; the `ollama` Service in
+  # this namespace points at it, so the short name resolves from here.
+  OLLAMA_BASE_URL: "http://ollama:11434"
   # No OpenAI-compatible endpoint is deployed, so hide that connection and
   # keep the app talking to Ollama only.
   ENABLE_OPENAI_API: "False"

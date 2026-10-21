@@ -7,5 +7,6 @@ resources:
   - configmap.yaml
   - deployment.yaml
   - service.yaml
+  - service-ollama.yaml
   - ingress.yaml
   - secret.sops.yaml
