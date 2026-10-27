@@ -5,7 +5,7 @@ metadata:
   name: open-webui
   namespace: open-webui
 spec:
-  replicas: 1
+  replicas: 0
   strategy:
     # Open WebUI keeps its database (SQLite) on the shared RWX NFS volume.
     # A rolling update would briefly run two pods against the same file, so
