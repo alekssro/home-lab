@@ -55,7 +55,7 @@ spec:
               sleep 30
               echo "Init container finished."
       containers:
-        - image: ghcr.io/matter-js/matterjs-server:1.4.0
+        - image: ghcr.io/matter-js/matterjs-server:1.5.5
           name: home-assistant-matter
           env:
             - name: TZ
