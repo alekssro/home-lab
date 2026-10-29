@@ -23,7 +23,7 @@ resources:
   - frigate
   - media-server
   # - openclaw
-  - open-webui
+  # - open-webui
   # - kanbn
   - monitoring
   - protonmail-bridge
