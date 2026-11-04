@@ -10,6 +10,7 @@ data:
   # Ollama itself runs on a host outside the cluster; the `ollama` Service in
   # this namespace points at it, so the short name resolves from here.
   OLLAMA_BASE_URL: "http://ollama:11434"
+  OLLAMA_HOST: "0.0.0.0:11434"
   # No OpenAI-compatible endpoint is deployed, so hide that connection and
   # keep the app talking to Ollama only.
   ENABLE_OPENAI_API: "False"
