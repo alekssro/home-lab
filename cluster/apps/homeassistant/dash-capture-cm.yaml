@@ -11,7 +11,7 @@ data:
     const path = require('path');
 
     const PORT = parseInt(process.env.PORT || '8099', 10);
-    const OUTPUT_FILE = process.env.OUTPUT_FILE || '/config/www/dashboard_epaper.png';
+    const OUTPUT_FILE = process.env.OUTPUT_FILE || '/config/epaper/dashboard_epaper.png';
     const TARGET_URL = process.env.TARGET_URL || 'http://127.0.0.1:8123/lovelace-epaper/0?kiosk';
     const WIDTH = parseInt(process.env.VIEWPORT_WIDTH || '800', 10);
     const HEIGHT = parseInt(process.env.VIEWPORT_HEIGHT || '480', 10);
@@ -124,12 +124,28 @@ data:
       } else if (req.url === '/health' || req.url === '/healthz') {
         res.writeHead(200, { 'Content-Type': 'text/plain' });
         res.end('OK');
+      } else if (req.url === '/image') {
+        fs.readFile(OUTPUT_FILE, function(err, image) {
+          if (err) {
+            if (err.code !== 'ENOENT') {
+              console.error('Error reading dashboard image:', err);
+            }
+            res.writeHead(err.code === 'ENOENT' ? 404 : 500, { 'Content-Type': 'text/plain' });
+            res.end(err.code === 'ENOENT' ? 'Not Found' : 'Internal Server Error');
+            return;
+          }
+          res.writeHead(200, {
+            'Content-Type': 'image/png',
+            'Cache-Control': 'no-store'
+          });
+          res.end(image);
+        });
       } else {
         res.writeHead(404, { 'Content-Type': 'text/plain' });
         res.end('Not Found');
       }
     });
 
-    server.listen(PORT, '0.0.0.0', function() {
+    server.listen(PORT, process.env.LISTEN_ADDRESS || '0.0.0.0', function() {
       console.log('dash-capture listening on port ' + PORT);
     });

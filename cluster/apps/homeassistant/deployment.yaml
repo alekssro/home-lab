@@ -72,7 +72,9 @@ spec:
             - name: TARGET_URL
               value: "http://127.0.0.1:8123/lovelace-epaper/0?kiosk"
             - name: OUTPUT_FILE
-              value: "/config/www/dashboard_epaper.png"
+              value: "/config/epaper/dashboard_epaper.png"
+            - name: LISTEN_ADDRESS
+              value: "192.168.68.96"
             - name: VIEWPORT_WIDTH
               value: "800"
             - name: VIEWPORT_HEIGHT

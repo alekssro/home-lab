@@ -19,7 +19,7 @@ data:
     template: !include templates.yaml
 
     shell_command:
-      generar_captura_epaper: "curl -s http://127.0.0.1:8099/capture"
+      generar_captura_epaper: "curl -s http://192.168.68.96:8099/capture"
 
     utility_meter:
       consumo_red_diario:
