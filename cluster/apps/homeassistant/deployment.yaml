@@ -23,7 +23,7 @@ spec:
     spec:
       hostNetwork: true
       containers:
-        - image: ghcr.io/home-assistant/home-assistant:2026.11.2
+        - image: ghcr.io/home-assistant/home-assistant:2026.11.3
           name: home-assistant
           env:
             - name: TZ
