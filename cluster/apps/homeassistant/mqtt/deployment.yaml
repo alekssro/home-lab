@@ -26,7 +26,7 @@ spec:
         runAsUser: 1883
         runAsGroup: 1883
       containers:
-        - image: eclipse-mosquitto:2.0.22
+        - image: eclipse-mosquitto:2.0.23
           name: mosquitto
           env:
             - name: TZ
